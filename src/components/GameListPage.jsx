@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import GameList from 'components/GameList';
-
-import SockJsClient from 'react-stomp';
-
-const WEB_SOCKET_URL = 'http://localhost:3002/v1/game-events';
+import GameUpdateHandler from 'components/GameUpdateHandler';
 
 const GameListPage = () => {
   const [games, setGames] = useState([]);
 
-  const onGameMessageReceived = (newGame) => {
-    console.log('web socket game updated message received', newGame);
-    setGames(updateGames(newGame));
+  const handleGameUpdated = (game) => {
+    console.log(`handling game updated ${game}`);
+    setGames(updateGames(game));
   };
 
   const updateGames = (newGame) => {
@@ -36,16 +33,10 @@ const GameListPage = () => {
         console.log(err.message);
       });
   }, []);
+
   return (
     <>
-      <SockJsClient
-        url={WEB_SOCKET_URL}
-        topics={['/topic/game-updated']}
-        onConnect={() => console.log('web socket connected')}
-        onDisconnect={console.log('web socket disconnected')}
-        onMessage={(game) => onGameMessageReceived(game)}
-        debug={false}
-      />
+      <GameUpdateHandler onGameUpdated={handleGameUpdated} />
       <GameList games={games} />
     </>
   );

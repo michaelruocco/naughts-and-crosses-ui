@@ -1,7 +1,15 @@
+import { useNavigate } from 'react-router-dom';
+
 const GameList = (props) => {
   const { games } = props;
+  const navigate = useNavigate();
+
+  const viewGame = (id) => {
+    navigate(`/game/${id}`);
+  };
+
   return (
-    <table>
+    <table class="gameTable">
       <thead>
         <tr>
           <th>Turn</th>
@@ -12,7 +20,7 @@ const GameList = (props) => {
       </thead>
       {games.map((game) => (
         <tbody key={game.id}>
-          <tr>
+          <tr onClick={() => viewGame(game.id)}>
             <td>{game.status.turn}</td>
             <td>{game.status.complete.toString()}</td>
             <td>{game.status.nextPlayerToken}</td>
