@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import GameList from 'components/GameList';
-import GameUpdateHandler from 'components/GameUpdateHandler';
 import Button from '@mui/material/Button';
+import { useSubscription } from 'react-stomp-hooks';
 
 import { Box } from '@mui/system';
 
 const GameListPage = () => {
+  const handleGameUpdated = (game) => {
+    setGames(updateGames(JSON.parse(game)));
+  };
+
+  useSubscription('/topic/game-updated', (message) =>
+    handleGameUpdated(message.body),
+  );
   const [games, setGames] = useState([]);
 
   const createGame = () => {
@@ -16,11 +23,6 @@ const GameListPage = () => {
       .then((data) => {
         setGames(updateGames(data));
       });
-  };
-
-  const handleGameUpdated = (game) => {
-    console.log(`handling game updated ${game}`);
-    setGames(updateGames(game));
   };
 
   const updateGames = (newGame) => {
@@ -49,7 +51,6 @@ const GameListPage = () => {
 
   return (
     <>
-      <GameUpdateHandler onGameUpdated={handleGameUpdated} />
       <Box m={5} textAlign="center">
         <Button variant="contained" onClick={createGame}>
           New Game

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
+import { StompSessionProvider } from 'react-stomp-hooks';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -17,7 +18,9 @@ root.render(
   <React.StrictMode>
     <CssBaseline />
     <BrowserRouter>
-      <NaughtsAndCrossesApp />
+      <StompSessionProvider url={'http://localhost:3002/v1/game-events'}>
+        <NaughtsAndCrossesApp />
+      </StompSessionProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

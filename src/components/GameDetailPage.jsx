@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import GameUpdateHandler from 'components/GameUpdateHandler';
 import Board from 'components/Board';
+import { useSubscription } from 'react-stomp-hooks';
 
 const GameDetailPage = () => {
   const [game, setGame] = useState([]);
   const { id } = useParams();
 
   const handleGameUpdated = (game) => {
-    console.log(`handling game updated ${game}`);
-    setGame(game);
+    setGame(JSON.parse(game));
   };
+
+  useSubscription('/topic/game-updated', (message) =>
+    handleGameUpdated(message.body),
+  );
 
   const takeTurn = (location) => {
     const body = JSON.stringify({
@@ -45,7 +48,6 @@ const GameDetailPage = () => {
 
   return (
     <>
-      <GameUpdateHandler onGameUpdated={handleGameUpdated} />
       <Board board={game.board} onLocationSelected={handleLocationSelected} />
     </>
   );
