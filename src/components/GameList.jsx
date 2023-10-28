@@ -1,34 +1,31 @@
+import { Box } from '@mui/system';
+import Grid from '@mui/material/Grid';
+import GameListItem from 'components/GameListItem';
 import { useNavigate } from 'react-router-dom';
 
 const GameList = (props) => {
-  const { games } = props;
   const navigate = useNavigate();
+  const { games } = props;
 
   const viewGame = (id) => {
     navigate(`/game/${id}`);
   };
 
   return (
-    <table class="gameTable">
-      <thead>
-        <tr>
-          <th>Turn</th>
-          <th>Complete</th>
-          <th>Next Player</th>
-          <th>Winner</th>
-        </tr>
-      </thead>
-      {games.map((game) => (
-        <tbody key={game.id}>
-          <tr onClick={() => viewGame(game.id)}>
-            <td>{game.status.turn}</td>
-            <td>{game.status.complete.toString()}</td>
-            <td>{game.status.nextPlayerToken}</td>
-            <td>{game.status.winningToken}</td>
-          </tr>
-        </tbody>
-      ))}
-    </table>
+    <Box m={5}>
+      <Grid
+        container
+        direction="column-reverse"
+        justifyContent="center"
+        spacing={2}
+      >
+        {games.map((game) => (
+          <Grid item key={game.id} onclick={() => viewGame(game.id)}>
+            <GameListItem game={game} />
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 export default GameList;

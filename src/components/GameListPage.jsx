@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import GameList from 'components/GameList';
 import GameUpdateHandler from 'components/GameUpdateHandler';
+import Button from '@mui/material/Button';
+
+import { Box } from '@mui/system';
 
 const GameListPage = () => {
   const [games, setGames] = useState([]);
+
+  const createGame = () => {
+    fetch('http://localhost:3002/v1/games', {
+      method: 'POST',
+    });
+  };
 
   const handleGameUpdated = (game) => {
     console.log(`handling game updated ${game}`);
@@ -37,6 +46,11 @@ const GameListPage = () => {
   return (
     <>
       <GameUpdateHandler onGameUpdated={handleGameUpdated} />
+      <Box m={5} textAlign="center">
+        <Button variant="contained" onClick={createGame}>
+          New Game
+        </Button>
+      </Box>
       <GameList games={games} />
     </>
   );
