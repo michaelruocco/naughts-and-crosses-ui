@@ -8,7 +8,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 function ResponsiveAppBar() {
   return (
-    <AppBar position="static" sx={{ mb: 2 }}>
+    <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />

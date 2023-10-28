@@ -11,7 +11,11 @@ const GameListPage = () => {
   const createGame = () => {
     fetch('http://localhost:3002/v1/games', {
       method: 'POST',
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setGames(updateGames(data));
+      });
   };
 
   const handleGameUpdated = (game) => {

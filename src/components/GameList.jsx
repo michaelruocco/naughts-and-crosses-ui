@@ -1,4 +1,3 @@
-import { Box } from '@mui/system';
 import Grid from '@mui/material/Grid';
 import GameListItem from 'components/GameListItem';
 import { useNavigate } from 'react-router-dom';
@@ -12,20 +11,18 @@ const GameList = (props) => {
   };
 
   return (
-    <Box m={5}>
-      <Grid
-        container
-        direction="column-reverse"
-        justifyContent="center"
-        spacing={2}
-      >
-        {games.map((game) => (
-          <Grid item key={game.id} onclick={() => viewGame(game.id)}>
-            <GameListItem game={game} />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+    <Grid
+      container
+      direction="column-reverse"
+      justifyContent="center"
+      spacing={2}
+    >
+      {games.map((game) => (
+        <Grid item key={game.id} onClick={() => viewGame(game.id)}>
+          <GameListItem game={game} />
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 export default GameList;
