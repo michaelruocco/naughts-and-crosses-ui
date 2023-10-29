@@ -5,15 +5,19 @@ import { useSubscription } from 'react-stomp-hooks';
 import GamesApiClient from 'adapters/GamesApiClient';
 
 const GameDetailPage = () => {
-  const [game, setGame] = useState([]);
+  const [game, setGame] = useState(null);
   const { id } = useParams();
 
   const handleGameUpdated = (updatedGame) => {
-    if (game.id === updatedGame.id) {
+    if (isUpdateRelevant(updatedGame)) {
       setGame(updatedGame);
       return;
     }
     console.log(`update for game with id ${updatedGame.id} ignored`);
+  };
+
+  const isUpdateRelevant = (updatedGame) => {
+    return game.id === updatedGame.id && game !== updatedGame;
   };
 
   useSubscription('/topic/game-updated', (message) =>
@@ -47,7 +51,9 @@ const GameDetailPage = () => {
   }, []);
 
   return (
-    <Board board={game.board} onLocationSelected={handleLocationSelected} />
+    game && (
+      <Board board={game.board} onLocationSelected={handleLocationSelected} />
+    )
   );
 };
 export default GameDetailPage;

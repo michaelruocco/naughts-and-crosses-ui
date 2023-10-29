@@ -7,6 +7,8 @@ import GamesApiClient from 'adapters/GamesApiClient';
 import { Box } from '@mui/system';
 
 const GameListPage = () => {
+  const [games, setGames] = useState([]);
+
   const handleGameUpdated = (updatedGame) => {
     setGames(updateGames(updatedGame));
   };
@@ -14,7 +16,6 @@ const GameListPage = () => {
   useSubscription('/topic/game-updated', (message) =>
     handleGameUpdated(JSON.parse(message.body)),
   );
-  const [games, setGames] = useState([]);
 
   const createGame = () => {
     const performCreateGame = async () => {

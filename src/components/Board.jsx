@@ -16,10 +16,6 @@ const Board = (props) => {
     return token;
   };
 
-  if (!board) {
-    return null;
-  }
-
   return (
     <>
       <Box mx={15}>
