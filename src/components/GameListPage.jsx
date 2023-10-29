@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import GameList from 'components/GameList';
 import Button from '@mui/material/Button';
 import { useSubscription } from 'react-stomp-hooks';
+import GamesApiClient from 'adapters/GamesApiClient';
 
 import { Box } from '@mui/system';
 
@@ -16,13 +17,11 @@ const GameListPage = () => {
   const [games, setGames] = useState([]);
 
   const createGame = () => {
-    fetch('http://localhost:3002/v1/games', {
-      method: 'POST',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setGames(updateGames(data));
-      });
+    const performCreateGame = async () => {
+      const newGame = await GamesApiClient.create();
+      setGames(updateGames(newGame));
+    };
+    performCreateGame();
   };
 
   const updateGames = (newGame) => {
@@ -39,14 +38,11 @@ const GameListPage = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:3002/v1/games?minimal=true')
-      .then((response) => response.json())
-      .then((data) => {
-        setGames(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    const fetchGames = async () => {
+      const games = await GamesApiClient.getAll();
+      setGames(games);
+    };
+    fetchGames();
   }, []);
 
   return (

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Board from 'components/Board';
 import { useSubscription } from 'react-stomp-hooks';
+import GamesApiClient from 'adapters/GamesApiClient';
 
 const GameDetailPage = () => {
   const [game, setGame] = useState([]);
@@ -16,19 +17,17 @@ const GameDetailPage = () => {
   );
 
   const takeTurn = (location) => {
-    const body = JSON.stringify({
-      coordinates: location.coordinates,
-      token: game.status.nextPlayerToken,
+    const performTakeTurn = async (request) => {
+      const updatedGame = await GamesApiClient.takeTurn(request);
+      setGame(updatedGame);
+    };
+    performTakeTurn({
+      id: id,
+      body: {
+        coordinates: location.coordinates,
+        token: game.status.nextPlayerToken,
+      },
     });
-    fetch(`http://localhost:3002/v1/games/${id}/turns`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: body,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setGame(data);
-      });
   };
 
   const handleLocationSelected = (location) => {
@@ -36,20 +35,15 @@ const GameDetailPage = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3002/v1/games/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setGame(data);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    const fetchGame = async () => {
+      const game = await GamesApiClient.getById(id);
+      setGame(game);
+    };
+    fetchGame();
   }, []);
 
   return (
-    <>
-      <Board board={game.board} onLocationSelected={handleLocationSelected} />
-    </>
+    <Board board={game.board} onLocationSelected={handleLocationSelected} />
   );
 };
 export default GameDetailPage;
