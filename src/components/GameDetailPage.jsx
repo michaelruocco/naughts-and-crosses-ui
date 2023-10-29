@@ -8,12 +8,16 @@ const GameDetailPage = () => {
   const [game, setGame] = useState([]);
   const { id } = useParams();
 
-  const handleGameUpdated = (game) => {
-    setGame(JSON.parse(game));
+  const handleGameUpdated = (updatedGame) => {
+    if (game.id === updatedGame.id) {
+      setGame(updatedGame);
+      return;
+    }
+    console.log(`update for game with id ${updatedGame.id} ignored`);
   };
 
   useSubscription('/topic/game-updated', (message) =>
-    handleGameUpdated(message.body),
+    handleGameUpdated(JSON.parse(message.body)),
   );
 
   const takeTurn = (location) => {

@@ -7,12 +7,12 @@ import GamesApiClient from 'adapters/GamesApiClient';
 import { Box } from '@mui/system';
 
 const GameListPage = () => {
-  const handleGameUpdated = (game) => {
-    setGames(updateGames(JSON.parse(game)));
+  const handleGameUpdated = (updatedGame) => {
+    setGames(updateGames(updatedGame));
   };
 
   useSubscription('/topic/game-updated', (message) =>
-    handleGameUpdated(message.body),
+    handleGameUpdated(JSON.parse(message.body)),
   );
   const [games, setGames] = useState([]);
 
@@ -24,17 +24,17 @@ const GameListPage = () => {
     performCreateGame();
   };
 
-  const updateGames = (newGame) => {
-    const oldGame = games.find(({ id }) => id === newGame.id);
+  const updateGames = (updatedGame) => {
+    const oldGame = games.find(({ id }) => id === updatedGame.id);
     if (oldGame) {
       return games.map((game) => {
-        if (game.id === newGame.id) {
-          return newGame;
+        if (game.id === updatedGame.id) {
+          return updatedGame;
         }
         return game;
       });
     }
-    return games.concat(newGame);
+    return games.concat(updatedGame);
   };
 
   useEffect(() => {
