@@ -9,16 +9,49 @@ import { Box } from '@mui/system';
 const Board = (props) => {
   const { board, onLocationSelected } = props;
 
-  const toGridLocationContent = (token) => {
-    if (token === ' ') {
+  const toFormattedToken = (location) => {
+    if (location.token === ' ') {
       return '\u00A0'; //&nbsp;
     }
-    return token;
+    return location.token;
+  };
+
+  const isAvailable = (location) => {
+    return location.token === ' ';
+  };
+
+  const toAvailableContent = (location) => {
+    return (
+      <CardActionArea onClick={() => onLocationSelected(location)}>
+        {toContent(location)}
+      </CardActionArea>
+    );
+  };
+
+  const toUnavailableContent = (location) => {
+    return toContent(location);
+  };
+
+  const toContent = (location) => {
+    return (
+      <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+        <Typography sx={{ typography: { sm: 'h1', xs: 'h2' } }} align="center">
+          {toFormattedToken(location)}
+        </Typography>
+      </CardContent>
+    );
+  };
+
+  const toCardContent = (location) => {
+    if (isAvailable(location)) {
+      return toAvailableContent(location);
+    }
+    return toUnavailableContent(location);
   };
 
   return (
     <>
-      <Box mx={15}>
+      <Box mx={25}>
         <Grid
           container
           direction="row"
@@ -28,18 +61,7 @@ const Board = (props) => {
         >
           {board.locations.map((location) => (
             <Grid item key={JSON.stringify(location.coordinates)} xs={1}>
-              <Card>
-                <CardActionArea onClick={() => onLocationSelected(location)}>
-                  <CardContent>
-                    <Typography
-                      sx={{ typography: { sm: 'h1', xs: 'h2' } }}
-                      align="center"
-                    >
-                      {toGridLocationContent(location.token)}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <Card>{toCardContent(location)}</Card>
             </Grid>
           ))}
         </Grid>
