@@ -7,7 +7,7 @@ import { CardActionArea } from '@mui/material';
 import { Box } from '@mui/system';
 
 const Board = (props) => {
-  const { board, onLocationSelected } = props;
+  const { board, onLocationSelected, enabled } = props;
 
   const toFormattedToken = (location) => {
     if (location.token === ' ') {
@@ -43,7 +43,7 @@ const Board = (props) => {
   };
 
   const toCardContent = (location) => {
-    if (isAvailable(location)) {
+    if (isAvailable(location) && enabled) {
       return toAvailableContent(location);
     }
     return toUnavailableContent(location);

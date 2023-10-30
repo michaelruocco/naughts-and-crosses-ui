@@ -52,7 +52,11 @@ const GameDetailPage = () => {
 
   return (
     game && (
-      <Board board={game.board} onLocationSelected={handleLocationSelected} />
+      <Board
+        board={game.board}
+        onLocationSelected={handleLocationSelected}
+        enabled={!game.status.complete}
+      />
     )
   );
 };
