@@ -16,6 +16,13 @@ const Board = (props) => {
     return location.token;
   };
 
+  const toColor = (location) => {
+    if (location.winner) {
+      return 'green';
+    }
+    return 'black';
+  };
+
   const isAvailable = (location) => {
     return location.token === ' ';
   };
@@ -33,9 +40,15 @@ const Board = (props) => {
   };
 
   const toContent = (location) => {
+    const color = toColor(location);
+    console.log(`color ${color}`);
     return (
       <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
-        <Typography sx={{ typography: { sm: 'h1', xs: 'h2' } }} align="center">
+        <Typography
+          sx={{ typography: { sm: 'h1', xs: 'h2' } }}
+          align="center"
+          color={toColor(location)}
+        >
           {toFormattedToken(location)}
         </Typography>
       </CardContent>
