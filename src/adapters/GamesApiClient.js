@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: 'http://localhost:3002',
+  baseURL: API_BASE_URL,
 });
 
 const getAll = async () => {
@@ -17,7 +17,7 @@ const getAll = async () => {
 const getById = async (id) => {
   try {
     return await client
-      .get(`http://localhost:3002/v1/games/${id}`)
+      .get(`/v1/games/${id}`)
       .then((response) => response.data);
   } catch (e) {
     throw new Error(e.message);
@@ -34,10 +34,9 @@ const create = async () => {
 
 const takeTurn = async (request) => {
   const { id, body } = request;
-  console.log(`take turn body is ${JSON.stringify(body)}`);
   try {
     return await client
-      .put(`http://localhost:3002/v1/games/${id}/turns`, body)
+      .put(`/v1/games/${id}/turns`, body)
       .then((response) => response.data);
   } catch (e) {
     throw new Error(e.message);

@@ -41,7 +41,6 @@ const Board = (props) => {
 
   const toContent = (location) => {
     const color = toColor(location);
-    console.log(`color ${color}`);
     return (
       <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
         <Typography

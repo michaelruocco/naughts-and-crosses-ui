@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import AdbIcon from '@mui/icons-material/Adb';
 
 function ResponsiveAppBar() {
+  const titleText = 'Naughts & Crosses';
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -27,7 +28,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            Naughts & Crosses
+            {titleText}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }} />
@@ -49,7 +50,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            Naughts & Crosses
+            {titleText}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} />
 

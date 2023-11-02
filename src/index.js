@@ -18,7 +18,7 @@ root.render(
   <React.StrictMode>
     <CssBaseline />
     <BrowserRouter>
-      <StompSessionProvider url={'http://localhost:3002/v1/game-events'}>
+      <StompSessionProvider url={`${API_BASE_URL}/v1/game-events`}>
         <NaughtsAndCrossesApp />
       </StompSessionProvider>
     </BrowserRouter>
