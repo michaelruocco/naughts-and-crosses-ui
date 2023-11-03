@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: APP_API_BASE_URL,
 });
 
 const getAll = async () => {

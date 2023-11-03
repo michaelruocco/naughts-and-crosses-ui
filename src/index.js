@@ -12,13 +12,24 @@ import './styles/app.css';
 
 import NaughtsAndCrossesApp from 'components/NaughtsAndCrossesApp';
 
+const buildWebsocketUrl = () => {
+  const baseUrl = `${APP_WEB_SOCKET_BASE_URL}/v1/game-events`;
+  if (APP_WEB_SOCKET_PREFIX_WINDOW_ORIGIN) {
+    return `${window.location.origin}${baseUrl}`;
+  }
+  return baseUrl;
+};
+
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
+const webSocketUrl = buildWebsocketUrl();
+console.log('webSocketUrl', webSocketUrl);
+
 root.render(
   <React.StrictMode>
     <CssBaseline />
     <BrowserRouter>
-      <StompSessionProvider url={`${API_BASE_URL}/v1/game-events`}>
+      <StompSessionProvider url={webSocketUrl}>
         <NaughtsAndCrossesApp />
       </StompSessionProvider>
     </BrowserRouter>

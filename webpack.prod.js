@@ -7,7 +7,9 @@ module.exports = merge(common, {
   devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({
-      API_BASE_URL: JSON.stringify('$API_BASE_URL'),
+      APP_API_BASE_URL: JSON.stringify('/api'),
+      APP_WEB_SOCKET_BASE_URL: JSON.stringify('/web-socket'),
+      APP_WEB_SOCKET_PREFIX_WINDOW_ORIGIN: JSON.stringify(true),
     }),
   ],
 });

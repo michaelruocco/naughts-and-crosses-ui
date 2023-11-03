@@ -1,0 +1,19 @@
+version: '3'
+services:
+  naughts-and-crosses-ui:
+    image: naughts-and-crosses-ui:latest
+    container_name: naughts-and-crosses-ui
+    ports:
+      - 3001:80
+    environment:
+      - NGINX_PROXY_BACKEND_BASE_URL=http://naughts-and-crosses-api:80
+    depends_on:
+      - naughts-and-crosses-api
+
+  naughts-and-crosses-api:
+    image: naughts-and-crosses-api:latest
+    container_name: naughts-and-crosses-api
+    ports:
+      - 3002:80
+    environment:
+      - SERVER_PORT=80

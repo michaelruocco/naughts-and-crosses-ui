@@ -2,6 +2,8 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const webpack = require('webpack');
 
+const baseUrl = 'http://localhost:3002';
+
 module.exports = merge(common, {
   mode: 'development',
   devtool: 'inline-source-map',
@@ -13,9 +15,12 @@ module.exports = merge(common, {
     compress: true,
     historyApiFallback: true,
   },
+
   plugins: [
     new webpack.DefinePlugin({
-      API_BASE_URL: JSON.stringify('http://localhost:3002'),
+      APP_API_BASE_URL: JSON.stringify(baseUrl),
+      APP_WEB_SOCKET_BASE_URL: JSON.stringify(baseUrl),
+      APP_WEB_SOCKET_PREFIX_WINDOW_ORIGIN: JSON.stringify(false),
     }),
   ],
 });
