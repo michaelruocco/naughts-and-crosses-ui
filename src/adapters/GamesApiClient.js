@@ -36,7 +36,7 @@ const takeTurn = async (request) => {
   const { id, body } = request;
   try {
     return await client
-      .put(`/v1/games/${id}/turns`, body)
+      .post(`/v1/games/${id}/turns`, body)
       .then((response) => response.data);
   } catch (e) {
     throw new Error(e.message);
