@@ -41,3 +41,15 @@ docker-compose up -d
 ```
 
 running this command will make the UI available on [local port 3001](http://localhost:3001)
+
+## Running a multi node set up for the UI and API in docker
+
+As above, assuming you have built the API and UI docker images, you can run a multi node set
+up with 2 instances of the API and UI running by running the following command
+
+```bash
+docker-compose --profile multi-node up -d
+```
+
+running this command will make the UI available on both [local port 3001](http://localhost:3001)
+and [local port 3002](http://localhost:3002)

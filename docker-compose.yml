@@ -1,20 +1,59 @@
-version: '3'
+version: '3.9'
+
 services:
-  naughts-and-crosses-ui:
+  naughts-and-crosses-ui-1:
     image: naughts-and-crosses-ui:latest
-    container_name: naughts-and-crosses-ui
+    container_name: naughts-and-crosses-ui-1
     ports:
       - 3001:80
     environment:
-      - NGINX_PROXY_BACKEND_BASE_URL=http://naughts-and-crosses-api:80
+      NGINX_PROXY_BACKEND_BASE_URL: http://naughts-and-crosses-api-1:80
     depends_on:
-      - naughts-and-crosses-api
+      - naughts-and-crosses-api-1
 
-  naughts-and-crosses-api:
-    image: naughts-and-crosses-api:latest
-    container_name: naughts-and-crosses-api
+  naughts-and-crosses-ui-2:
+    image: naughts-and-crosses-ui:latest
+    container_name: naughts-and-crosses-ui-2
+    profiles: [ "multi-node" ]
     ports:
       - 3002:80
     environment:
-      - SERVER_PORT=80
-      - CORS_ALLOWED_ORIGINS=http://localhost:3001
+      NGINX_PROXY_BACKEND_BASE_URL: http://naughts-and-crosses-api-2:80
+    depends_on:
+      - naughts-and-crosses-api-2
+
+  naughts-and-crosses-api-1:
+    image: naughts-and-crosses-api:latest
+    container_name: naughts-and-crosses-api-1
+    environment:
+      SERVER_PORT: 80
+      CORS_ALLOWED_ORIGINS: http://localhost:3001
+      DATABASE_URL: jdbc:postgresql://naughts-and-crosses-db:5432/naughts-and-crosses-api
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_DRIVER: org.postgresql.Driver
+    restart: on-failure
+    depends_on:
+      - naughts-and-crosses-db
+
+  naughts-and-crosses-api-2:
+    image: naughts-and-crosses-api:latest
+    container_name: naughts-and-crosses-api-2
+    profiles: [ "multi-node" ]
+    environment:
+      SERVER_PORT: 80
+      CORS_ALLOWED_ORIGINS: http://localhost:3002
+      DATABASE_URL: jdbc:postgresql://naughts-and-crosses-db:5432/naughts-and-crosses-api
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_DRIVER: org.postgresql.Driver
+    restart: on-failure
+    depends_on:
+      - naughts-and-crosses-db
+      
+  naughts-and-crosses-db:
+    image: postgres:16-alpine
+    container_name: naughts-and-crosses-db
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: naughts-and-crosses-api
