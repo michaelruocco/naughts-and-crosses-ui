@@ -32,9 +32,17 @@ services:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_DRIVER: org.postgresql.Driver
+      KAFKA_LISTENERS_ENABLED: "true"
+      KAFKA_PRODUCERS_ENABLED: "true"
+      KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
+      KAFKA_CONSUMER_GROUP_ID: naughts-and-crosses-api-group-1
+      KAFKA_CLIENT_ID: naughts-and-crosses-api-client-id-1
+      KAFKA_GAME_EVENT_TOPIC: game-update
+      KAFKA_SECURITY_PROTOCOL: PLAINTEXT
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
+      - kafka
 
   naughts-and-crosses-api-2:
     image: naughts-and-crosses-api:latest
@@ -47,9 +55,17 @@ services:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_DRIVER: org.postgresql.Driver
+      KAFKA_LISTENERS_ENABLED: "true"
+      KAFKA_PRODUCERS_ENABLED: "true"
+      KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
+      KAFKA_CONSUMER_GROUP_ID: naughts-and-crosses-api-group-2
+      KAFKA_CLIENT_ID: naughts-and-crosses-api-client-id-2
+      KAFKA_GAME_EVENT_TOPIC: game-update
+      KAFKA_SECURITY_PROTOCOL: PLAINTEXT
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
+      - kafka
       
   naughts-and-crosses-db:
     image: postgres:16-alpine
@@ -57,3 +73,39 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: naughts-and-crosses-api
+
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - 2181:2181
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - 9094:9094
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_LISTENERS=INTERNAL://:9092,EXTERNAL://:9094,
+      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CREATE_TOPICS=game-event:1:1
+    depends_on:
+      - zookeeper
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - 8081:8080
+    restart: "no"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local-kafka-cluster
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    depends_on:
+      - kafka
