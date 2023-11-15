@@ -24,10 +24,11 @@ docker build -t naughts-and-crosses-ui .
 After building the docker image, to run it you can run:
 
 ```bash
-docker run -d -p 8080:80 --rm -e NGINX_PROXY_API_BASE_URL=http://naughts-and-crosses-api:80 naughts-and-crosses-ui
+docker run -d -p 3001:80 --rm -e NGINX_PROXY_BACKEND_BASE_URL=http://host.docker.internal:3002 naughts-and-crosses-ui
 ```
 
-Note - this expects the backend API to be available at the url provided in `API_BASE_URL`
+Note - this expects the backend API to be available at the url provided in `NGINX_PROXY_BACKEND_BASE_URL` the
+example above assumes it is running on the host machine on port 3002
 
 ## Running the UI and API in docker
 

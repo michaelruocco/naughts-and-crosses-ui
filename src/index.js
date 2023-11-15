@@ -13,11 +13,7 @@ import './styles/app.css';
 import NaughtsAndCrossesApp from 'components/NaughtsAndCrossesApp';
 
 const buildWebsocketUrl = () => {
-  const baseUrl = `${APP_WEB_SOCKET_BASE_URL}/v1/game-events`;
-  if (APP_WEB_SOCKET_PREFIX_WINDOW_ORIGIN) {
-    return `${window.location.origin}${baseUrl}`;
-  }
-  return baseUrl;
+  return `${APP_WEB_SOCKET_BASE_URL}/v1/game-events`;
 };
 
 const container = document.getElementById('root');

@@ -19,8 +19,7 @@ module.exports = merge(common, {
   plugins: [
     new webpack.DefinePlugin({
       APP_API_BASE_URL: JSON.stringify(baseUrl),
-      APP_WEB_SOCKET_BASE_URL: JSON.stringify(baseUrl),
-      APP_WEB_SOCKET_PREFIX_WINDOW_ORIGIN: JSON.stringify(false),
+      APP_WEB_SOCKET_BASE_URL: JSON.stringify(baseUrl)
     }),
   ],
 });
