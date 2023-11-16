@@ -6,9 +6,6 @@ COPY . /src
 RUN npm install && npm run build
 
 FROM nginx:1.25.3
-COPY ./nginx/start-nginx.sh /usr/bin/start-nginx.sh
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
-RUN chmod +x /usr/bin/start-nginx.sh
-WORKDIR /usr/share/nginx/html
-COPY --from=0 /src/dist .
-ENTRYPOINT [ "start-nginx.sh" ]
+RUN mkdir /etc/nginx/templates
+COPY ./nginx/default.conf.template /etc/nginx/templates
+COPY --from=0 /src/dist /usr/share/nginx/html
