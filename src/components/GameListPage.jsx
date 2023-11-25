@@ -13,7 +13,7 @@ const GameListPage = () => {
     setGames(updateGames(updatedGame));
   };
 
-  useSubscription('/topic/game-updated', (message) =>
+  useSubscription('/topic/game-update', (message) =>
     handleGameUpdated(JSON.parse(message.body)),
   );
 

@@ -20,7 +20,7 @@ const GameDetailPage = () => {
     return game.id === updatedGame.id && game !== updatedGame;
   };
 
-  useSubscription('/topic/game-updated', (message) =>
+  useSubscription('/topic/game-update', (message) =>
     handleGameUpdated(JSON.parse(message.body)),
   );
 
