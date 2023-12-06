@@ -8,9 +8,13 @@ services:
       - 3001:80
     environment:
       NGINX_PROXY_BACKEND_BASE_URL: http://naughts-and-crosses-api-1:80
+      APP_AUTH_URL: http://keycloak:4021
+      APP_AUTH_REALM: naughts-and-crosses-local
+      APP_AUTH_CLIENT_ID: naughts-and-crosses-ui
     depends_on:
       - naughts-and-crosses-api-1
-
+      - keycloak
+      
   naughts-and-crosses-ui-2:
     image: naughts-and-crosses-ui:latest
     container_name: naughts-and-crosses-ui-2
@@ -19,8 +23,12 @@ services:
       - 3002:80
     environment:
       NGINX_PROXY_BACKEND_BASE_URL: http://naughts-and-crosses-api-2:80
+      APP_AUTH_URL: http://keycloak:4021
+      APP_AUTH_REALM: naughts-and-crosses-local
+      APP_AUTH_CLIENT_ID: naughts-and-crosses-ui
     depends_on:
       - naughts-and-crosses-api-2
+      - keycloak
 
   naughts-and-crosses-api-1:
     image: naughts-and-crosses-api:latest
@@ -39,10 +47,12 @@ services:
       KAFKA_CLIENT_ID: naughts-and-crosses-api-client-id-1
       KAFKA_GAME_EVENT_TOPIC: game-update
       KAFKA_SECURITY_PROTOCOL: PLAINTEXT
+      AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
       - kafka
+      - keycloak
 
   naughts-and-crosses-api-2:
     image: naughts-and-crosses-api:latest
@@ -62,10 +72,12 @@ services:
       KAFKA_CLIENT_ID: naughts-and-crosses-api-client-id-2
       KAFKA_GAME_EVENT_TOPIC: game-update
       KAFKA_SECURITY_PROTOCOL: PLAINTEXT
+      AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
       - kafka
+      - keycloak
       
   naughts-and-crosses-db:
     image: postgres:16-alpine
@@ -73,6 +85,23 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: naughts-and-crosses-api
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: keycloak
+    command: [ "start-dev", "--http-port=4021", "--import-realm" ]
+    ports:
+      - 4021:4021
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://keycloak:8080/auth/realms/naughts-and-crosses-local/.well-known/openid-configuration" ]
+      interval: 10s
+      timeout: 10s
+      retries: 15
 
   zookeeper:
     image: wurstmeister/zookeeper:latest

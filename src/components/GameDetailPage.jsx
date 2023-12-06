@@ -3,17 +3,20 @@ import { useParams } from 'react-router-dom';
 import Board from 'components/Board';
 import { useSubscription } from 'react-stomp-hooks';
 import GamesApiClient from 'adapters/GamesApiClient';
+import { useKeycloak } from '@react-keycloak/web';
 
 const GameDetailPage = () => {
   const [game, setGame] = useState(null);
   const { id } = useParams();
+  const { keycloak } = useKeycloak();
+  const client = new GamesApiClient(keycloak.token);
 
   const handleGameUpdated = (updatedGame) => {
     if (isUpdateRelevant(updatedGame)) {
       setGame(updatedGame);
       return;
     }
-    console.log(`update for game with id ${updatedGame.id} ignored`);
+    console.debug(`update for game with id ${updatedGame.id} ignored`);
   };
 
   const isUpdateRelevant = (updatedGame) => {
@@ -26,7 +29,7 @@ const GameDetailPage = () => {
 
   const takeTurn = (location) => {
     const performTakeTurn = async (request) => {
-      const updatedGame = await GamesApiClient.takeTurn(request);
+      const updatedGame = await client.takeTurn(request);
       setGame(updatedGame);
     };
     performTakeTurn({
@@ -44,7 +47,7 @@ const GameDetailPage = () => {
 
   useEffect(() => {
     const fetchGame = async () => {
-      const game = await GamesApiClient.getById(id);
+      const game = await client.getById(id);
       setGame(game);
     };
     fetchGame();

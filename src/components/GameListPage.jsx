@@ -3,14 +3,19 @@ import GameList from 'components/GameList';
 import Button from '@mui/material/Button';
 import { useSubscription } from 'react-stomp-hooks';
 import GamesApiClient from 'adapters/GamesApiClient';
+import { useKeycloak } from '@react-keycloak/web';
 
 import { Box } from '@mui/system';
 
 const GameListPage = () => {
   const [games, setGames] = useState([]);
+  const { keycloak } = useKeycloak();
+  const client = new GamesApiClient(keycloak.token);
 
   const handleGameUpdated = (updatedGame) => {
-    setGames(updateGames(updatedGame));
+    const updatedGames = updateGames(updatedGame);
+    console.log(`updated games ${updatedGames}`);
+    setGames(updatedGames);
   };
 
   useSubscription('/topic/game-update', (message) =>
@@ -19,7 +24,7 @@ const GameListPage = () => {
 
   const createGame = () => {
     const performCreateGame = async () => {
-      const newGame = await GamesApiClient.create();
+      const newGame = await client.create();
       setGames(updateGames(newGame));
     };
     performCreateGame();
@@ -40,7 +45,8 @@ const GameListPage = () => {
 
   useEffect(() => {
     const fetchGames = async () => {
-      const games = await GamesApiClient.getAll();
+      const games = await client.getAll();
+      console.log(`got all games from api ${games.map(g => g.id)}`);
       setGames(games);
     };
     fetchGames();
