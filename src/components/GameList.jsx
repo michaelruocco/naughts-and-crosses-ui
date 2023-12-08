@@ -13,7 +13,7 @@ const GameList = (props) => {
   return (
     <Grid
       container
-      direction="column-reverse"
+      direction="column"
       justifyContent="center"
       spacing={2}
     >

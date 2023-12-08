@@ -32,6 +32,14 @@ example above assumes it is running on the host machine on port 3002
 
 ## Running the UI and API in docker
 
+Note - for keycloak to work correctly you will also need to update your hosts file,
+on a mac this can be found at `/etc/hosts` and you will need to map the domain name
+`keycloak` to the local machine by adding the following line to the file:
+
+```
+127.0.0.1	keycloak
+```
+
 Assuming you have built the API docker image following the instructions in the `README.md`
 in [the api](https://github.com/michaelruocco/naughts-and-crosses-api) repo, and you have
 followed the steps above to build the UI docker image, then you should be able to run
