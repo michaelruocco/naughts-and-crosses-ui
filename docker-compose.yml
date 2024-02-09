@@ -40,18 +40,13 @@ services:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_DRIVER: org.postgresql.Driver
-      KAFKA_LISTENERS_ENABLED: "true"
-      KAFKA_PRODUCERS_ENABLED: "true"
-      KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
-      KAFKA_CONSUMER_GROUP_ID: naughts-and-crosses-api-group-1
-      KAFKA_CLIENT_ID: naughts-and-crosses-api-client-id-1
-      KAFKA_GAME_EVENT_TOPIC: game-update
-      KAFKA_SECURITY_PROTOCOL: PLAINTEXT
+      BROKER_RELAY_HOST: activemq
+      BROKER_RELAY_PORT: 61613
       AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
-      - kafka
+      - activemq
       - keycloak
 
   naughts-and-crosses-api-2:
@@ -65,18 +60,13 @@ services:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_DRIVER: org.postgresql.Driver
-      KAFKA_LISTENERS_ENABLED: "true"
-      KAFKA_PRODUCERS_ENABLED: "true"
-      KAFKA_BOOTSTRAP_SERVERS: http://kafka:9092
-      KAFKA_CONSUMER_GROUP_ID: naughts-and-crosses-api-group-2
-      KAFKA_CLIENT_ID: naughts-and-crosses-api-client-id-2
-      KAFKA_GAME_EVENT_TOPIC: game-update
-      KAFKA_SECURITY_PROTOCOL: PLAINTEXT
+      BROKER_RELAY_HOST: activemq
+      BROKER_RELAY_PORT: 61613
       AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
-      - kafka
+      - activemq
       - keycloak
       
   naughts-and-crosses-db:
@@ -103,38 +93,6 @@ services:
       timeout: 10s
       retries: 15
 
-  zookeeper:
-    image: wurstmeister/zookeeper:latest
-    ports:
-      - 2181:2181
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-
-  kafka:
-    image: wurstmeister/kafka:latest
-    ports:
-      - 9094:9094
-    environment:
-      - KAFKA_BROKER_ID=1
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_LISTENERS=INTERNAL://:9092,EXTERNAL://:9094,
-      - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka:9092,EXTERNAL://localhost:9094
-      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
-      - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
-      - KAFKA_CREATE_TOPICS=game-event:1:1
-    depends_on:
-      - zookeeper
-
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
-    ports:
-      - 8081:8080
-    restart: "no"
-    environment:
-      - KAFKA_CLUSTERS_0_NAME=local-kafka-cluster
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
-      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-    depends_on:
-      - kafka
+  activemq:
+    image: apache/activemq-classic:latest
+    container_name: activemq
