@@ -42,10 +42,10 @@ services:
       DATABASE_DRIVER: org.postgresql.Driver
       BROKER_HOST: activemq
       BROKER_PORT: 61613
-      BROKER_CLIENT_LOGIN: guest
-      BROKER_CLIENT_PASSCODE: guest
-      BROKER_SYSTEM_LOGIN: guest
-      BROKER_SYSTEM_PASSCODE: guest
+      BROKER_CLIENT_LOGIN: artemis
+      BROKER_CLIENT_PASSCODE: artemis
+      BROKER_SYSTEM_LOGIN: artemis
+      BROKER_SYSTEM_PASSCODE: artemis
       AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
     restart: on-failure
     depends_on:
@@ -66,10 +66,10 @@ services:
       DATABASE_DRIVER: org.postgresql.Driver
       BROKER_HOST: activemq
       BROKER_PORT: 61613
-      BROKER_CLIENT_LOGIN: guest
-      BROKER_CLIENT_PASSCODE: guest
-      BROKER_SYSTEM_LOGIN: guest
-      BROKER_SYSTEM_PASSCODE: guest
+      BROKER_CLIENT_LOGIN: artemis
+      BROKER_CLIENT_PASSCODE: artemis
+      BROKER_SYSTEM_LOGIN: artemis
+      BROKER_SYSTEM_PASSCODE: artemis
       AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
     restart: on-failure
     depends_on:
@@ -102,5 +102,5 @@ services:
       retries: 15
 
   activemq:
-    image: apache/activemq-classic:latest
+    image: apache/activemq-artemis:latest-alpine
     container_name: activemq
