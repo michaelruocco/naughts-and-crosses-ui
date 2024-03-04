@@ -4,6 +4,10 @@ import Board from 'components/Board';
 import { useSubscription } from 'react-stomp-hooks';
 import GamesApiClient from 'adapters/GamesApiClient';
 import { useKeycloak } from '@react-keycloak/web';
+import Button from '@mui/material/Button';
+import { Box } from '@mui/system';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 const GameDetailPage = () => {
   const [game, setGame] = useState(null);
@@ -17,6 +21,21 @@ const GameDetailPage = () => {
       return;
     }
     console.debug(`update for game with id ${updatedGame.id} ignored`);
+  };
+
+  const exportToPdf = () => {
+    const performExportToPdf = async () => {
+      const element = document.getElementById('pdf');
+      const canvas = await html2canvas(element);
+      const data = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      const imgProperties = pdf.getImageProperties(data);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+      pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('download.pdf');
+    };
+    performExportToPdf();
   };
 
   const isUpdateRelevant = (updatedGame) => {
@@ -55,11 +74,20 @@ const GameDetailPage = () => {
 
   return (
     game && (
-      <Board
-        board={game.board}
-        onLocationSelected={handleLocationSelected}
-        enabled={!game.status.complete}
-      />
+      <>
+        <Box m={5} textAlign="center">
+          <Button variant="contained" onClick={exportToPdf}>
+            Export to PDF
+          </Button>
+        </Box>
+        <div id="pdf">
+          <Board
+            board={game.board}
+            onLocationSelected={handleLocationSelected}
+            enabled={!game.status.complete}
+          />
+        </div>
+      </>
     )
   );
 };
