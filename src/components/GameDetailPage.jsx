@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import { Box } from '@mui/system';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { toPng } from 'html-to-image';
 
 const GameDetailPage = () => {
   const [game, setGame] = useState(null);
@@ -23,20 +24,32 @@ const GameDetailPage = () => {
     console.debug(`update for game with id ${updatedGame.id} ignored`);
   };
 
-  const exportToPdf = () => {
-    const performExportToPdf = async () => {
-      const element = document.getElementById('pdf');
-      const canvas = await html2canvas(element);
-      const data = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      const imgProperties = pdf.getImageProperties(data);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-      pdf.addImage(data, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('download.pdf');
+  const exportBoardToPdf = () => {
+    const performExportBoardToPdf = async () => {
+      const image = await getBoardAsImage();
+      const pdf = toPdf(image);
+      pdf.save(toPdfFilename());
     };
-    performExportToPdf();
+    performExportBoardToPdf();
   };
+  
+  const getBoardAsImage = async () => {
+    const element = document.getElementById('pdf-board-container');
+    return await toPng(element);
+  }
+
+  const toPdf = (image) => {
+    const pdf = new jsPDF();
+    const properties = pdf.getImageProperties(image);
+    const width = pdf.internal.pageSize.getWidth();
+    const height = (properties.height * width) / properties.width;
+    pdf.addImage(image, 'PNG', 0, 0, width, height);
+    return pdf;
+  }
+
+  const toPdfFilename = () => {
+    return `naughts-and-crosses-game-${game.id}-${Date.now()}.pdf`
+  }
 
   const isUpdateRelevant = (updatedGame) => {
     return game.id === updatedGame.id && game !== updatedGame;
@@ -76,11 +89,11 @@ const GameDetailPage = () => {
     game && (
       <>
         <Box m={5} textAlign="center">
-          <Button variant="contained" onClick={exportToPdf}>
+          <Button variant="contained" onClick={exportBoardToPdf}>
             Export to PDF
           </Button>
         </Box>
-        <div id="pdf">
+        <div id="pdf-board-container">
           <Board
             board={game.board}
             onLocationSelected={handleLocationSelected}
