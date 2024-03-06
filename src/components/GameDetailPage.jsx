@@ -39,10 +39,29 @@ const GameDetailPage = () => {
 
   const toPdf = (image) => {
     const pdf = new jsPDF();
-    const properties = pdf.getImageProperties(image);
-    const width = pdf.internal.pageSize.getWidth();
-    const height = (properties.height * width) / properties.width;
-    pdf.addImage(image, 'PNG', 0, 0, width, height);
+
+    const position = 5;
+    const margin = position * 2;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const imageProps = pdf.getImageProperties(image);
+    const imageWidth = pageWidth - margin;
+    const imageHeight = (((imageProps.height * imageWidth) / imageProps.width) - margin);
+    pdf.addImage(image, 'PNG', margin, margin, imageWidth, imageHeight);
+
+    console.log(`pageWidth ${pageWidth} pageHeight ${pageHeight}`);
+    console.log(`imageWidth ${imageWidth} imageHeight ${imageHeight}`);
+
+    var y = margin;
+    var heightRemaining = imageHeight - pageHeight;
+    while(heightRemaining >= 0) {
+      y += heightRemaining - imageHeight;
+      console.log(`adding page y ${y} heightRemaining ${heightRemaining}`);
+      pdf.addPage();
+      pdf.addImage(image, 'PNG', margin, y, imageWidth, imageHeight);
+      heightRemaining -= pageHeight;
+    }
     return pdf;
   }
 
