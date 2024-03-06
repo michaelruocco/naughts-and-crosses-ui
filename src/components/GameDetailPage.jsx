@@ -6,7 +6,6 @@ import GamesApiClient from 'adapters/GamesApiClient';
 import { useKeycloak } from '@react-keycloak/web';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/system';
-import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { toPng } from 'html-to-image';
 
