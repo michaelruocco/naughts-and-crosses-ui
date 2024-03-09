@@ -31,11 +31,11 @@ const GameDetailPage = () => {
     };
     performExportBoardToPdf();
   };
-  
+
   const getBoardAsImage = async () => {
     const element = document.getElementById('pdf-board-container');
     return await toPng(element);
-  }
+  };
 
   const toPdf = (image) => {
     const pdf = new jsPDF();
@@ -47,27 +47,24 @@ const GameDetailPage = () => {
 
     const imageProps = pdf.getImageProperties(image);
     const imageWidth = pageWidth - margin;
-    const imageHeight = (((imageProps.height * imageWidth) / imageProps.width) - margin);
+    const imageHeight =
+      (imageProps.height * imageWidth) / imageProps.width - margin;
     pdf.addImage(image, 'PNG', margin, margin, imageWidth, imageHeight);
-
-    console.log(`pageWidth ${pageWidth} pageHeight ${pageHeight}`);
-    console.log(`imageWidth ${imageWidth} imageHeight ${imageHeight}`);
 
     var y = margin;
     var heightRemaining = imageHeight - pageHeight;
-    while(heightRemaining >= 0) {
+    while (heightRemaining >= 0) {
       y += heightRemaining - imageHeight;
-      console.log(`adding page y ${y} heightRemaining ${heightRemaining}`);
       pdf.addPage();
       pdf.addImage(image, 'PNG', margin, y, imageWidth, imageHeight);
       heightRemaining -= pageHeight;
     }
     return pdf;
-  }
+  };
 
   const toPdfFilename = () => {
-    return `naughts-and-crosses-game-${game.id}-${Date.now()}.pdf`
-  }
+    return `naughts-and-crosses-game-${game.id}-${Date.now()}.pdf`;
+  };
 
   const isUpdateRelevant = (updatedGame) => {
     return game.id === updatedGame.id && game !== updatedGame;
