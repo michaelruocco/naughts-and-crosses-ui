@@ -5,9 +5,17 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useNavigate } from 'react-router-dom';
 
 function ResponsiveAppBar() {
+  const navigate = useNavigate();
   const titleText = 'Naughts & Crosses';
+
+  const home = (event) => {
+    event.preventDefault();
+    navigate('/');
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -18,6 +26,7 @@ function ResponsiveAppBar() {
             noWrap
             component="a"
             href="/"
+            onClick={(event) => home(event)}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -39,6 +48,7 @@ function ResponsiveAppBar() {
             noWrap
             component="a"
             href="/"
+            onClick={(event) => home(event)}
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
