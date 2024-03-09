@@ -18,6 +18,8 @@
     "@mui/material": "^5.14.15",
     "@react-keycloak/web": "^3.4.0",
     "axios": "^1.6.0",
+    "html-to-image": "^1.11.11",
+    "jspdf": "^2.5.1",
     "keycloak-js": "^23.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",

@@ -4,6 +4,10 @@ import Board from 'components/Board';
 import { useSubscription } from 'react-stomp-hooks';
 import GamesApiClient from 'adapters/GamesApiClient';
 import { useKeycloak } from '@react-keycloak/web';
+import Button from '@mui/material/Button';
+import { Box } from '@mui/system';
+import { jsPDF } from 'jspdf';
+import { toPng } from 'html-to-image';
 
 const GameDetailPage = () => {
   const [game, setGame] = useState(null);
@@ -17,6 +21,49 @@ const GameDetailPage = () => {
       return;
     }
     console.debug(`update for game with id ${updatedGame.id} ignored`);
+  };
+
+  const exportBoardToPdf = () => {
+    const performExportBoardToPdf = async () => {
+      const image = await getBoardAsImage();
+      const pdf = toPdf(image);
+      pdf.save(toPdfFilename());
+    };
+    performExportBoardToPdf();
+  };
+
+  const getBoardAsImage = async () => {
+    const element = document.getElementById('pdf-board-container');
+    return await toPng(element);
+  };
+
+  const toPdf = (image) => {
+    const pdf = new jsPDF();
+
+    const position = 5;
+    const margin = position * 2;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const imageProps = pdf.getImageProperties(image);
+    const imageWidth = pageWidth - margin;
+    const imageHeight =
+      (imageProps.height * imageWidth) / imageProps.width - margin;
+    pdf.addImage(image, 'PNG', margin, margin, imageWidth, imageHeight);
+
+    var y = margin;
+    var heightRemaining = imageHeight - pageHeight;
+    while (heightRemaining >= 0) {
+      y += heightRemaining - imageHeight;
+      pdf.addPage();
+      pdf.addImage(image, 'PNG', margin, y, imageWidth, imageHeight);
+      heightRemaining -= pageHeight;
+    }
+    return pdf;
+  };
+
+  const toPdfFilename = () => {
+    return `naughts-and-crosses-game-${game.id}-${Date.now()}.pdf`;
   };
 
   const isUpdateRelevant = (updatedGame) => {
@@ -55,11 +102,20 @@ const GameDetailPage = () => {
 
   return (
     game && (
-      <Board
-        board={game.board}
-        onLocationSelected={handleLocationSelected}
-        enabled={!game.status.complete}
-      />
+      <>
+        <Box m={5} textAlign="center">
+          <Button variant="contained" onClick={exportBoardToPdf}>
+            Export to PDF
+          </Button>
+        </Box>
+        <div id="pdf-board-container">
+          <Board
+            board={game.board}
+            onLocationSelected={handleLocationSelected}
+            enabled={!game.status.complete}
+          />
+        </div>
+      </>
     )
   );
 };
