@@ -4,13 +4,20 @@ import Button from '@mui/material/Button';
 import { useSubscription } from 'react-stomp-hooks';
 import GamesApiClient from 'adapters/GamesApiClient';
 import { useKeycloak } from '@react-keycloak/web';
-
+import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 
 const GameListPage = () => {
   const [games, setGames] = useState([]);
+  const navigate = useNavigate();
   const { keycloak } = useKeycloak();
   const client = new GamesApiClient(keycloak.token);
+
+  const fetchGames = async () => {
+    const games = await client.getAllGames();
+    setGames(games);
+  };
 
   const handleGameUpdated = (updatedGame) => {
     const updatedGames = updateGames(updatedGame);
@@ -18,17 +25,21 @@ const GameListPage = () => {
     setGames(updatedGames);
   };
 
+  const handleViewGame = (id) => {
+    navigate(`/game/${id}`);
+  };
+
+  const handleDeleteGame = (id) => {
+    const deleteGame = async (id) => {
+      await client.deleteById(id);
+      await fetchGames();
+    };
+    deleteGame(id);
+  };
+
   useSubscription('/topic/game-update', (message) =>
     handleGameUpdated(JSON.parse(message.body)),
   );
-
-  const createGame = () => {
-    const performCreateGame = async () => {
-      const newGame = await client.create();
-      setGames(updateGames(newGame));
-    };
-    performCreateGame();
-  };
 
   const updateGames = (updatedGame) => {
     const oldGame = games.find(({ id }) => id === updatedGame.id);
@@ -44,22 +55,21 @@ const GameListPage = () => {
   };
 
   useEffect(() => {
-    const fetchGames = async () => {
-      const games = await client.getAll();
-      console.log(`got all games from api ${games.map(g => g.id)}`);
-      setGames(games);
-    };
     fetchGames();
   }, []);
 
   return (
     <>
       <Box m={5} textAlign="center">
-        <Button variant="contained" onClick={createGame}>
+        <Button variant="contained" component={Link} to="/create-game">
           New Game
         </Button>
       </Box>
-      <GameList games={games} />
+      <GameList
+        games={games}
+        onViewGame={handleViewGame}
+        onDeleteGame={handleDeleteGame}
+      />
     </>
   );
 };

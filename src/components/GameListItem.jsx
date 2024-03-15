@@ -2,19 +2,33 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import GameListItemStatus from 'components/GameListItemStatus';
-import { CardActionArea } from '@mui/material';
+import { Button, CardActions } from '@mui/material';
 
 const GameListItem = (props) => {
-  const { game } = props;
+  const { game, onViewGame, onDeleteGame } = props;
   const { status } = game;
+
+  const viewGame = () => {
+    onViewGame(game.id);
+  };
+
+  const deleteGame = () => {
+    onDeleteGame(game.id);
+  };
 
   return (
     <Card>
-      <CardActionArea href={`/game/${game.id}`}>
-        <CardContent>
-          <GameListItemStatus status={status} />
-        </CardContent>
-      </CardActionArea>
+      <CardContent>
+        <GameListItemStatus status={status} />
+      </CardContent>
+      <CardActions>
+        <Button size="small" onClick={() => viewGame()}>
+          View
+        </Button>
+        <Button size="small" onClick={() => deleteGame()}>
+          Delete
+        </Button>
+      </CardActions>
     </Card>
   );
 };

@@ -5,12 +5,22 @@ class GamesApiClient {
     this.axios = axios.create({
       baseURL: APP_API_BASE_URL,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
   }
-  
-  async getAll() {
+
+  async getAllUsers() {
+    try {
+      return await this.axios
+        .get('/v1/users')
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async getAllGames() {
     try {
       return await this.axios
         .get('/v1/games?minimal=true')
@@ -30,9 +40,21 @@ class GamesApiClient {
     }
   }
 
-  async create() {
+  async deleteById(id) {
     try {
-      return await this.axios.post('/v1/games').then((response) => response.data);
+      return await this.axios
+        .delete(`/v1/games/${id}`)
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async create(request) {
+    try {
+      return await this.axios
+        .post('/v1/games', request)
+        .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);
     }
@@ -48,6 +70,6 @@ class GamesApiClient {
       throw new Error(e.message);
     }
   }
-};
+}
 
 export default GamesApiClient;
