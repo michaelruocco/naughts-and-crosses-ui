@@ -47,6 +47,8 @@ services:
       BROKER_SYSTEM_LOGIN: artemis
       BROKER_SYSTEM_PASSCODE: artemis
       AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
+      KEYCLOAK_ADMIN_CLIENT_ID: naughts-and-crosses-api
+      KEYCLOAK_ADMIN_CLIENT_SECRET: naughts-and-crosses-api-secret
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
@@ -71,6 +73,8 @@ services:
       BROKER_SYSTEM_LOGIN: artemis
       BROKER_SYSTEM_PASSCODE: artemis
       AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
+      KEYCLOAK_ADMIN_CLIENT_ID: naughts-and-crosses-api
+      KEYCLOAK_ADMIN_CLIENT_SECRET: naughts-and-crosses-api-secret
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
