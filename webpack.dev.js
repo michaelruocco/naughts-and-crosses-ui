@@ -1,6 +1,11 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const webpack = require('webpack');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
+const gitRevisionPlugin = new GitRevisionPlugin({
+  lightweightTags: true,
+  commithashCommand: 'rev-parse --short HEAD',
+});
 
 const baseUrl = 'http://localhost:3002';
 
@@ -22,7 +27,9 @@ module.exports = merge(common, {
       APP_WEB_SOCKET_BASE_URL: JSON.stringify(baseUrl),
       APP_AUTH_URL: JSON.stringify('http://keycloak:4021'),
       APP_AUTH_REALM: JSON.stringify('naughts-and-crosses-local'),
-      APP_AUTH_CLIENT_ID: JSON.stringify('naughts-and-crosses-ui')
+      APP_AUTH_CLIENT_ID: JSON.stringify('naughts-and-crosses-ui'),
+      APP_VERSION: JSON.stringify(gitRevisionPlugin.version()),
+      APP_COMMIT_HASH: JSON.stringify(gitRevisionPlugin.commithash()),
     }),
   ],
 });

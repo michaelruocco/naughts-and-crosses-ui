@@ -11,9 +11,7 @@ const VersionInfo = () => {
 
   useEffect(() => {
     const fetchInfo = async () => {
-      console.log
       const info = await client.getApiInfo();
-      console.log(`got api info ${JSON.stringify(info)}`);
       setApiInfo(info);
     };
     fetchInfo();
@@ -21,15 +19,24 @@ const VersionInfo = () => {
 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <VersionInfoListItem label='UI Version' value='blah' />
-      <VersionInfoListItem label='UI Commit ID' value='blah' />
-      {apiInfo && 
+      <VersionInfoListItem label="UI Version" value={`${APP_VERSION}`} />
+      <VersionInfoListItem
+        label="UI Commit Hash"
+        value={`${APP_COMMIT_HASH}`}
+      />
+      {apiInfo && (
         <>
-          <VersionInfoListItem label='API Version' value={apiInfo.build.version} />
-          <VersionInfoListItem label='API Commit ID' value={apiInfo.git.commit.id} />
+          <VersionInfoListItem
+            label="API Version"
+            value={apiInfo.build.version}
+          />
+          <VersionInfoListItem
+            label="API Commit Hash"
+            value={apiInfo.git.commit.id}
+          />
         </>
-      }
+      )}
     </List>
-  )
+  );
 };
 export default VersionInfo;

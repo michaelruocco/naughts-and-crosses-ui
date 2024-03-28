@@ -1,6 +1,11 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 const webpack = require('webpack');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
+const gitRevisionPlugin = new GitRevisionPlugin({
+  lightweightTags: true,
+  commithashCommand: 'rev-parse --short HEAD',
+});
 
 module.exports = merge(common, {
   mode: 'production',
@@ -12,6 +17,8 @@ module.exports = merge(common, {
       APP_AUTH_URL: JSON.stringify('$APP_AUTH_URL'),
       APP_AUTH_REALM: JSON.stringify('$APP_AUTH_REALM'),
       APP_AUTH_CLIENT_ID: JSON.stringify('$APP_AUTH_CLIENT_ID'),
+      APP_VERSION: JSON.stringify(gitRevisionPlugin.version()),
+      APP_COMMIT_HASH: JSON.stringify(gitRevisionPlugin.commithash()),
     }),
   ],
 });
