@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
@@ -14,6 +15,11 @@ function ResponsiveAppBar() {
   const home = (event) => {
     event.preventDefault();
     navigate('/');
+  };
+
+  const about = (event) => {
+    event.preventDefault();
+    navigate('/about');
   };
 
   return (
@@ -62,7 +68,15 @@ function ResponsiveAppBar() {
           >
             {titleText}
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} />
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Button
+              key='About'
+              onClick={(event) => about(event)}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              About
+            </Button>
+          </Box>
 
           <Box sx={{ flexGrow: 0 }} />
         </Toolbar>

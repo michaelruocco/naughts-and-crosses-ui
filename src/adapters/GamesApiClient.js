@@ -10,6 +10,16 @@ class GamesApiClient {
     });
   }
 
+  async getApiInfo() {
+    try {
+      return await this.axios
+        .get('/actuator/info')
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  };
+
   async getAllUsers() {
     try {
       return await this.axios
