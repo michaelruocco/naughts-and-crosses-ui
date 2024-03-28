@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import GameListPage from 'components/GameListPage';
 import GameDetailPage from 'components/GameDetailPage';
 import CreateGamePage from 'components/CreateGamePage';
+import AboutPage from 'components/AboutPage';
 import { useKeycloak } from '@react-keycloak/web';
 
 const NaughtsAndCrossesApp = () => {
@@ -42,6 +43,7 @@ const NaughtsAndCrossesApp = () => {
             <Route path="/" element={<GameListPage />} />
             <Route path="/game/:id" element={<GameDetailPage />} />
             <Route path="/create-game" element={<CreateGamePage />} />
+            <Route path="/about" element={<AboutPage />} />
           </Routes>
         </Box>
       </BrowserRouter>
