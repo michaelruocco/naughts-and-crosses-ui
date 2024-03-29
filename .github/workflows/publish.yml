@@ -23,6 +23,7 @@ jobs:
 
       - name: Build and Push Image
         run: |
-          export TAG=$(git describe --tags)
-          docker build -t naughts-and-crosses-ui:$TAG .
-          docker push naughts-and-crosses-ui:$TAG
+          export IMAGE_NAME=michaelruocco/naughts-and-crosses-ui:$(git describe --tags)
+          echo $IMAGE_NAME
+          docker build -t $IMAGE_NAME .
+          docker push $IMAGE_NAME
