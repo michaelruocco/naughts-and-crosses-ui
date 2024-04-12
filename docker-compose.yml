@@ -42,6 +42,7 @@ services:
       DATABASE_DRIVER: org.postgresql.Driver
       BROKER_HOST: activemq
       BROKER_PORT: 61613
+      BROKER_SSL_ENABLED: false
       BROKER_CLIENT_LOGIN: artemis
       BROKER_CLIENT_PASSCODE: artemis
       BROKER_SYSTEM_LOGIN: artemis
@@ -68,6 +69,7 @@ services:
       DATABASE_DRIVER: org.postgresql.Driver
       BROKER_HOST: activemq
       BROKER_PORT: 61613
+      BROKER_SSL_ENABLED: false
       BROKER_CLIENT_LOGIN: artemis
       BROKER_CLIENT_PASSCODE: artemis
       BROKER_SYSTEM_LOGIN: artemis
