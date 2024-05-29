@@ -453,10 +453,10 @@
       "groups": []
     },
     {
-      "username": "player-1",
+      "username": "user-1",
       "enabled": true,
-      "email": "player-1@myemail.com",
-      "firstName": "Player",
+      "email": "user-1@email.com",
+      "firstName": "User",
       "lastName": "One",
       "credentials": [
         {
@@ -468,10 +468,10 @@
       "groups": []
     },
     {
-      "username": "player-2",
+      "username": "user-2",
       "enabled": true,
-      "email": "player-2@myemail.com",
-      "firstName": "Player",
+      "email": "user-2@email.com",
+      "firstName": "User",
       "lastName": "Two",
       "credentials": [
         {
