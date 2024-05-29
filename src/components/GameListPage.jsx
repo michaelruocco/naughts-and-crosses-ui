@@ -20,9 +20,13 @@ const GameListPage = () => {
   };
 
   const handleGameUpdated = (updatedGame) => {
-    const updatedGames = updateGames(updatedGame);
-    console.log(`updated games ${updatedGames}`);
-    setGames(updatedGames);
+    console.log(`handle game updated ${updatedGame}`);
+    setGames(updateGames(updatedGame));
+  };
+
+  const handleGameDeleted = (deletedId) => {
+    console.log(`handle game deleted ${deletedId}`);
+    setGames(games.filter(({ id }) => id !== deletedId));
   };
 
   const handleViewGame = (id) => {
@@ -41,8 +45,16 @@ const GameListPage = () => {
     handleGameUpdated(JSON.parse(message.body)),
   );
 
+  useSubscription('/topic/game-delete', (message) =>
+    handleGameDeleted(parseInt(message.body)),
+  );
+
+  const findGameById = (id) => {
+    return games.find(({ gameId }) => gameId === id);
+  };
+
   const updateGames = (updatedGame) => {
-    const oldGame = games.find(({ id }) => id === updatedGame.id);
+    const oldGame = findGameById(updatedGame.id);
     if (oldGame) {
       return games.map((game) => {
         if (game.id === updatedGame.id) {
