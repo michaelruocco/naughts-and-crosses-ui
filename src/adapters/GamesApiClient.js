@@ -18,7 +18,7 @@ class GamesApiClient {
     } catch (e) {
       throw new Error(e.message);
     }
-  };
+  }
 
   async getAllUsers() {
     try {

@@ -8,9 +8,11 @@ services:
       - 3001:80
     environment:
       NGINX_PROXY_BACKEND_BASE_URL: http://naughts-and-crosses-api-1:80
-      APP_AUTH_URL: http://keycloak:4021
-      APP_AUTH_REALM: naughts-and-crosses-local
-      APP_AUTH_CLIENT_ID: naughts-and-crosses-ui
+      APP_COGNITO_ENDPOINT_URL: http://cognito:9229
+      APP_COGNITO_CLIENT_ID: 6b0j5hb1u25z290vv502lfl1c
+      APP_COGNITO_REGION_NAME: eu-central-1
+      APP_AWS_ACCESS_KEY_ID: abc
+      APP_AWS_SECRET_ACCESS_KEY: 123
     depends_on:
       - naughts-and-crosses-api-1
       - keycloak
@@ -23,9 +25,11 @@ services:
       - 3002:80
     environment:
       NGINX_PROXY_BACKEND_BASE_URL: http://naughts-and-crosses-api-2:80
-      APP_AUTH_URL: http://keycloak:4021
-      APP_AUTH_REALM: naughts-and-crosses-local
-      APP_AUTH_CLIENT_ID: naughts-and-crosses-ui
+      APP_COGNITO_ENDPOINT_URL: http://cognito:9229
+      APP_COGNITO_CLIENT_ID: 6b0j5hb1u25z290vv502lfl1c
+      APP_COGNITO_REGION_NAME: eu-central-1
+      APP_AWS_ACCESS_KEY_ID: abc
+      APP_AWS_SECRET_ACCESS_KEY: 123
     depends_on:
       - naughts-and-crosses-api-2
       - keycloak
@@ -47,9 +51,12 @@ services:
       BROKER_CLIENT_PASSCODE: artemis
       BROKER_SYSTEM_LOGIN: artemis
       BROKER_SYSTEM_PASSCODE: artemis
-      AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
-      KEYCLOAK_ADMIN_CLIENT_ID: naughts-and-crosses-api
-      KEYCLOAK_ADMIN_CLIENT_SECRET: naughts-and-crosses-api-secret
+      AUTH_ISSUER_URL: http://cognito:9229/local_4RsGXSAf
+      AWS_COGNITO_USER_POOL_ID: "local_4RsGXSAf"
+      AWS_COGNITO_REGION_NAME: eu-central-1
+      AWS_COGNITO_ENDPOINT_OVERRIDE: http://cognito:9229
+      AWS_COGNITO_ACCESS_KEY_ID: abc
+      AWS_COGNITO_SECRET_ACCESS_KEY: 123
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
@@ -74,9 +81,12 @@ services:
       BROKER_CLIENT_PASSCODE: artemis
       BROKER_SYSTEM_LOGIN: artemis
       BROKER_SYSTEM_PASSCODE: artemis
-      AUTH_ISSUER_URL: http://keycloak:4021/realms/naughts-and-crosses-local
-      KEYCLOAK_ADMIN_CLIENT_ID: naughts-and-crosses-api
-      KEYCLOAK_ADMIN_CLIENT_SECRET: naughts-and-crosses-api-secret
+      AUTH_ISSUER_URL: http://cognito:9229/local_4RsGXSAf
+      AWS_COGNITO_USER_POOL_ID: "local_4RsGXSAf"
+      AWS_COGNITO_REGION_NAME: eu-central-1
+      AWS_COGNITO_ENDPOINT_OVERRIDE: http://cognito:9229
+      AWS_COGNITO_ACCESS_KEY_ID: abc
+      AWS_COGNITO_SECRET_ACCESS_KEY: 123
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
@@ -90,22 +100,18 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: naughts-and-crosses-api
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:23.0
-    container_name: keycloak
-    command: [ "start-dev", "--http-port=4021", "--import-realm" ]
-    ports:
-      - 4021:4021
-    environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
+  cognito:
+    image: michaelruocco/cognito-local:latest
+    container_name: cognito
     volumes:
-      - ./keycloak:/opt/keycloak/data/import
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://keycloak:8080/realms/naughts-and-crosses-local/.well-known/openid-configuration" ]
-      interval: 10s
-      timeout: 10s
-      retries: 15
+      - ./cognito:/app/.cognito/db/
+    ports:
+      - 9229:9229
+    environment:
+      - AWS_ACCESS_KEY_ID=abc
+      - AWS_SECRET_ACCESS_KEY=123
+      - ISSUER_HOST=cognito
+      - CODE=9999
 
   activemq:
     image: apache/activemq-artemis:latest-alpine

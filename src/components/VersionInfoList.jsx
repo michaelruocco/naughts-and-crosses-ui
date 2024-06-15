@@ -1,22 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import GamesApiClient from 'adapters/GamesApiClient';
-import { useKeycloak } from '@react-keycloak/web';
+import React from 'react';
 import VersionInfoListItem from 'components/VersionInfoListItem';
 import List from '@mui/material/List';
 
-const VersionInfo = () => {
-  const [apiInfo, setApiInfo] = useState(null);
-  const { keycloak } = useKeycloak();
-  const client = new GamesApiClient(keycloak.token);
-
-  useEffect(() => {
-    const fetchInfo = async () => {
-      const info = await client.getApiInfo();
-      setApiInfo(info);
-    };
-    fetchInfo();
-  }, []);
-
+const VersionInfo = (props) => {
+  const { apiInfo } = props;
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <VersionInfoListItem label="UI Version" value={`${APP_VERSION}`} />
