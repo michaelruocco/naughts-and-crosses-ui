@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Board from 'components/Board';
 import { useSubscription } from 'react-stomp-hooks';
-import GamesApiClient from 'adapters/GamesApiClient';
-import { useKeycloak } from '@react-keycloak/web';
+import PrivateApiClient from 'adapters/PrivateApiClient';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/system';
 import { jsPDF } from 'jspdf';
 import { toPng } from 'html-to-image';
+import { useAuth } from '../hooks/AuthProvider';
 
 const GameDetailPage = () => {
   const [game, setGame] = useState(null);
   const { id } = useParams();
-  const { keycloak } = useKeycloak();
-  const client = new GamesApiClient(keycloak.token);
+  const { token } = useAuth();
+  const client = new PrivateApiClient(token);
 
   const handleGameUpdated = (updatedGame) => {
     if (isUpdateRelevant(updatedGame)) {

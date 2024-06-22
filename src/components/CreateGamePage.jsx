@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import GamesApiClient from 'adapters/GamesApiClient';
-import { useKeycloak } from '@react-keycloak/web';
+import PrivateApiClient from 'adapters/PrivateApiClient';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
+import { useAuth } from '../hooks/AuthProvider';
 
 const CreateGamePage = () => {
   const [users, setUsers] = useState([]);
   const [crossesPlayer, setCrossesPlayer] = useState(null);
   const [naughtsPlayer, setNaughtsPlayer] = useState(null);
   const [errorMessage, setErrorMessage] = useState(false);
-  const { keycloak } = useKeycloak();
-  const client = new GamesApiClient(keycloak.token);
+  const { token } = useAuth();
+  const client = new PrivateApiClient(token);
   const navigate = useNavigate();
 
   const createGame = () => {
@@ -29,11 +29,11 @@ const CreateGamePage = () => {
       const request = {
         requestedPlayers: [
           {
-            userId: crossesPlayer.id,
+            username: crossesPlayer.username,
             token: 'X',
           },
           {
-            userId: naughtsPlayer.id,
+            username: naughtsPlayer.username,
             token: 'O',
           },
         ],

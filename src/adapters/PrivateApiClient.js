@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-class GamesApiClient {
+class PrivateApiClient {
   constructor(token) {
     this.axios = axios.create({
       baseURL: APP_API_BASE_URL,
@@ -10,15 +10,15 @@ class GamesApiClient {
     });
   }
 
-  async getApiInfo() {
+  async getUser(username) {
     try {
       return await this.axios
-        .get('/actuator/info')
+        .get(`/v1/users/${username}`)
         .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);
     }
-  };
+  }
 
   async getAllUsers() {
     try {
@@ -82,4 +82,4 @@ class GamesApiClient {
   }
 }
 
-export default GamesApiClient;
+export default PrivateApiClient;

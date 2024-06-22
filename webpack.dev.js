@@ -25,9 +25,6 @@ module.exports = merge(common, {
     new webpack.DefinePlugin({
       APP_API_BASE_URL: JSON.stringify(baseUrl),
       APP_WEB_SOCKET_BASE_URL: JSON.stringify(baseUrl),
-      APP_AUTH_URL: JSON.stringify('http://keycloak:4021'),
-      APP_AUTH_REALM: JSON.stringify('naughts-and-crosses-local'),
-      APP_AUTH_CLIENT_ID: JSON.stringify('naughts-and-crosses-ui'),
       APP_VERSION: JSON.stringify(gitRevisionPlugin.version()),
       APP_COMMIT_HASH: JSON.stringify(gitRevisionPlugin.commithash()),
     }),

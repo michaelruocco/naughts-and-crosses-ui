@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import GameList from 'components/GameList';
 import Button from '@mui/material/Button';
 import { useSubscription } from 'react-stomp-hooks';
-import GamesApiClient from 'adapters/GamesApiClient';
-import { useKeycloak } from '@react-keycloak/web';
+import PrivateApiClient from 'adapters/PrivateApiClient';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/AuthProvider';
 
 const GameListPage = () => {
   const [games, setGames] = useState([]);
+  const { token } = useAuth();
   const navigate = useNavigate();
-  const { keycloak } = useKeycloak();
-  const client = new GamesApiClient(keycloak.token);
+  const client = new PrivateApiClient(token);
 
   const fetchGames = async () => {
     const games = await client.getAllGames();
