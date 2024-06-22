@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import GamesApiClient from 'adapters/GamesApiClient';
+import PublicApiClient from 'adapters/PublicApiClient';
 import VersionInfoList from 'components/VersionInfoList';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
 
 const AboutPage = () => {
   const [apiInfo, setApiInfo] = useState(null);
-  const accessToken = sessionStorage.getItem('accessToken');
-  const client = new GamesApiClient(accessToken);
+  const client = new PublicApiClient();
 
   useEffect(() => {
     const fetchInfo = async () => {

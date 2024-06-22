@@ -1,0 +1,17 @@
+{
+  "Clients": {
+    "6b0j5hb1u25z290vv502lfl1c": {
+      "AccessTokenValidity": 1,
+      "ClientId": "6b0j5hb1u25z290vv502lfl1c",
+      "ClientName": "nac-user-pool-client",
+      "CreationDate": "2024-06-14T19:50:27.022Z",
+      "LastModifiedDate": "2024-06-14T19:50:27.022Z",
+      "TokenValidityUnits": {
+        "AccessToken": "hours",
+        "IdToken": "minutes",
+        "RefreshToken": "days"
+      },
+      "UserPoolId": "local_4RsGXSAf"
+    }
+  }
+}

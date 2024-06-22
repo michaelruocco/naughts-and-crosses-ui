@@ -1,12 +1,11 @@
-const geStompConfig = () => {
-  const accessToken = sessionStorage.getItem('accessToken');
-  if (!accessToken) {
+const getStompConfig = (token) => {
+  if (!token) {
     return null;
   }
   return {
     websocketUrl: `${APP_WEB_SOCKET_BASE_URL}/v1/game-events`,
-    connectHeaders: { Authorization: accessToken },
+    connectHeaders: { Authorization: token },
   };
 };
 
-export default geStompConfig;
+export default getStompConfig;

@@ -5,26 +5,14 @@ import { Box } from '@mui/system';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-import AuthClient from 'adapters/AuthClient';
+import { useAuth } from '../hooks/AuthProvider';
 
 const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState(false);
   const navigate = useNavigate();
-  const authClient = new AuthClient();
+  const auth = useAuth();
 
-  const handleSubmit = (event) => {
-    const performSignIn = async (username, password) => {
-      try {
-        const response = await authClient.signIn(username, password);
-        const result = response.AuthenticationResult;
-        sessionStorage.setItem('accessToken', result.AccessToken);
-        navigate('/');
-      } catch (e) {
-        console.log(e.message);
-        setErrorMessage('Login failed');
-      }
-    };
-
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMessage(null);
     const data = new FormData(event.currentTarget);
@@ -34,7 +22,13 @@ const LoginPage = () => {
       setErrorMessage('Both username and password must be provided');
       return null;
     }
-    performSignIn(username, password);
+    try {
+      await auth.login(username, password);
+      navigate('/');
+    } catch (e) {
+      console.log(e.message);
+      setErrorMessage('Login failed');
+    }
   };
 
   return (

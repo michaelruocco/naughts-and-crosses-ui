@@ -1,10 +1,11 @@
 import React from 'react';
 import { StompSessionProvider } from 'react-stomp-hooks';
 import getStompConfig from 'adapters/StompConfig';
+import { useAuth } from '../hooks/AuthProvider';
 
 const StompEnabled = ({ children }) => {
-  const stompConfig = getStompConfig();
-  console.log(`stomp config ${JSON.stringify(stompConfig)}`);
+  const { token } = useAuth();
+  const stompConfig = getStompConfig(token);
   if (!stompConfig) {
     return children;
   }

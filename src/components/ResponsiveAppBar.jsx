@@ -13,8 +13,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
+import { useAuth } from '../hooks/AuthProvider';
 
 function ResponsiveAppBar() {
+  const { user, logout } = useAuth();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,26 +37,27 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
   const titleText = 'Naughts & Crosses';
 
-  const home = (event) => {
+  const navigateHome = (event) => {
     event.preventDefault();
     navigate('/');
   };
 
-  const about = (event) => {
+  const navigateAbout = (event) => {
     event.preventDefault();
     handleCloseNavMenu();
     navigate('/about');
   };
 
-  const performLogout = async () => {
-    sessionStorage.removeItem('accessToken');
-    handleCloseUserMenu();
+  const navigateLogin = (event) => {
+    event.preventDefault();
+    handleCloseNavMenu();
     navigate('/login');
   };
 
-  const logout = (event) => {
+  const handleLogout = (event) => {
     event.preventDefault();
-    performLogout();
+    logout();
+    navigateLogin(event);
   };
 
   return (
@@ -66,7 +70,7 @@ function ResponsiveAppBar() {
             noWrap
             component="a"
             href="/"
-            onClick={(event) => home(event)}
+            onClick={(event) => navigateHome(event)}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -111,7 +115,7 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <MenuItem key="About" onClick={about}>
+              <MenuItem key="About" onClick={navigateAbout}>
                 <Typography textAlign="center">About</Typography>
               </MenuItem>
             </Menu>
@@ -123,7 +127,7 @@ function ResponsiveAppBar() {
             noWrap
             component="a"
             href="/"
-            onClick={(event) => home(event)}
+            onClick={(event) => navigateHome(event)}
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -140,7 +144,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             <Button
               key="About"
-              onClick={(event) => about(event)}
+              onClick={(event) => navigateAbout(event)}
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
               About
@@ -148,36 +152,48 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open user menu">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Username" src="username.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem key="logout" onClick={handleCloseUserMenu}>
-                <Typography
-                  textAlign="center"
-                  onClick={(event) => logout(event)}
-                >
-                  Logout
-                </Typography>
+            {!user && (
+              <MenuItem key="Login" onClick={navigateLogin}>
+                <Typography textAlign="center">Login</Typography>
               </MenuItem>
-            </Menu>
+            )}
+            {user && (
+              <>
+                <Tooltip title="Open user menu">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt={user.username} src="username.jpg" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem key="username" disabled={true}>
+                    <Typography textAlign="center">{user.username}</Typography>
+                  </MenuItem>
+                  <MenuItem key="logout" onClick={handleCloseUserMenu}>
+                    <Typography
+                      textAlign="center"
+                      onClick={(event) => handleLogout(event)}
+                    >
+                      Logout
+                    </Typography>
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
           </Box>
         </Toolbar>
       </Container>
