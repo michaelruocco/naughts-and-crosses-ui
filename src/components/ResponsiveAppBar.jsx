@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,11 +12,12 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import Avatar from '@mui/material/Avatar';
 import { useAuth } from '../hooks/AuthProvider';
+import PublicAppBarMenu from './PublicAppBarMenu';
+import PrivateAppBarMenu from './PrivateAppBarMenu';
 
 function ResponsiveAppBar() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const handleOpenNavMenu = (event) => {
@@ -24,14 +25,6 @@ function ResponsiveAppBar() {
   };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   const navigate = useNavigate();
@@ -46,18 +39,6 @@ function ResponsiveAppBar() {
     event.preventDefault();
     handleCloseNavMenu();
     navigate('/about');
-  };
-
-  const navigateLogin = (event) => {
-    event.preventDefault();
-    handleCloseNavMenu();
-    navigate('/login');
-  };
-
-  const handleLogout = (event) => {
-    event.preventDefault();
-    logout();
-    navigateLogin(event);
   };
 
   return (
@@ -152,48 +133,8 @@ function ResponsiveAppBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {!user && (
-              <MenuItem key="Login" onClick={navigateLogin}>
-                <Typography textAlign="center">Login</Typography>
-              </MenuItem>
-            )}
-            {user && (
-              <>
-                <Tooltip title="Open user menu">
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={user.username} src="username.jpg" />
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  <MenuItem key="username" disabled={true}>
-                    <Typography textAlign="center">{user.username}</Typography>
-                  </MenuItem>
-                  <MenuItem key="logout" onClick={handleCloseUserMenu}>
-                    <Typography
-                      textAlign="center"
-                      onClick={(event) => handleLogout(event)}
-                    >
-                      Logout
-                    </Typography>
-                  </MenuItem>
-                </Menu>
-              </>
-            )}
+            {!user && <PublicAppBarMenu />}
+            {user && <PrivateAppBarMenu />}
           </Box>
         </Toolbar>
       </Container>
