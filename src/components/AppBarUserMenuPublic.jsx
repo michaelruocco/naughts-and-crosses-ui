@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 
-function PublicAppBarMenu() {
+function AppBarUserMenuPublic() {
   const navigate = useNavigate();
 
   const navigateLogin = (event) => {
@@ -17,4 +17,4 @@ function PublicAppBarMenu() {
     </MenuItem>
   );
 }
-export default PublicAppBarMenu;
+export default AppBarUserMenuPublic;

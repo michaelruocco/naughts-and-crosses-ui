@@ -8,7 +8,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import { useAuth } from '../hooks/AuthProvider';
 
-function PrivateAppBarMenu() {
+function AppBarUserMenuPrivate() {
   const { user, logout } = useAuth();
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -71,4 +71,4 @@ function PrivateAppBarMenu() {
     </>
   );
 }
-export default PrivateAppBarMenu;
+export default AppBarUserMenuPrivate;

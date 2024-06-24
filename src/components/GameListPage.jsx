@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import GameList from 'components/GameList';
 import Button from '@mui/material/Button';
 import { useSubscription } from 'react-stomp-hooks';
-import PrivateApiClient from 'adapters/PrivateApiClient';
+import GameApiClient from 'adapters/GameApiClient';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
@@ -12,10 +12,10 @@ const GameListPage = () => {
   const [games, setGames] = useState([]);
   const { token } = useAuth();
   const navigate = useNavigate();
-  const client = new PrivateApiClient(token);
+  const client = new GameApiClient(token);
 
   const fetchGames = async () => {
-    const games = await client.getAllGames();
+    const games = await client.getAll();
     setGames(games);
   };
 
@@ -33,12 +33,9 @@ const GameListPage = () => {
     navigate(`/game/${id}`);
   };
 
-  const handleDeleteGame = (id) => {
-    const deleteGame = async (id) => {
-      await client.deleteById(id);
-      await fetchGames();
-    };
-    deleteGame(id);
+  const handleDeleteGame = async (id) => {
+    await client.delete(id);
+    fetchGames();
   };
 
   useSubscription('/topic/game-update', (message) =>

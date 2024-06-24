@@ -1,6 +1,6 @@
 import { useContext, createContext, useState } from 'react';
 import PublicApiClient from 'adapters/PublicApiClient';
-import PrivateApiClient from 'adapters/PrivateApiClient';
+import UserApiClient from 'adapters/UserApiClient';
 import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
@@ -15,9 +15,9 @@ const AuthProvider = ({ children }) => {
     setToken(response.accessToken);
     localStorage.setItem('token', response.accessToken);
 
-    const privateClient = new PrivateApiClient(response.accessToken);
+    const privateClient = new UserApiClient(response.accessToken);
     const decoded = jwtDecode(response.accessToken);
-    const user = await privateClient.getUser(decoded.username);
+    const user = await privateClient.get(decoded.username);
     setUser(user);
     return;
   };

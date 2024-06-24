@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-class PrivateApiClient {
+class GameApiClient {
   constructor(token) {
     this.axios = axios.create({
       baseURL: APP_API_BASE_URL,
@@ -10,27 +10,7 @@ class PrivateApiClient {
     });
   }
 
-  async getUser(username) {
-    try {
-      return await this.axios
-        .get(`/v1/users/${username}`)
-        .then((response) => response.data);
-    } catch (e) {
-      throw new Error(e.message);
-    }
-  }
-
-  async getAllUsers() {
-    try {
-      return await this.axios
-        .get('/v1/users')
-        .then((response) => response.data);
-    } catch (e) {
-      throw new Error(e.message);
-    }
-  }
-
-  async getAllGames() {
+  async getAll() {
     try {
       return await this.axios
         .get('/v1/games?minimal=true')
@@ -40,7 +20,7 @@ class PrivateApiClient {
     }
   }
 
-  async getById(id) {
+  async get(id) {
     try {
       return await this.axios
         .get(`/v1/games/${id}`)
@@ -50,7 +30,7 @@ class PrivateApiClient {
     }
   }
 
-  async deleteById(id) {
+  async delete(id) {
     try {
       return await this.axios
         .delete(`/v1/games/${id}`)
@@ -82,4 +62,4 @@ class PrivateApiClient {
   }
 }
 
-export default PrivateApiClient;
+export default GameApiClient;

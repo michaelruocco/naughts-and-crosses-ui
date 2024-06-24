@@ -4,29 +4,41 @@ import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
+import AlertSnackbar from './AlertSnackbar';
 import { useAuth } from '../hooks/AuthProvider';
 
 const LoginPage = () => {
-  const [errorMessage, setErrorMessage] = useState(false);
+  const closedSnackState = {
+    open: false,
+    message: '',
+  };
+  const [snackState, setSnackState] = useState(closedSnackState);
   const navigate = useNavigate();
   const auth = useAuth();
 
+  const closeSnackbar = () => {
+    setSnackState(closedSnackState);
+  };
+
+  const setErrorMessage = (message) => {
+    setSnackState({ open: true, message: message });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrorMessage(null);
+    closeSnackbar();
     const data = new FormData(event.currentTarget);
     const username = data.get('username');
     const password = data.get('password');
     if (!username || !password) {
       setErrorMessage('Both username and password must be provided');
-      return null;
+      return;
     }
     try {
       await auth.login(username, password);
       navigate('/');
     } catch (e) {
-      console.log(e.message);
+      console.debug(e.message);
       setErrorMessage('Login failed');
     }
   };
@@ -63,12 +75,12 @@ const LoginPage = () => {
               Login
             </Button>
           </Box>
+          <AlertSnackbar
+            open={snackState.open}
+            message={snackState.message}
+            onClose={closeSnackbar}
+          />
         </Box>
-        {errorMessage ? (
-          <Box m={1} textAlign="center">
-            <Alert severity="error">{errorMessage}</Alert>
-          </Box>
-        ) : null}
       </Grid>
     </>
   );

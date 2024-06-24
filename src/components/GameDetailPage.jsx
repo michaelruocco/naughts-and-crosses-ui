@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Board from 'components/Board';
 import { useSubscription } from 'react-stomp-hooks';
-import PrivateApiClient from 'adapters/PrivateApiClient';
+import GameApiClient from 'adapters/GameApiClient';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/system';
 import { jsPDF } from 'jspdf';
@@ -13,7 +13,7 @@ const GameDetailPage = () => {
   const [game, setGame] = useState(null);
   const { id } = useParams();
   const { token } = useAuth();
-  const client = new PrivateApiClient(token);
+  const client = new GameApiClient(token);
 
   const handleGameUpdated = (updatedGame) => {
     if (isUpdateRelevant(updatedGame)) {
@@ -74,18 +74,16 @@ const GameDetailPage = () => {
     handleGameUpdated(JSON.parse(message.body)),
   );
 
-  const takeTurn = (location) => {
-    const performTakeTurn = async (request) => {
-      const updatedGame = await client.takeTurn(request);
-      setGame(updatedGame);
-    };
-    performTakeTurn({
+  const takeTurn = async (location) => {
+    const request = {
       id: id,
       body: {
         coordinates: location.coordinates,
         token: game.status.nextPlayerToken,
       },
-    });
+    };
+    const updatedGame = await client.takeTurn(request);
+    setGame(updatedGame);
   };
 
   const handleLocationSelected = (location) => {
@@ -94,7 +92,7 @@ const GameDetailPage = () => {
 
   useEffect(() => {
     const fetchGame = async () => {
-      const game = await client.getById(id);
+      const game = await client.get(id);
       setGame(game);
     };
     fetchGame();

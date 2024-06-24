@@ -1,53 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import PrivateApiClient from 'adapters/PrivateApiClient';
+import UserApiClient from 'adapters/UserApiClient';
+import GameApiClient from 'adapters/GameApiClient';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
+import AlertSnackbar from './AlertSnackbar';
 import { useAuth } from '../hooks/AuthProvider';
 
 const CreateGamePage = () => {
   const [users, setUsers] = useState([]);
   const [crossesPlayer, setCrossesPlayer] = useState(null);
   const [naughtsPlayer, setNaughtsPlayer] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(false);
+  const closedSnackState = {
+    open: false,
+    message: '',
+  };
+  const [snackState, setSnackState] = useState(closedSnackState);
   const { token } = useAuth();
-  const client = new PrivateApiClient(token);
+  const userClient = new UserApiClient(token);
+  const gameClient = new GameApiClient(token);
   const navigate = useNavigate();
 
-  const createGame = () => {
-    const performCreateGame = async () => {
-      setErrorMessage(null);
-      if (!crossesPlayer || !naughtsPlayer) {
-        setErrorMessage('Both players must be selected to create a game');
-        return;
-      }
+  const closeSnackbar = () => {
+    setSnackState(closedSnackState);
+  };
 
-      const request = {
-        requestedPlayers: [
-          {
-            username: crossesPlayer.username,
-            token: 'X',
-          },
-          {
-            username: naughtsPlayer.username,
-            token: 'O',
-          },
-        ],
-      };
-      const game = await client.create(request);
-      navigate(`/game/${game.id}`);
+  const setErrorMessage = (message) => {
+    setSnackState({ open: true, message: message });
+  };
+
+  const createGame = async () => {
+    closeSnackbar();
+    if (!crossesPlayer || !naughtsPlayer) {
+      setErrorMessage('Both players must be selected to create a game');
+      return;
+    }
+
+    const request = {
+      requestedPlayers: [
+        {
+          username: crossesPlayer.username,
+          token: 'X',
+        },
+        {
+          username: naughtsPlayer.username,
+          token: 'O',
+        },
+      ],
     };
-    performCreateGame();
+    const game = await gameClient.create(request);
+    navigate(`/game/${game.id}`);
   };
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await client.getAllUsers();
-      console.log(`got all users from api ${users.map((g) => g.id)}`);
+      const users = await userClient.getAll();
       setUsers(users);
     };
     fetchUsers();
@@ -93,12 +103,12 @@ const CreateGamePage = () => {
           <Button variant="contained" onClick={createGame}>
             Create
           </Button>
+          <AlertSnackbar
+            open={snackState.open}
+            message={snackState.message}
+            onClose={closeSnackbar}
+          />
         </Box>
-        {errorMessage ? (
-          <Box m={1} textAlign="center">
-            <Alert severity="error">{errorMessage}</Alert>
-          </Box>
-        ) : null}
       </Grid>
     </>
   );

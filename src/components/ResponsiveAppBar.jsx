@@ -13,8 +13,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import { useAuth } from '../hooks/AuthProvider';
-import PublicAppBarMenu from './PublicAppBarMenu';
-import PrivateAppBarMenu from './PrivateAppBarMenu';
+import PublicAppBarMenu from './AppBarUserMenuPublic';
+import PrivateAppBarMenu from './AppBarUserMenuPrivate';
+import AppBarUserMenuPublic from './AppBarUserMenuPublic';
+import AppBarUserMenuPrivate from './AppBarUserMenuPrivate';
+import PrivateComponent from './PrivateComponent';
 
 function ResponsiveAppBar() {
   const { user } = useAuth();
@@ -39,6 +42,12 @@ function ResponsiveAppBar() {
     event.preventDefault();
     handleCloseNavMenu();
     navigate('/about');
+  };
+
+  const navigateUsers = (event) => {
+    event.preventDefault();
+    handleCloseNavMenu();
+    navigate('/users');
   };
 
   return (
@@ -99,6 +108,11 @@ function ResponsiveAppBar() {
               <MenuItem key="About" onClick={navigateAbout}>
                 <Typography textAlign="center">About</Typography>
               </MenuItem>
+              <PrivateComponent>
+                <MenuItem key="Users" onClick={navigateUsers}>
+                  <Typography textAlign="center">Users</Typography>
+                </MenuItem>
+              </PrivateComponent>
             </Menu>
           </Box>
 
@@ -130,11 +144,20 @@ function ResponsiveAppBar() {
             >
               About
             </Button>
+            <PrivateComponent>
+              <Button
+                key="Users"
+                onClick={(event) => navigateUsers(event)}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                Users
+              </Button>
+            </PrivateComponent>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {!user && <PublicAppBarMenu />}
-            {user && <PrivateAppBarMenu />}
+            {!user && <AppBarUserMenuPublic />}
+            {user && <AppBarUserMenuPrivate />}
           </Box>
         </Toolbar>
       </Container>

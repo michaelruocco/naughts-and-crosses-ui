@@ -8,6 +8,7 @@ import GameListPage from 'components/GameListPage';
 import GameDetailPage from 'components/GameDetailPage';
 import CreateGamePage from 'components/CreateGamePage';
 import AboutPage from 'components/AboutPage';
+import UserListPage from 'components/UserListPage';
 import PrivateRoute from 'components/PrivateRoute';
 import LoginPage from 'components/LoginPage';
 import StompEnabled from './StompEnabled';
@@ -52,6 +53,14 @@ const NaughtsAndCrossesApp = () => {
                 }
               />
               <Route path="/about" element={<AboutPage />} />
+              <Route
+                path="/users"
+                element={
+                  <PrivateRoute>
+                    <UserListPage />
+                  </PrivateRoute>
+                }
+              />
             </Routes>
           </Box>
         </AuthProvider>
