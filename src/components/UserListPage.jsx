@@ -9,11 +9,13 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import AlertSnackbar from './AlertSnackbar';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const UserListPage = () => {
   const [users, setUsers] = useState([]);
   const batchRef = useRef(null);
   const [uploadInProgress, setUploadInProgress] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(false);
   const closedSnackState = {
     open: false,
     message: '',
@@ -36,12 +38,22 @@ const UserListPage = () => {
   };
 
   const fetchUsers = async () => {
-    const users = await client.getAll();
+    const users = await client.getAllUsers();
     setUsers(users);
+  };
+
+  const calculateProgress = (batch) => {
+    const completeCount = batch.users.length + batch.errors.length;
+    return (completeCount / batch.requests.length) * 100;
+  };
+
+  const shouldDisplayProgressBar = () => {
+    return uploadProgress > 0 && uploadProgress < 100;
   };
 
   const checkBatchStatus = async (id) => {
     let batch = await client.getBatch(id);
+    setUploadProgress(calculateProgress(batch));
     if (!batch.complete) {
       return;
     }
@@ -114,6 +126,11 @@ const UserListPage = () => {
             />
           </Button>
         </ButtonGroup>
+        {shouldDisplayProgressBar() && (
+          <Box m={5} textAlign="center">
+            <LinearProgress variant="determinate" value={uploadProgress} />
+          </Box>
+        )}
         <AlertSnackbar
           open={snackState.open}
           severity={snackState.severity}

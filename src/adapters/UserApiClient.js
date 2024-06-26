@@ -44,6 +44,16 @@ class UserApiClient {
     }
   }
 
+  async create(request) {
+    try {
+      return await this.axios
+        .post('/v1/users', request)
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
   async delete(username) {
     try {
       return await this.axios
@@ -54,10 +64,20 @@ class UserApiClient {
     }
   }
 
-  async getAll() {
+  async getAllUsers() {
     try {
       return await this.axios
         .get('/v1/users')
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async getAllGroups() {
+    try {
+      return await this.axios
+        .get('/v1/user-groups')
         .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);

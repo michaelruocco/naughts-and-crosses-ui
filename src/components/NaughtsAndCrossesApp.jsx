@@ -7,6 +7,7 @@ import { Routes, Route } from 'react-router-dom';
 import GameListPage from 'components/GameListPage';
 import GameDetailPage from 'components/GameDetailPage';
 import CreateGamePage from 'components/CreateGamePage';
+import CreateUserPage from 'components/CreateUserPage';
 import AboutPage from 'components/AboutPage';
 import UserListPage from 'components/UserListPage';
 import PrivateRoute from 'components/PrivateRoute';
@@ -58,6 +59,14 @@ const NaughtsAndCrossesApp = () => {
                 element={
                   <PrivateRoute>
                     <UserListPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/create-user"
+                element={
+                  <PrivateRoute>
+                    <CreateUserPage />
                   </PrivateRoute>
                 }
               />

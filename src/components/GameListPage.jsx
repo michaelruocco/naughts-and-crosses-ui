@@ -20,12 +20,10 @@ const GameListPage = () => {
   };
 
   const handleGameUpdated = (updatedGame) => {
-    console.log(`handle game updated ${updatedGame}`);
     setGames(updateGames(updatedGame));
   };
 
   const handleGameDeleted = (deletedId) => {
-    console.log(`handle game deleted ${deletedId}`);
     setGames(games.filter(({ id }) => id !== deletedId));
   };
 

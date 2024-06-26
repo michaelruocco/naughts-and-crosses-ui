@@ -3,6 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Button, CardActions } from '@mui/material';
+import Chip from '@mui/material/Chip';
 
 const UserListItem = (props) => {
   const { user, onDeleteUser } = props;
@@ -18,12 +19,28 @@ const UserListItem = (props) => {
     onDeleteUser(user.username);
   };
 
+  const toStatusChipColor = (status) => {
+    if (status === 'CONFIRMED') {
+      return 'success';
+    }
+    return 'primary';
+  };
+
   return (
     <Card>
       <CardContent>
-        <Typography variant="h5">{user.fullName}</Typography>
+        <Typography variant="h5">
+          {user.username}{' '}
+          <Chip
+            label={user.status.replaceAll('_', ' ')}
+            color={toStatusChipColor(user.status)}
+          />
+        </Typography>
         <Typography variant="body2" color="text.secondary">
-          {user.username}
+          {user.fullName}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {user.groups.join(', ')}
         </Typography>
         <Typography
           variant="body2"

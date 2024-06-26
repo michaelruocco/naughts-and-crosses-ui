@@ -17,10 +17,10 @@ class PublicApiClient {
     }
   }
 
-  async getToken(username, password) {
+  async getToken(request) {
     try {
       return await this.axios
-        .post('/v1/tokens', { username: username, password: password })
+        .post('/v1/tokens', request)
         .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);
