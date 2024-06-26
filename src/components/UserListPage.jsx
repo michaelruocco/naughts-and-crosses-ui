@@ -10,9 +10,11 @@ import { styled } from '@mui/material/styles';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import AlertSnackbar from './AlertSnackbar';
 import LinearProgress from '@mui/material/LinearProgress';
+import { useNavigate } from 'react-router-dom';
 
 const UserListPage = () => {
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
   const batchRef = useRef(null);
   const [uploadInProgress, setUploadInProgress] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(false);
@@ -89,6 +91,10 @@ const UserListPage = () => {
     fetchUsers();
   };
 
+  const handleUpdateUser = async (username) => {
+    navigate(`/user/${username}`);
+  };
+
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -138,7 +144,11 @@ const UserListPage = () => {
           onClose={closeSnackbar}
         />
       </Box>
-      <UserList users={users} onDeleteUser={handleDeleteUser} />
+      <UserList
+        users={users}
+        onUpdateUser={handleUpdateUser}
+        onDeleteUser={handleDeleteUser}
+      />
     </>
   );
 };

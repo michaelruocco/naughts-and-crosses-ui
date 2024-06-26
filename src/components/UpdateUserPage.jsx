@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserApiClient from 'adapters/UserApiClient';
 import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import AlertSnackbar from './AlertSnackbar';
 import { useAuth } from '../hooks/AuthProvider';
 import UserForm from './UserForm';
+import { useParams } from 'react-router-dom';
 import UserListButton from './UserListButton';
 
-const CreateUserPage = () => {
+const UpdateUserPage = () => {
+  const { username } = useParams();
   const closedSnackState = {
     open: false,
     message: '',
   };
   const [snackState, setSnackState] = useState(closedSnackState);
+  const [user, setUser] = useState(null);
 
   const { token } = useAuth();
   const client = new UserApiClient(token);
@@ -33,13 +36,22 @@ const CreateUserPage = () => {
   const handleSubmit = async (formInput) => {
     closeSnackbar();
     try {
-      const user = await client.create(formInput);
-      setSuccessMessage(`User ${user.username} created successfully`);
+      const user = await client.update(formInput);
+      setSuccessMessage(`User ${user.username} updated successfully`);
       navigate('/users');
     } catch (e) {
       setErrorMessage(e.message);
     }
   };
+
+  const fetchUser = async (username) => {
+    const user = await client.get(username);
+    setUser(user);
+  };
+
+  useEffect(() => {
+    fetchUser(username);
+  }, []);
 
   return (
     <Grid
@@ -49,7 +61,11 @@ const CreateUserPage = () => {
       justifyContent="center"
     >
       <UserListButton />
-      <UserForm onSubmit={handleSubmit} buttonText="Create" />
+      <UserForm
+        onSubmit={handleSubmit}
+        existingUser={user}
+        buttonText="Update"
+      />
       <AlertSnackbar
         open={snackState.open}
         severity={snackState.severity}
@@ -59,4 +75,4 @@ const CreateUserPage = () => {
     </Grid>
   );
 };
-export default CreateUserPage;
+export default UpdateUserPage;

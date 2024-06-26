@@ -54,6 +54,16 @@ class UserApiClient {
     }
   }
 
+  async update(request) {
+    try {
+      return await this.axios
+        .put(`/v1/users/${request.username}`, request)
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
   async delete(username) {
     try {
       return await this.axios
