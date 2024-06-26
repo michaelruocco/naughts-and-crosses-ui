@@ -57,7 +57,7 @@ const CreateGamePage = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await userClient.getAll();
+      const users = await userClient.getAllUsers();
       setUsers(users);
     };
     fetchUsers();
