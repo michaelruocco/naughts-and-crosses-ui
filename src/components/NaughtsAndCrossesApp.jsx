@@ -8,6 +8,7 @@ import GameListPage from 'components/GameListPage';
 import GameDetailPage from 'components/GameDetailPage';
 import CreateGamePage from 'components/CreateGamePage';
 import CreateUserPage from 'components/CreateUserPage';
+import UpdateUserPage from 'components/UpdateUserPage';
 import AboutPage from 'components/AboutPage';
 import UserListPage from 'components/UserListPage';
 import PrivateRoute from 'components/PrivateRoute';
@@ -67,6 +68,14 @@ const NaughtsAndCrossesApp = () => {
                 element={
                   <PrivateRoute>
                     <CreateUserPage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/user/:username"
+                element={
+                  <PrivateRoute>
+                    <UpdateUserPage />
                   </PrivateRoute>
                 }
               />

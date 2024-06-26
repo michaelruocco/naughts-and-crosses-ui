@@ -8,6 +8,8 @@ import { Box } from '@mui/system';
 import { jsPDF } from 'jspdf';
 import { toPng } from 'html-to-image';
 import { useAuth } from '../hooks/AuthProvider';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import { Link } from 'react-router-dom';
 
 const GameDetailPage = () => {
   const [game, setGame] = useState(null);
@@ -102,9 +104,14 @@ const GameDetailPage = () => {
     game && (
       <>
         <Box m={5} textAlign="center">
-          <Button variant="contained" onClick={exportBoardToPdf}>
-            Export to PDF
-          </Button>
+          <ButtonGroup variant="contained">
+            <Button variant="contained" component={Link} to="/">
+              Home
+            </Button>
+            <Button variant="contained" onClick={exportBoardToPdf}>
+              Export to PDF
+            </Button>
+          </ButtonGroup>
         </Box>
         <div id="pdf-board-container">
           <Board
