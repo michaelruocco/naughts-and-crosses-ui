@@ -95,6 +95,11 @@ const UserListPage = () => {
     navigate(`/user/${username}`);
   };
 
+  const synchronizeExternalUsers = async () => {
+    await client.synchronizeExternalUsers();
+    fetchUsers();
+  };
+
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -117,6 +122,9 @@ const UserListPage = () => {
         <ButtonGroup variant="contained">
           <Button variant="contained" component={Link} to="/create-user">
             Create User
+          </Button>
+          <Button variant="contained" onClick={synchronizeExternalUsers}>
+            Sync External Users
           </Button>
           <Button
             component="label"

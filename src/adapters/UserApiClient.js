@@ -93,6 +93,16 @@ class UserApiClient {
       throw new Error(e.message);
     }
   }
+
+  async synchronizeExternalUsers() {
+    try {
+      return await this.axios
+        .post('/v1/external-user-synchronizations')
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
 }
 
 export default UserApiClient;
