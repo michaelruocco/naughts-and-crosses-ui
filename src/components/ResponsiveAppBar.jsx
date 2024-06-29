@@ -18,6 +18,7 @@ import PrivateAppBarMenu from './AppBarUserMenuPrivate';
 import AppBarUserMenuPublic from './AppBarUserMenuPublic';
 import AppBarUserMenuPrivate from './AppBarUserMenuPrivate';
 import PrivateComponent from './PrivateComponent';
+import AdminOnlyComponent from './AdminOnlyComponent';
 
 function ResponsiveAppBar() {
   const { user } = useAuth();
@@ -108,11 +109,11 @@ function ResponsiveAppBar() {
               <MenuItem key="About" onClick={navigateAbout}>
                 <Typography textAlign="center">About</Typography>
               </MenuItem>
-              <PrivateComponent>
+              <AdminOnlyComponent>
                 <MenuItem key="Users" onClick={navigateUsers}>
                   <Typography textAlign="center">Users</Typography>
                 </MenuItem>
-              </PrivateComponent>
+              </AdminOnlyComponent>
             </Menu>
           </Box>
 
@@ -144,7 +145,7 @@ function ResponsiveAppBar() {
             >
               About
             </Button>
-            <PrivateComponent>
+            <AdminOnlyComponent>
               <Button
                 key="Users"
                 onClick={(event) => navigateUsers(event)}
@@ -152,7 +153,7 @@ function ResponsiveAppBar() {
               >
                 Users
               </Button>
-            </PrivateComponent>
+            </AdminOnlyComponent>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

@@ -2,9 +2,9 @@ import { useAuth } from '../hooks/AuthProvider';
 
 const PrivateComponent = ({ children }) => {
   const { user } = useAuth();
-  if (!user) {
-    return <></>;
+  if (user) {
+    return children;
   }
-  return children;
+  return <></>;
 };
 export default PrivateComponent;
