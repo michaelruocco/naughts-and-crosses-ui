@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import { useAuth } from '../hooks/AuthProvider';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 function AppBarUserMenuPrivate() {
   const { user, logout } = useAuth();
@@ -37,7 +38,7 @@ function AppBarUserMenuPrivate() {
     <>
       <Tooltip title="Open user menu">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt={user.username} src="username.jpg" />
+          <AccountCircleIcon fontSize="large" sx={{ color: 'white' }} />
         </IconButton>
       </Tooltip>
       <Menu

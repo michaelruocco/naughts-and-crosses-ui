@@ -63,6 +63,10 @@ const CreateGamePage = () => {
     fetchUsers();
   }, []);
 
+  const toOptionLabel = (user) => {
+    return user.fullName || user.username;
+  };
+
   const autoCompleteWidth = 300;
 
   return (
@@ -79,7 +83,7 @@ const CreateGamePage = () => {
             id="crosses-player"
             sx={{ width: autoCompleteWidth }}
             options={users}
-            getOptionLabel={(user) => user.fullName}
+            getOptionLabel={(user) => toOptionLabel(user)}
             renderInput={(params) => (
               <TextField {...params} label="Crosses Player" />
             )}
@@ -92,7 +96,7 @@ const CreateGamePage = () => {
             id="naughts-player"
             sx={{ width: autoCompleteWidth }}
             options={users}
-            getOptionLabel={(user) => user.fullName}
+            getOptionLabel={(user) => toOptionLabel(user)}
             renderInput={(params) => (
               <TextField {...params} label="Naughts Player" />
             )}

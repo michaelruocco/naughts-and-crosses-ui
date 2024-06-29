@@ -15,6 +15,7 @@ import PrivateRoute from 'components/PrivateRoute';
 import LoginPage from 'components/LoginPage';
 import StompEnabled from './StompEnabled';
 import AuthProvider from '../hooks/AuthProvider';
+import AdminOnlyRoute from './AdminOnlyRoute';
 
 const NaughtsAndCrossesApp = () => {
   return (
@@ -58,9 +59,9 @@ const NaughtsAndCrossesApp = () => {
               <Route
                 path="/users"
                 element={
-                  <PrivateRoute>
+                  <AdminOnlyRoute>
                     <UserListPage />
-                  </PrivateRoute>
+                  </AdminOnlyRoute>
                 }
               />
               <Route
