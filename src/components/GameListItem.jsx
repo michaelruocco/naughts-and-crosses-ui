@@ -3,6 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import GameListItemStatus from 'components/GameListItemStatus';
 import { Button, CardActions } from '@mui/material';
+import AdminOnlyComponent from './AdminOnlyComponent';
 
 const GameListItem = (props) => {
   const { game, onViewGame, onDeleteGame } = props;
@@ -25,9 +26,11 @@ const GameListItem = (props) => {
         <Button size="small" onClick={() => viewGame()}>
           View
         </Button>
-        <Button size="small" onClick={() => deleteGame()}>
-          Delete
-        </Button>
+        <AdminOnlyComponent>
+          <Button size="small" onClick={() => deleteGame()}>
+            Delete
+          </Button>
+        </AdminOnlyComponent>
       </CardActions>
     </Card>
   );

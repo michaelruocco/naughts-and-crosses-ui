@@ -62,3 +62,15 @@ docker-compose --profile multi-node up -d
 
 running this command will make the UI available on both [local port 3001](http://localhost:3001)
 and [local port 3002](http://localhost:3002)
+
+## TODO List
+
+- add users pages endpoint
+- add user filtering by group
+- add endpoint to return users for game player dropdown with only username and full name
+- game list pages endpoint
+- game list filtered by player so user only sees their own games
+- game list filtered to hide complete games
+- restrict create game if not admin at least one player has to be authenticated user
+- restrict get game endpoint for admin or player of game
+- investigate auth0 integration with cognito
