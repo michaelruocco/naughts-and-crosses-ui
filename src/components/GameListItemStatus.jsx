@@ -1,30 +1,13 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
+import UserTurn from './UserTurn';
 
 const GameListItem = (props) => {
-  const { status } = props;
-
-  const toText = (status) => {
-    if (status.complete) {
-      return toCompleteText(status);
-    }
-    return `Next Player ${status.nextPlayerToken}`;
-  };
-
-  const toCompleteText = (status) => {
-    if (status.draw) {
-      return 'Draw';
-    }
-    return `Winner ${status.winner}`;
-  };
-
+  const { game } = props;
   return (
     <>
       <Typography variant="body2" color="text.secondary">
-        Turn {status.turn}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        {toText(status)}
+        <UserTurn game={game} />
       </Typography>
     </>
   );

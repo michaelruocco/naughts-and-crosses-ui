@@ -7,7 +7,6 @@ import AdminOnlyComponent from './AdminOnlyComponent';
 
 const GameListItem = (props) => {
   const { game, onViewGame, onDeleteGame } = props;
-  const { status } = game;
 
   const viewGame = () => {
     onViewGame(game.id);
@@ -20,7 +19,7 @@ const GameListItem = (props) => {
   return (
     <Card>
       <CardContent>
-        <GameListItemStatus status={status} />
+        <GameListItemStatus game={game} />
       </CardContent>
       <CardActions>
         <Button size="small" onClick={() => viewGame()}>
