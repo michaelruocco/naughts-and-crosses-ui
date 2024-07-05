@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import UserApiClient from 'adapters/UserApiClient';
 import GameApiClient from 'adapters/GameApiClient';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
@@ -11,7 +10,7 @@ import AlertSnackbar from './AlertSnackbar';
 import { useAuth } from '../hooks/AuthProvider';
 
 const CreateGamePage = () => {
-  const [users, setUsers] = useState([]);
+  const [usernames, setUsernames] = useState([]);
   const [crossesPlayer, setCrossesPlayer] = useState(null);
   const [naughtsPlayer, setNaughtsPlayer] = useState(null);
   const closedSnackState = {
@@ -20,7 +19,6 @@ const CreateGamePage = () => {
   };
   const [snackState, setSnackState] = useState(closedSnackState);
   const { token } = useAuth();
-  const userClient = new UserApiClient(token);
   const gameClient = new GameApiClient(token);
   const navigate = useNavigate();
 
@@ -42,30 +40,32 @@ const CreateGamePage = () => {
     const request = {
       requestedPlayers: [
         {
-          username: crossesPlayer.username,
+          username: crossesPlayer,
           token: 'X',
         },
         {
-          username: naughtsPlayer.username,
+          username: naughtsPlayer,
           token: 'O',
         },
       ],
     };
-    const game = await gameClient.create(request);
-    navigate(`/game/${game.id}`);
+
+    try {
+      const game = await gameClient.create(request);
+      navigate(`/game/${game.id}`);
+    } catch (e) {
+      console.debug(e.message);
+      setErrorMessage('Unable to create game');
+    }
   };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const users = await userClient.getAllUsers();
-      setUsers(users);
+    const fetchUsernames = async () => {
+      const usernames = await gameClient.getAllCandidatePlayerUsernames();
+      setUsernames(usernames);
     };
-    fetchUsers();
+    fetchUsernames();
   }, []);
-
-  const toOptionLabel = (user) => {
-    return user.fullName || user.username;
-  };
 
   const autoCompleteWidth = 300;
 
@@ -82,8 +82,8 @@ const CreateGamePage = () => {
             disablePortal
             id="crosses-player"
             sx={{ width: autoCompleteWidth }}
-            options={users}
-            getOptionLabel={(user) => toOptionLabel(user)}
+            options={usernames}
+            //getOptionLabel={(username) => username}
             renderInput={(params) => (
               <TextField {...params} label="Crosses Player" />
             )}
@@ -95,8 +95,8 @@ const CreateGamePage = () => {
             disablePortal
             id="naughts-player"
             sx={{ width: autoCompleteWidth }}
-            options={users}
-            getOptionLabel={(user) => toOptionLabel(user)}
+            options={usernames}
+            //getOptionLabel={(user) => toOptionLabel(user)}
             renderInput={(params) => (
               <TextField {...params} label="Naughts Player" />
             )}

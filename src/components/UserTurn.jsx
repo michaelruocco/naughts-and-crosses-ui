@@ -9,16 +9,22 @@ const UserTurn = (props) => {
   };
 
   const currentUserNotPlaying = (players) => {
-    console.log(JSON.stringify(players));
     const usernames = players.map((player) => player.user.username);
     return !usernames.includes(user.username);
   };
 
-  const playerToColor = (player) => {
+  const playerToCompleteColor = (player) => {
     if (isCurrentUser(player)) {
       return 'green';
     }
     return 'red';
+  };
+
+  const playerToInProgressColor = (player) => {
+    if (isCurrentUser(player)) {
+      return 'green';
+    }
+    return '#ffc107';
   };
 
   const gameToColor = (game) => {
@@ -30,9 +36,9 @@ const UserTurn = (props) => {
       return 'black';
     }
     if (status.complete) {
-      return playerToColor(status.winner);
+      return playerToCompleteColor(status.winner);
     }
-    return playerToColor(status.nextPlayer);
+    return playerToInProgressColor(status.nextPlayer);
   };
 
   const toText = (status) => {
