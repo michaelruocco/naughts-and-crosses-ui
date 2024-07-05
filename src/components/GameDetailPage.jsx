@@ -10,11 +10,12 @@ import { toPng } from 'html-to-image';
 import { useAuth } from '../hooks/AuthProvider';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import { Link } from 'react-router-dom';
+import UserTurn from './UserTurn';
 
 const GameDetailPage = () => {
   const [game, setGame] = useState(null);
   const { id } = useParams();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const client = new GameApiClient(token);
 
   const handleGameUpdated = (updatedGame) => {
@@ -81,7 +82,7 @@ const GameDetailPage = () => {
       id: id,
       body: {
         coordinates: location.coordinates,
-        token: game.status.nextPlayerToken,
+        token: game.status.nextPlayer.token,
       },
     };
     const updatedGame = await client.takeTurn(request);
@@ -90,6 +91,16 @@ const GameDetailPage = () => {
 
   const handleLocationSelected = (location) => {
     takeTurn(location);
+  };
+
+  const toEnabled = (game) => {
+    if (game.status.complete) {
+      return false;
+    }
+    if (game.status.nextPlayer.username !== user.username) {
+      return false;
+    }
+    return true;
   };
 
   useEffect(() => {
@@ -113,11 +124,14 @@ const GameDetailPage = () => {
             </Button>
           </ButtonGroup>
         </Box>
+        <Box m={5} textAlign="center">
+          <UserTurn game={game} />
+        </Box>
         <div id="pdf-board-container">
           <Board
             board={game.board}
             onLocationSelected={handleLocationSelected}
-            enabled={!game.status.complete}
+            enabled={toEnabled(game)}
           />
         </div>
       </>

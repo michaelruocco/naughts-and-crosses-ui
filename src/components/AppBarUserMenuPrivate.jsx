@@ -5,7 +5,6 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
-import Avatar from '@mui/material/Avatar';
 import { useAuth } from '../hooks/AuthProvider';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 

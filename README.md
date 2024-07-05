@@ -66,7 +66,7 @@ and [local port 3002](http://localhost:3002)
 ## TODO List
 
 - add users pages endpoint
-- add user filtering by group
+- add users filtering by group
 - add endpoint to return users for game player dropdown with only username and full name
 - game list pages endpoint
 - game list filtered by player so user only sees their own games
