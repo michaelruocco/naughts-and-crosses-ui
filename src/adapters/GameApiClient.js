@@ -60,6 +60,16 @@ class GameApiClient {
       throw new Error(e.message);
     }
   }
+
+  async getAllCandidatePlayerUsernames() {
+    try {
+      return await this.axios
+        .get('/v1/games/candidate-players/usernames')
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
 }
 
 export default GameApiClient;
