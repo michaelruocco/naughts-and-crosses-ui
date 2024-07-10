@@ -26,6 +26,16 @@ class PublicApiClient {
       throw new Error(e.message);
     }
   }
+
+  async refreshToken(refreshToken) {
+    try {
+      return await this.axios
+        .put('/v1/tokens', { refreshToken: refreshToken })
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
 }
 
 export default PublicApiClient;

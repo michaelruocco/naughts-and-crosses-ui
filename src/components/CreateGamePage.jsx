@@ -18,8 +18,8 @@ const CreateGamePage = () => {
     message: '',
   };
   const [snackState, setSnackState] = useState(closedSnackState);
-  const { token } = useAuth();
-  const gameClient = new GameApiClient(token);
+  const { accessToken } = useAuth();
+  const gameClient = new GameApiClient(accessToken);
   const navigate = useNavigate();
 
   const closeSnackbar = () => {

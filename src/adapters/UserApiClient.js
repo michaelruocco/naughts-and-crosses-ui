@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 class UserApiClient {
-  constructor(token) {
+  constructor(accessToken) {
     this.axios = axios.create({
       baseURL: APP_API_BASE_URL,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
   }

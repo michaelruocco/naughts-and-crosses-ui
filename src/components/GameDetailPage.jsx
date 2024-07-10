@@ -15,8 +15,8 @@ import UserTurn from './UserTurn';
 const GameDetailPage = () => {
   const [game, setGame] = useState(null);
   const { id } = useParams();
-  const { token, user } = useAuth();
-  const client = new GameApiClient(token);
+  const { accessToken, user } = useAuth();
+  const client = new GameApiClient(accessToken);
 
   const handleGameUpdated = (updatedGame) => {
     if (isUpdateRelevant(updatedGame)) {

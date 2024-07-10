@@ -34,8 +34,8 @@ const UserForm = (props) => {
     },
   );
 
-  const { token } = useAuth();
-  const client = new UserApiClient(token);
+  const { accessToken } = useAuth();
+  const client = new UserApiClient(accessToken);
 
   const handleInput = (event) => {
     const target = event.target;
