@@ -10,9 +10,9 @@ import { useAuth } from '../hooks/AuthProvider';
 
 const GameListPage = () => {
   const [games, setGames] = useState([]);
-  const { token } = useAuth();
+  const { accessToken } = useAuth();
   const navigate = useNavigate();
-  const client = new GameApiClient(token);
+  const client = new GameApiClient(accessToken);
 
   const fetchGames = async () => {
     const games = await client.getAll();

@@ -65,7 +65,6 @@ and [local port 3002](http://localhost:3002)
 
 ## TODO List
 
-- implement access token refresh
 - add users pages endpoint
 - add users filtering by group
 - game list pages endpoint

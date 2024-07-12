@@ -17,8 +17,8 @@ const UpdateUserPage = () => {
   const [snackState, setSnackState] = useState(closedSnackState);
   const [user, setUser] = useState(null);
 
-  const { token } = useAuth();
-  const client = new UserApiClient(token);
+  const { accessToken } = useAuth();
+  const client = new UserApiClient(accessToken);
   const navigate = useNavigate();
 
   const closeSnackbar = () => {
