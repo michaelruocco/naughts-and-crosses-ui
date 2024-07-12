@@ -76,14 +76,18 @@ const UserListPage = () => {
   const handleFileSelected = async (event) => {
     closeSnackbar();
     const files = Array.from(event.target.files);
-    const batch = await client.uploadBatch(files[0]);
-    if (batch.complete) {
-      return;
+    try {
+      const batch = await client.uploadBatch(files[0]);
+      if (batch.complete) {
+        return;
+      }
+      setUploadInProgress(true);
+      batchRef.current = setInterval(() => {
+        checkBatchStatus(batch.id);
+      }, 1000);
+    } catch (e) {
+      setErrorMessage(e.message);
     }
-    setUploadInProgress(true);
-    batchRef.current = setInterval(() => {
-      checkBatchStatus(batch.id);
-    }, 1000);
   };
 
   const handleDeleteUser = async (username) => {
