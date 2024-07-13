@@ -44,8 +44,8 @@ const GameListPage = () => {
     handleGameDeleted(parseInt(message.body)),
   );
 
-  const findGameById = (id) => {
-    return games.find(({ gameId }) => gameId === id);
+  const findGameById = (otherId) => {
+    return games.find(({ id }) => id === otherId);
   };
 
   const updateGames = (updatedGame) => {
