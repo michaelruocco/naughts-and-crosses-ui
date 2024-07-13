@@ -28,8 +28,12 @@ const AuthProvider = ({ children }) => {
       autoLogout();
       return;
     }
-    const response = await publicClient.refreshToken(refreshToken);
-    await updateStorage(response);
+    try {
+      const response = await publicClient.refreshToken(refreshToken);
+      await updateStorage(response);
+    } catch (e) {
+      autoLogout();
+    }
   };
 
   const updateStorage = async (response) => {

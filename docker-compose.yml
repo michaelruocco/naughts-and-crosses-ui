@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   naughts-and-crosses-ui-1:
     image: naughts-and-crosses-ui:latest
@@ -39,18 +37,23 @@ services:
       BROKER_CLIENT_PASSCODE: artemis
       BROKER_SYSTEM_LOGIN: artemis
       BROKER_SYSTEM_PASSCODE: artemis
-      AUTH_ISSUER_URL: http://cognito:9229/local_4RsGXSAf
+      AUTH_ISSUER_URL: "http://cognito:9229/local_4RsGXSAf"
       AWS_COGNITO_USER_POOL_ID: "local_4RsGXSAf"
       AWS_COGNITO_USER_POOL_CLIENT_ID: "6b0j5hb1u25z290vv502lfl1c"
       AWS_COGNITO_REGION_NAME: eu-central-1
       AWS_COGNITO_ENDPOINT_OVERRIDE: http://cognito:9229
       AWS_COGNITO_ACCESS_KEY_ID: abc
       AWS_COGNITO_SECRET_ACCESS_KEY: 123
+      CLAM_AV_HOST: antivirus
+      CLAM_AV_PORT: 3310
+      CLAM_AV_CONNECT_TIMEOUT: 2
+      CLAM_AV_READ_TIMEOUT: 20
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
       - activemq
       - cognito
+      - antivirus
 
   naughts-and-crosses-api-2:
     image: naughts-and-crosses-api:latest
@@ -70,18 +73,23 @@ services:
       BROKER_CLIENT_PASSCODE: artemis
       BROKER_SYSTEM_LOGIN: artemis
       BROKER_SYSTEM_PASSCODE: artemis
-      AUTH_ISSUER_URL: http://cognito:9229/local_4RsGXSAf
+      AUTH_ISSUER_URL: "http://cognito:9229/local_4RsGXSAf"
       AWS_COGNITO_USER_POOL_ID: "local_4RsGXSAf"
       AWS_COGNITO_USER_POOL_CLIENT_ID: "6b0j5hb1u25z290vv502lfl1c"
       AWS_COGNITO_REGION_NAME: eu-central-1
       AWS_COGNITO_ENDPOINT_OVERRIDE: http://cognito:9229
       AWS_COGNITO_ACCESS_KEY_ID: abc
       AWS_COGNITO_SECRET_ACCESS_KEY: 123
+      CLAM_AV_HOST: antivirus
+      CLAM_AV_PORT: 3310
+      CLAM_AV_CONNECT_TIMEOUT: 2
+      CLAM_AV_READ_TIMEOUT: 20
     restart: on-failure
     depends_on:
       - naughts-and-crosses-db
       - activemq
       - cognito
+      - antivirus
       
   naughts-and-crosses-db:
     image: postgres:16-alpine
@@ -106,3 +114,9 @@ services:
   activemq:
     image: apache/activemq-artemis:latest-alpine
     container_name: activemq
+
+  antivirus:
+    image: clamav/clamav
+    container_name: antivirus
+    ports:
+      - 3310:3310
