@@ -9,7 +9,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Autocomplete from '@mui/material/Autocomplete';
 
 const UserForm = (props) => {
-  const { onSubmit, existingUser, buttonText } = props;
+  const { onSubmit, existingUser, buttonText, disabled } = props;
   const [groupOptions, setGroupOptions] = useState([]);
 
   const newUser = {
@@ -76,7 +76,7 @@ const UserForm = (props) => {
         name="username"
         label="Username"
         margin="normal"
-        disabled={initialUser?.username !== ''}
+        disabled={initialUser?.username !== '' || disabled}
         value={formInput?.username}
         onChange={handleInput}
         fullWidth
@@ -88,6 +88,7 @@ const UserForm = (props) => {
         name="firstName"
         label="First Name"
         margin="normal"
+        disabled={disabled}
         value={formInput.firstName}
         onChange={handleInput}
         fullWidth
@@ -98,6 +99,7 @@ const UserForm = (props) => {
         name="lastName"
         label="Last Name"
         margin="normal"
+        disabled={disabled}
         value={formInput.lastName}
         onChange={handleInput}
         fullWidth
@@ -108,6 +110,7 @@ const UserForm = (props) => {
         name="email"
         label="Email"
         margin="normal"
+        disabled={disabled}
         value={formInput.email}
         onChange={handleInput}
         fullWidth
@@ -116,8 +119,9 @@ const UserForm = (props) => {
       <FormControlLabel
         id="emailVerified"
         name="emailVerified"
-        control={<Checkbox checked={formInput.emailVerified} />}
         label="Email Verified"
+        disabled={disabled}
+        control={<Checkbox checked={formInput.emailVerified} />}
         onChange={handleCheckboxInput}
       />
       <Autocomplete
@@ -125,6 +129,7 @@ const UserForm = (props) => {
         id="groups"
         name="groups"
         label="Groups"
+        disabled={disabled}
         multiple={true}
         options={groupOptions}
         value={formInput.groups}
@@ -132,7 +137,7 @@ const UserForm = (props) => {
         onChange={handleGroupsInput}
       />
       <Box m={1} textAlign="center">
-        <Button variant="contained" type="submit">
+        <Button variant="contained" type="submit" disabled={disabled}>
           {buttonText}
         </Button>
       </Box>

@@ -6,7 +6,7 @@ import { Button, CardActions } from '@mui/material';
 import Chip from '@mui/material/Chip';
 
 const UserListItem = (props) => {
-  const { user, onUpdateUser, onDeleteUser } = props;
+  const { user, actionsVisible, onUpdateUser, onDeleteUser } = props;
 
   const toEmailTextColor = (verified) => {
     if (verified) {
@@ -53,14 +53,16 @@ const UserListItem = (props) => {
           {user.email}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => updateUser()}>
-          Update
-        </Button>
-        <Button size="small" onClick={() => deleteUser()}>
-          Delete
-        </Button>
-      </CardActions>
+      {actionsVisible && (
+        <CardActions>
+          <Button size="small" onClick={() => updateUser()}>
+            Update
+          </Button>
+          <Button size="small" onClick={() => deleteUser()}>
+            Delete
+          </Button>
+        </CardActions>
+      )}
     </Card>
   );
 };

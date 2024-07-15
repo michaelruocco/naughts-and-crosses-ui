@@ -13,11 +13,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import { useAuth } from '../hooks/AuthProvider';
-import PublicAppBarMenu from './AppBarUserMenuPublic';
-import PrivateAppBarMenu from './AppBarUserMenuPrivate';
 import AppBarUserMenuPublic from './AppBarUserMenuPublic';
 import AppBarUserMenuPrivate from './AppBarUserMenuPrivate';
-import PrivateComponent from './PrivateComponent';
 import AdminOnlyComponent from './AdminOnlyComponent';
 
 function ResponsiveAppBar() {
