@@ -84,10 +84,14 @@ class UserApiClient {
     }
   }
 
-  async getPage(limit, offset) {
+  async getPage(limit, offset, filterGroups) {
     try {
       return await this.axios
-        .post('/v1/users/pages', { limit: limit, offset: offset })
+        .post('/v1/users/pages', {
+          limit: limit,
+          offset: offset,
+          groups: filterGroups,
+        })
         .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);

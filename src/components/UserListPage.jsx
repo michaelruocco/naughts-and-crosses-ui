@@ -12,13 +12,15 @@ import AlertSnackbar from './AlertSnackbar';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from 'react-router-dom';
 import NacPagination from 'components/NacPagination';
+import FilterMenuButton from 'components/FilterMenuButton';
 
 const UserListPage = () => {
-  const pageSize = 3;
+  const pageSize = 10;
   const [users, setUsers] = useState([]);
   const [offset, setOffset] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filterGroups, setFilterGroups] = useState([]);
 
   const navigate = useNavigate();
   const batchRef = useRef(null);
@@ -46,7 +48,7 @@ const UserListPage = () => {
   };
 
   const fetchUsers = async () => {
-    const page = await client.getPage(pageSize, offset);
+    const page = await client.getPage(pageSize, offset, filterGroups);
     setUsers(page.users);
     setTotalUsers(page.total);
     if (offset >= page.total) {
@@ -138,12 +140,12 @@ const UserListPage = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [offset]);
+  }, [offset, filterGroups]);
 
   return (
     <>
       <Box m={2} textAlign="center">
-        <ButtonGroup variant="contained">
+        <ButtonGroup>
           <Button variant="contained" component={Link} to="/create-user">
             Create User
           </Button>
@@ -169,6 +171,15 @@ const UserListPage = () => {
             <LinearProgress variant="determinate" value={uploadProgress} />
           </Box>
         )}
+      </Box>
+      <Box m={2} textAlign="center">
+        <ButtonGroup>
+          <FilterMenuButton
+            popoverId="user-groups-popover"
+            buttonText="Filter Groups"
+            onFilterChange={setFilterGroups}
+          />
+        </ButtonGroup>
       </Box>
       <NacPagination
         currentPage={currentPage}

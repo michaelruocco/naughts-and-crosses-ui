@@ -26,7 +26,6 @@ const UserGroupAutocomplete = (props) => {
 
   return (
     <Autocomplete
-      disablePortal
       id="groups"
       name="groups"
       label="Groups"
@@ -34,7 +33,9 @@ const UserGroupAutocomplete = (props) => {
       multiple={true}
       options={groupOptions}
       value={selectedGroups}
-      renderInput={(params) => <TextField {...params} label="Groups" />}
+      renderInput={(params) => (
+        <TextField {...params} label="Groups" sx={{ minWidth: 350 }} />
+      )}
       onChange={handleGroupsChange}
     />
   );
