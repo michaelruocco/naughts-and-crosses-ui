@@ -177,6 +177,7 @@ const UserListPage = () => {
           <FilterMenuButton
             popoverId="user-groups-popover"
             buttonText="Filter Groups"
+            filterValues={filterGroups}
             onFilterChange={setFilterGroups}
           />
         </ButtonGroup>

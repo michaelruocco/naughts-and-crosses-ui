@@ -6,8 +6,8 @@ import { Box } from '@mui/system';
 import Badge from '@mui/material/Badge';
 
 const FilterMenuButton = (props) => {
-  const { popoverId, buttonText, onFilterChange } = props;
-  const [selectedFilters, setSelectedFilters] = useState([]);
+  const { popoverId, buttonText, filterValues, onFilterChange } = props;
+  const [selectedFilters, setSelectedFilters] = useState(filterValues);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
