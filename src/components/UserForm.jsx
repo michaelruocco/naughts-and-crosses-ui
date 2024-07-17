@@ -1,16 +1,13 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import Button from '@mui/material/Button';
-import UserApiClient from 'adapters/UserApiClient';
 import { Box } from '@mui/system';
-import { useAuth } from '../hooks/AuthProvider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
-import Autocomplete from '@mui/material/Autocomplete';
+import UserGroupAutocomplete from './UserGroupAutocomplete';
 
 const UserForm = (props) => {
   const { onSubmit, existingUser, buttonText, disabled } = props;
-  const [groupOptions, setGroupOptions] = useState([]);
 
   const newUser = {
     username: '',
@@ -34,9 +31,6 @@ const UserForm = (props) => {
     },
   );
 
-  const { accessToken } = useAuth();
-  const client = new UserApiClient(accessToken);
-
   const handleInput = (event) => {
     const target = event.target;
     setFormInput({ [target.name]: target.value });
@@ -47,7 +41,7 @@ const UserForm = (props) => {
     setFormInput({ [target.name]: target.checked });
   };
 
-  const handleGroupsInput = (event, value) => {
+  const handleGroupsInput = (value) => {
     setFormInput({ groups: value });
   };
 
@@ -56,18 +50,9 @@ const UserForm = (props) => {
     onSubmit(formInput);
   };
 
-  const fetchGroups = async () => {
-    const groups = await client.getAllGroups();
-    setGroupOptions(groups);
-  };
-
   useEffect(() => {
     setFormInput(initialUser);
   }, [existingUser]);
-
-  useEffect(() => {
-    fetchGroups();
-  }, []);
 
   return (
     <Box component="form" onSubmit={handleSubmit}>
@@ -124,17 +109,10 @@ const UserForm = (props) => {
         control={<Checkbox checked={formInput.emailVerified} />}
         onChange={handleCheckboxInput}
       />
-      <Autocomplete
-        disablePortal
-        id="groups"
-        name="groups"
-        label="Groups"
+      <UserGroupAutocomplete
+        selectedGroups={formInput.groups}
         disabled={disabled}
-        multiple={true}
-        options={groupOptions}
-        value={formInput.groups}
-        renderInput={(params) => <TextField {...params} label="Groups" />}
-        onChange={handleGroupsInput}
+        onGroupsChange={handleGroupsInput}
       />
       <Box m={1} textAlign="center">
         <Button variant="contained" type="submit" disabled={disabled}>
