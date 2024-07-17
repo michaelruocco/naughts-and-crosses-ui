@@ -11,9 +11,15 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import AlertSnackbar from './AlertSnackbar';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from 'react-router-dom';
+import NacPagination from 'components/NacPagination';
 
 const UserListPage = () => {
+  const pageSize = 3;
   const [users, setUsers] = useState([]);
+  const [offset, setOffset] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const navigate = useNavigate();
   const batchRef = useRef(null);
   const [uploadInProgress, setUploadInProgress] = useState(false);
@@ -40,8 +46,12 @@ const UserListPage = () => {
   };
 
   const fetchUsers = async () => {
-    const users = await client.getAllUsers();
-    setUsers(users);
+    const page = await client.getPage(pageSize, offset);
+    setUsers(page.users);
+    setTotalUsers(page.total);
+    if (offset >= page.total) {
+      setOffset(page.total - pageSize);
+    }
   };
 
   const calculateProgress = (batch) => {
@@ -116,13 +126,23 @@ const UserListPage = () => {
     width: 1,
   });
 
+  const toOffset = (pageNumber) => {
+    return (pageNumber - 1) * pageSize;
+  };
+
+  const handlePageSelected = (pageNumber) => {
+    const newOffset = toOffset(pageNumber);
+    setOffset(newOffset);
+    setCurrentPage(pageNumber);
+  };
+
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [offset]);
 
   return (
     <>
-      <Box m={5} textAlign="center">
+      <Box m={2} textAlign="center">
         <ButtonGroup variant="contained">
           <Button variant="contained" component={Link} to="/create-user">
             Create User
@@ -149,17 +169,29 @@ const UserListPage = () => {
             <LinearProgress variant="determinate" value={uploadProgress} />
           </Box>
         )}
-        <AlertSnackbar
-          open={snackState.open}
-          severity={snackState.severity}
-          message={snackState.message}
-          onClose={closeSnackbar}
-        />
       </Box>
+      <NacPagination
+        currentPage={currentPage}
+        pageSize={pageSize}
+        totalItems={totalUsers}
+        onPageSelected={handlePageSelected}
+      />
       <UserList
         users={users}
         onUpdateUser={handleUpdateUser}
         onDeleteUser={handleDeleteUser}
+      />
+      <NacPagination
+        currentPage={currentPage}
+        pageSize={pageSize}
+        totalItems={totalUsers}
+        onPageSelected={handlePageSelected}
+      />
+      <AlertSnackbar
+        open={snackState.open}
+        severity={snackState.severity}
+        message={snackState.message}
+        onClose={closeSnackbar}
       />
     </>
   );

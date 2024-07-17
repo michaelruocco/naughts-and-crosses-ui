@@ -10,6 +10,7 @@ import UserListButton from './UserListButton';
 
 const UpdateUserPage = () => {
   const { username } = useParams();
+  const { isAuthedUsername } = useAuth();
   const closedSnackState = {
     open: false,
     message: '',
@@ -62,6 +63,7 @@ const UpdateUserPage = () => {
     >
       <UserListButton />
       <UserForm
+        disabled={isAuthedUsername(user?.username)}
         onSubmit={handleSubmit}
         existingUser={user}
         buttonText="Update"

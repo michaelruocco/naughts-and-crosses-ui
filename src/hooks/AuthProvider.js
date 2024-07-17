@@ -78,6 +78,10 @@ const AuthProvider = ({ children }) => {
     return user && user.groups.some((group) => permittedGroups.includes(group));
   };
 
+  const isAuthedUsername = (username) => {
+    return user.username === username;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -86,6 +90,7 @@ const AuthProvider = ({ children }) => {
         login,
         logout,
         userIsMemberOfAtLeastOne,
+        isAuthedUsername,
       }}
     >
       {children}
