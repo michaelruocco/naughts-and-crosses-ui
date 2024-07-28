@@ -16,8 +16,12 @@ import LoginPage from 'components/LoginPage';
 import StompEnabled from './StompEnabled';
 import AuthProvider from '../hooks/AuthProvider';
 import AdminOnlyRoute from './AdminOnlyRoute';
+import Redirect from './Redirect';
+import LoginCallback from './LoginCallback';
 
 const NaughtsAndCrossesApp = () => {
+  const hostedLoginUrl = `${APP_LOGIN_URL}`;
+  console.log(`hosted login url ${hostedLoginUrl}`);
   return (
     <>
       <CssBaseline />
@@ -26,7 +30,18 @@ const NaughtsAndCrossesApp = () => {
           <ResponsiveAppBar />
           <Box m={5}>
             <Routes>
-              <Route path="/login" element={<LoginPage />} />
+              {hostedLoginUrl && (
+                <>
+                  <Route
+                    path="/login"
+                    element={<Redirect url={hostedLoginUrl} />}
+                  />
+                  <Route path="/login/callback" element={<LoginCallback />} />
+                </>
+              )}
+              {!hostedLoginUrl && (
+                <Route path="/login" element={<LoginPage />} />
+              )}
               <Route
                 path="/"
                 element={

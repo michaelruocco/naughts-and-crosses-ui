@@ -61,10 +61,10 @@ class GameApiClient {
     }
   }
 
-  async getAllCandidatePlayerUsernames() {
+  async getAllCandidatePlayers() {
     try {
       return await this.axios
-        .get('/v1/games/candidate-players/usernames')
+        .get('/v1/games/candidate-players')
         .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);
