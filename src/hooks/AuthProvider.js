@@ -22,17 +22,16 @@ const AuthProvider = ({ children }) => {
     navigate('/login');
   };
 
-  const toUser = async (accessToken) => {
-    const decodedToken = jwtDecode(accessToken);
-    const username = decodedToken.username;
-    const privateClient = new UserApiClient(accessToken);
-    return await privateClient.get(username);
+  const toUser = async (response) => {
+    const privateClient = new UserApiClient(response.accessToken);
+    return await privateClient.get(response.username);
   };
 
-  const updateStorage = async (accessToken) => {
+  const updateStorage = async (response) => {
+    const accessToken = response.accessToken;
     setAccessToken(accessToken);
     localStorage.setItem('accessToken', accessToken);
-    const user = await toUser(accessToken);
+    const user = await toUser(response);
     setUser(user);
     localStorage.setItem('user', JSON.stringify(user));
   };
@@ -44,7 +43,7 @@ const AuthProvider = ({ children }) => {
     }
     try {
       const response = await publicClient.refreshToken(refreshToken);
-      await updateStorage(response.accessToken);
+      await updateStorage(response);
     } catch (e) {
       autoLogout();
     }
@@ -74,14 +73,14 @@ const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     const response = await publicClient.getToken(username, password);
-    await updateStorage(response.accessToken);
+    await updateStorage(response);
     setRefreshToken(response.refreshToken);
     localStorage.setItem('refreshToken', response.refreshToken);
   };
 
   const callbackLogin = async (request) => {
     const response = await publicClient.exchangeAuthCodeForToken(request);
-    await updateStorage(response.accessToken);
+    await updateStorage(response);
   };
 
   const logout = () => {
