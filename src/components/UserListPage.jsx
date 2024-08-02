@@ -52,7 +52,7 @@ const UserListPage = () => {
     setUsers(page.users);
     setTotalUsers(page.total);
     if (offset >= page.total) {
-      setOffset(page.total - pageSize);
+      setOffset(Math.max(page.total - pageSize, 0));
     }
   };
 
