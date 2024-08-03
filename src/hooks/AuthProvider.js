@@ -22,20 +22,22 @@ const AuthProvider = ({ children }) => {
     navigate('/login');
   };
 
-  const updateStorage = async (response) => {
-    setAccessToken(response.accessToken);
-    localStorage.setItem('accessToken', response.accessToken);
-
+  const toUser = async (response) => {
     const privateClient = new UserApiClient(response.accessToken);
-    const { username } = jwtDecode(response.accessToken);
-    const user = await privateClient.get(username);
+    return await privateClient.get(response.username);
+  };
+
+  const updateStorage = async (response) => {
+    const accessToken = response.accessToken;
+    setAccessToken(accessToken);
+    localStorage.setItem('accessToken', accessToken);
+    const user = await toUser(response);
     setUser(user);
     localStorage.setItem('user', JSON.stringify(user));
-    setTimeout(refreshAccessToken, toExpiryMillis(response.accessToken, 5));
   };
 
   const refreshAccessToken = async () => {
-    if (isExpired(refreshToken)) {
+    if (refreshToken) {
       autoLogout();
       return;
     }
@@ -55,12 +57,9 @@ const AuthProvider = ({ children }) => {
     return exp < Date.now() / 1000;
   };
 
-  const logoutIfTokensExpired = () => {
+  const logoutIfLoggedInAndTokensExpired = () => {
     if (!user) {
       return;
-    }
-    if (isExpired(refreshToken)) {
-      autoLogout();
     }
     if (isExpired(accessToken)) {
       refreshAccessToken();
@@ -69,7 +68,7 @@ const AuthProvider = ({ children }) => {
 
   const tokenRef = useRef(null);
   tokenRef.current = setInterval(() => {
-    logoutIfTokensExpired();
+    logoutIfLoggedInAndTokensExpired();
   }, 5000);
 
   const login = async (username, password) => {
@@ -77,13 +76,11 @@ const AuthProvider = ({ children }) => {
     await updateStorage(response);
     setRefreshToken(response.refreshToken);
     localStorage.setItem('refreshToken', response.refreshToken);
-    setTimeout(autoLogout, toExpiryMillis(response.refreshToken, 60));
   };
 
-  const toExpiryMillis = (token, bufferSeconds) => {
-    const { exp } = jwtDecode(token);
-    const millis = (exp - Date.now() / 1000 - bufferSeconds) * 1000;
-    return millis;
+  const callbackLogin = async (request) => {
+    const response = await publicClient.exchangeAuthCodeForToken(request);
+    await updateStorage(response);
   };
 
   const logout = () => {
@@ -112,6 +109,7 @@ const AuthProvider = ({ children }) => {
         logout,
         userIsMemberOfAtLeastOne,
         isAuthedUsername,
+        callbackLogin,
       }}
     >
       {children}

@@ -49,7 +49,7 @@ const UserTurn = (props) => {
     if (isCurrentUser(nextPlayer)) {
       return 'Your turn';
     }
-    return `${nextPlayer.username}s turn`;
+    return `${nextPlayer.fullName}s turn`;
   };
 
   const toCompleteText = (status) => {
@@ -59,7 +59,7 @@ const UserTurn = (props) => {
     if (isCurrentUser(status.winner)) {
       return 'You won';
     }
-    return `${status.winner.username} won`;
+    return `${status.winner.fullName} won`;
   };
 
   return (

@@ -57,7 +57,7 @@ function AppBarUserMenuPrivate() {
         onClose={handleCloseUserMenu}
       >
         <MenuItem key="username" disabled={true}>
-          <Typography textAlign="center">{user.username}</Typography>
+          <Typography textAlign="center">{user.fullName}</Typography>
         </MenuItem>
         <MenuItem key="logout" onClick={handleCloseUserMenu}>
           <Typography

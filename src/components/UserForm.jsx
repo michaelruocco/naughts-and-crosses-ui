@@ -11,6 +11,7 @@ const UserForm = (props) => {
 
   const newUser = {
     username: '',
+    name: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -23,6 +24,7 @@ const UserForm = (props) => {
     (state, newState) => ({ ...state, ...newState }),
     {
       username: initialUser.username,
+      fullName: initialUser.fullName,
       firstName: initialUser.firstName,
       lastName: initialUser.lastName,
       email: initialUser.email,

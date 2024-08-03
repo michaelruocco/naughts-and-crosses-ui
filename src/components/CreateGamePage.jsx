@@ -10,7 +10,7 @@ import AlertSnackbar from './AlertSnackbar';
 import { useAuth } from '../hooks/AuthProvider';
 
 const CreateGamePage = () => {
-  const [usernames, setUsernames] = useState([]);
+  const [candidatePlayers, setCandidatePlayers] = useState([]);
   const [crossesPlayer, setCrossesPlayer] = useState(null);
   const [naughtsPlayer, setNaughtsPlayer] = useState(null);
   const closedSnackState = {
@@ -61,8 +61,8 @@ const CreateGamePage = () => {
 
   useEffect(() => {
     const fetchUsernames = async () => {
-      const usernames = await gameClient.getAllCandidatePlayerUsernames();
-      setUsernames(usernames);
+      const candidatePlayers = await gameClient.getAllCandidatePlayers();
+      setCandidatePlayers(candidatePlayers);
     };
     fetchUsernames();
   }, []);
@@ -82,12 +82,12 @@ const CreateGamePage = () => {
             disablePortal
             id="crosses-player"
             sx={{ width: autoCompleteWidth }}
-            options={usernames}
-            //getOptionLabel={(username) => username}
+            options={candidatePlayers}
+            getOptionLabel={(player) => player.fullName}
             renderInput={(params) => (
               <TextField {...params} label="Crosses Player" />
             )}
-            onChange={(event, value) => setCrossesPlayer(value)}
+            onChange={(event, value) => setCrossesPlayer(value.username)}
           />
         </Box>
         <Box m={1}>
@@ -95,12 +95,12 @@ const CreateGamePage = () => {
             disablePortal
             id="naughts-player"
             sx={{ width: autoCompleteWidth }}
-            options={usernames}
-            //getOptionLabel={(user) => toOptionLabel(user)}
+            options={candidatePlayers}
+            getOptionLabel={(player) => player.fullName}
             renderInput={(params) => (
               <TextField {...params} label="Naughts Player" />
             )}
-            onChange={(event, value) => setNaughtsPlayer(value)}
+            onChange={(event, value) => setNaughtsPlayer(value.username)}
           />
         </Box>
         <Box m={1} textAlign="center">

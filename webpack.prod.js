@@ -16,6 +16,7 @@ module.exports = merge(common, {
       APP_WEB_SOCKET_BASE_URL: JSON.stringify('/web-socket'),
       APP_VERSION: JSON.stringify(gitRevisionPlugin.version()),
       APP_COMMIT_HASH: JSON.stringify(gitRevisionPlugin.commithash()),
+      APP_LOGIN_URL: JSON.stringify('$APP_LOGIN_URL'),
     }),
   ],
 });
