@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
-import UserGroupAutocomplete from './UserGroupAutocomplete';
-import { Box } from '@mui/system';
 import Badge from '@mui/material/Badge';
 
-const FilterMenuButton = (props) => {
-  const { popoverId, buttonText, filterValues, onFilterChange } = props;
-  const [selectedFilters, setSelectedFilters] = useState(filterValues);
+const PopoverButton = (props) => {
+  const { popoverId, buttonText, badgeContent } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -16,17 +13,12 @@ const FilterMenuButton = (props) => {
     setAnchorEl(null);
   };
 
-  const handleFilterChange = (value) => {
-    setSelectedFilters(value);
-    onFilterChange(value);
-  };
-
   const open = Boolean(anchorEl);
   const id = open ? popoverId : undefined;
 
   return (
-    <Box>
-      <Badge badgeContent={selectedFilters.length} color="secondary">
+    <>
+      <Badge badgeContent={badgeContent} color="secondary">
         <Button aria-describedby={id} onClick={handleClick} variant="contained">
           {buttonText}
         </Button>
@@ -41,15 +33,9 @@ const FilterMenuButton = (props) => {
           horizontal: -125,
         }}
       >
-        <Box p={2}>
-          <UserGroupAutocomplete
-            selectedGroups={selectedFilters}
-            disabled={false}
-            onGroupsChange={handleFilterChange}
-          />
-        </Box>
+        {props.children}
       </Popover>
-    </Box>
+    </>
   );
 };
-export default FilterMenuButton;
+export default PopoverButton;

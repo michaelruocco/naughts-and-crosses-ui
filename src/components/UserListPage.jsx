@@ -12,7 +12,7 @@ import AlertSnackbar from './AlertSnackbar';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from 'react-router-dom';
 import NacPagination from 'components/NacPagination';
-import FilterMenuButton from 'components/FilterMenuButton';
+import UserGroupFilterButton from 'components/UserGroupFilterButton';
 
 const UserListPage = () => {
   const pageSize = 10;
@@ -174,10 +174,8 @@ const UserListPage = () => {
       </Box>
       <Box m={2} textAlign="center">
         <ButtonGroup>
-          <FilterMenuButton
-            popoverId="user-groups-popover"
-            buttonText="Filter Groups"
-            filterValues={filterGroups}
+          <UserGroupFilterButton
+            filterGroups={filterGroups}
             onFilterChange={setFilterGroups}
           />
         </ButtonGroup>
