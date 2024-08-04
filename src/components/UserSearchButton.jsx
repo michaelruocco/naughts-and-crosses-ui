@@ -24,7 +24,7 @@ const UserSearchButton = (props) => {
           <TextField
             id="searchTerm"
             name="searchTerm"
-            label="Email, name or username"
+            label="Email, username or name"
             value={searchTerm}
             onChange={handleSearchTermChange}
             sx={{ minWidth: 350 }}
