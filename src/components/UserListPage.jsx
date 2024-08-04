@@ -13,6 +13,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from 'react-router-dom';
 import NacPagination from 'components/NacPagination';
 import UserGroupFilterButton from 'components/UserGroupFilterButton';
+import UserSearchButton from './UserSearchButton';
 
 const UserListPage = () => {
   const pageSize = 10;
@@ -21,6 +22,7 @@ const UserListPage = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterGroups, setFilterGroups] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
   const batchRef = useRef(null);
@@ -48,7 +50,12 @@ const UserListPage = () => {
   };
 
   const fetchUsers = async () => {
-    const page = await client.getPage(pageSize, offset, filterGroups);
+    const page = await client.getPage(
+      pageSize,
+      offset,
+      filterGroups,
+      searchTerm,
+    );
     setUsers(page.users);
     setTotalUsers(page.total);
     if (offset >= page.total) {
@@ -140,7 +147,7 @@ const UserListPage = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, [offset, filterGroups]);
+  }, [offset, filterGroups, searchTerm]);
 
   return (
     <>
@@ -174,6 +181,10 @@ const UserListPage = () => {
       </Box>
       <Box m={2} textAlign="center">
         <ButtonGroup>
+          <UserSearchButton
+            searchTerm={searchTerm}
+            onSearchTermChange={setSearchTerm}
+          />
           <UserGroupFilterButton
             filterGroups={filterGroups}
             onFilterChange={setFilterGroups}
