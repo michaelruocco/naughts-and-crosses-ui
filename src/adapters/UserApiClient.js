@@ -84,13 +84,14 @@ class UserApiClient {
     }
   }
 
-  async getPage(limit, offset, filterGroups) {
+  async getPage(limit, offset, filterGroups, searchTerm) {
     try {
       return await this.axios
         .post('/v1/users/pages', {
           limit: limit,
           offset: offset,
           groups: filterGroups,
+          searchTerm: searchTerm,
         })
         .then((response) => response.data);
     } catch (e) {
