@@ -65,6 +65,5 @@ and [local port 3002](http://localhost:3002)
 
 ## TODO List
 
-- game list pages endpoint
 - game list filtered by player so user only sees their own games
 - game list filtered to hide complete games
