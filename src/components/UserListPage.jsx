@@ -12,8 +12,8 @@ import AlertSnackbar from './AlertSnackbar';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useNavigate } from 'react-router-dom';
 import NacPagination from 'components/NacPagination';
-import UserGroupFilterButton from 'components/UserGroupFilterButton';
-import UserSearchButton from './UserSearchButton';
+import DrawerButton from './DrawerButton';
+import UserFilters from './UserFilters';
 
 const UserListPage = () => {
   const pageSize = 10;
@@ -23,6 +23,8 @@ const UserListPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filterGroups, setFilterGroups] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterBadgeContent, setFilterBadgeContent] = useState(0);
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
 
   const navigate = useNavigate();
   const batchRef = useRef(null);
@@ -36,6 +38,25 @@ const UserListPage = () => {
   const [snackState, setSnackState] = useState(closedSnackState);
   const { accessToken } = useAuth();
   const client = new UserApiClient(accessToken);
+
+  const handleClearFilters = () => {
+    setFilterGroups([]);
+    setSearchTerm('');
+    handleToggleFilterDrawer(false);
+  };
+
+  const handleToggleFilterDrawer = (newOpen) => {
+    setFilterDrawerOpen(newOpen);
+  };
+
+  const calculateFilterBadgeContent = () => {
+    let count = 0;
+    if (searchTerm !== '') {
+      count++;
+    }
+    count += filterGroups.length;
+    setFilterBadgeContent(count);
+  };
 
   const closeSnackbar = () => {
     setSnackState(closedSnackState);
@@ -147,6 +168,7 @@ const UserListPage = () => {
 
   useEffect(() => {
     fetchUsers();
+    calculateFilterBadgeContent();
   }, [offset, filterGroups, searchTerm]);
 
   return (
@@ -172,24 +194,27 @@ const UserListPage = () => {
               accept="text/csv"
             />
           </Button>
+          <DrawerButton
+            buttonText="Filters"
+            badgeContent={filterBadgeContent}
+            open={filterDrawerOpen}
+            onToggle={handleToggleFilterDrawer}
+          >
+            <UserFilters
+              searchTerm={searchTerm}
+              onSearchTermChange={setSearchTerm}
+              groups={filterGroups}
+              onGroupsChange={setFilterGroups}
+              onClear={handleClearFilters}
+              onClose={() => handleToggleFilterDrawer(false)}
+            />
+          </DrawerButton>
         </ButtonGroup>
         {shouldDisplayProgressBar() && (
           <Box m={5} textAlign="center">
             <LinearProgress variant="determinate" value={uploadProgress} />
           </Box>
         )}
-      </Box>
-      <Box m={2} textAlign="center">
-        <ButtonGroup>
-          <UserSearchButton
-            searchTerm={searchTerm}
-            onSearchTermChange={setSearchTerm}
-          />
-          <UserGroupFilterButton
-            filterGroups={filterGroups}
-            onFilterChange={setFilterGroups}
-          />
-        </ButtonGroup>
       </Box>
       <NacPagination
         currentPage={currentPage}

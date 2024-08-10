@@ -21,7 +21,6 @@ import LoginCallback from './LoginCallback';
 
 const NaughtsAndCrossesApp = () => {
   const hostedLoginUrl = `${APP_LOGIN_URL}`;
-  console.log(`hosted login url ${hostedLoginUrl}`);
   return (
     <>
       <CssBaseline />
