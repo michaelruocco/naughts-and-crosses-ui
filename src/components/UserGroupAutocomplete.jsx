@@ -37,6 +37,7 @@ const UserGroupAutocomplete = (props) => {
         <TextField {...params} label="Groups" sx={{ minWidth: 350 }} />
       )}
       onChange={handleGroupsChange}
+      margin="normal"
     />
   );
 };

@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
   };
 
   const refreshAccessToken = async () => {
-    if (refreshToken) {
+    if (!refreshToken) {
       autoLogout();
       return;
     }
