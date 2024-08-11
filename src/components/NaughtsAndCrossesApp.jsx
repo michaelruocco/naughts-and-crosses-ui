@@ -1,6 +1,6 @@
 import React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Navigate } from 'react-router-dom';
 import ResponsiveAppBar from 'components/ResponsiveAppBar';
 import { Box } from '@mui/system';
 import { Routes, Route } from 'react-router-dom';
@@ -41,8 +41,9 @@ const NaughtsAndCrossesApp = () => {
               {!hostedLoginUrl && (
                 <Route path="/login" element={<LoginPage />} />
               )}
+              <Route path="/" element={<Navigate replace to="/games" />} />
               <Route
-                path="/"
+                path="/games"
                 element={
                   <PrivateRoute>
                     <StompEnabled>
@@ -84,6 +85,16 @@ const NaughtsAndCrossesApp = () => {
                   <PrivateRoute>
                     <CreateUserPage />
                   </PrivateRoute>
+                }
+              />
+              <Route
+                path="/user/:username/games"
+                element={
+                  <AdminOnlyRoute>
+                    <StompEnabled>
+                      <GameListPage />
+                    </StompEnabled>
+                  </AdminOnlyRoute>
                 }
               />
               <Route

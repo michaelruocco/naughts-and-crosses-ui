@@ -130,13 +130,17 @@ const UserListPage = () => {
     }
   };
 
+  const handleUpdateUser = async (username) => {
+    navigate(`/user/${username}`);
+  };
+
+  const handleViewUserGames = async (username) => {
+    navigate(`/user/${username}/games`);
+  };
+
   const handleDeleteUser = async (username) => {
     await client.delete(username);
     fetchUsers();
-  };
-
-  const handleUpdateUser = async (username) => {
-    navigate(`/user/${username}`);
   };
 
   const synchronizeExternalUsers = async () => {
@@ -225,6 +229,7 @@ const UserListPage = () => {
       <UserList
         users={users}
         onUpdateUser={handleUpdateUser}
+        onViewUserGames={handleViewUserGames}
         onDeleteUser={handleDeleteUser}
       />
       <NacPagination

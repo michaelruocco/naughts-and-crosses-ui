@@ -6,13 +6,14 @@ import { useSubscription } from 'react-stomp-hooks';
 import GameApiClient from 'adapters/GameApiClient';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/system';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../hooks/AuthProvider';
 import NacPagination from 'components/NacPagination';
 import DrawerButton from './DrawerButton';
 import GameFilters from './GameFilters';
 
 const GameListPage = () => {
+  const { username } = useParams();
   const pageSize = 5;
   const [games, setGames] = useState([]);
   const [offset, setOffset] = useState(0);
@@ -21,7 +22,7 @@ const GameListPage = () => {
   const [filterComplete, setFilterComplete] = useState('');
   const [filterBadgeContent, setFilterBadgeContent] = useState(0);
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
-  const { accessToken } = useAuth();
+  const { accessToken, user } = useAuth();
   const navigate = useNavigate();
   const client = new GameApiClient(accessToken);
 
@@ -44,7 +45,12 @@ const GameListPage = () => {
   };
 
   const fetchGames = async () => {
-    const page = await client.getPage(pageSize, offset, filterComplete);
+    const page = await client.getPage(
+      pageSize,
+      offset,
+      filterComplete,
+      username || user.username,
+    );
     setGames(page.games);
     setTotalGames(page.total);
     if (offset >= page.total) {
@@ -52,8 +58,15 @@ const GameListPage = () => {
     }
   };
 
+  const isCurrentUserPlaying = (game) => {
+    const usernames = game.players.map((player) => player.user.username);
+    return usernames.includes(user.username);
+  };
+
   const handleGameUpdated = (updatedGame) => {
-    setGames(updateGames(updatedGame));
+    if (isCurrentUserPlaying(updatedGame)) {
+      setGames(updateGames(updatedGame));
+    }
   };
 
   const handleGameDeleted = (deletedId) => {
@@ -109,13 +122,22 @@ const GameListPage = () => {
     calculateFilterBadgeContent();
   }, [offset, filterComplete]);
 
+  const viewingOwnGames = !username || username === user.username;
+
   return (
     <>
       <Box m={5} textAlign="center">
         <ButtonGroup>
-          <Button variant="contained" component={Link} to="/create-game">
-            New Game
-          </Button>
+          {username && (
+            <Button variant="contained" onClick={() => navigate(-1)}>
+              Back
+            </Button>
+          )}
+          {viewingOwnGames && (
+            <Button variant="contained" component={Link} to="/create-game">
+              New Game
+            </Button>
+          )}
           <DrawerButton
             buttonText="Filters"
             badgeContent={filterBadgeContent}

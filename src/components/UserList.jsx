@@ -3,7 +3,7 @@ import UserListItem from 'components/UserListItem';
 import { useAuth } from '../hooks/AuthProvider';
 
 const UserList = (props) => {
-  const { users, onUpdateUser, onDeleteUser } = props;
+  const { users, onUpdateUser, onViewUserGames, onDeleteUser } = props;
   const { isAuthedUsername } = useAuth();
   return (
     <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -11,8 +11,9 @@ const UserList = (props) => {
         <Grid item key={user.username}>
           <UserListItem
             user={user}
-            actionsVisible={!isAuthedUsername(user.username)}
+            modificationEnabled={!isAuthedUsername(user.username)}
             onUpdateUser={onUpdateUser}
+            onViewUserGames={onViewUserGames}
             onDeleteUser={onDeleteUser}
           />
         </Grid>
