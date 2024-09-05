@@ -116,8 +116,8 @@ const GameDetailPage = () => {
       <>
         <Box m={5} textAlign="center">
           <ButtonGroup variant="contained">
-            <Button variant="contained" component={Link} to="/">
-              Home
+            <Button variant="contained" component={Link} to="/games">
+              Games
             </Button>
             <Button variant="contained" onClick={exportBoardToPdf}>
               Export to PDF

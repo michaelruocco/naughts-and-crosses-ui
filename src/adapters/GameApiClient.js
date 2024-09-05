@@ -20,13 +20,14 @@ class GameApiClient {
     }
   }
 
-  async getPage(limit, offset, complete) {
+  async getPage(limit, offset, complete, username) {
     try {
       return await this.axios
         .post('/v1/games/pages', {
           limit: limit,
           offset: offset,
           complete: complete,
+          username: username,
         })
         .then((response) => response.data);
     } catch (e) {

@@ -31,11 +31,6 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
   const titleText = 'Naughts & Crosses';
 
-  const navigateHome = (event) => {
-    event.preventDefault();
-    navigate('/');
-  };
-
   const navigateAbout = (event) => {
     event.preventDefault();
     handleCloseNavMenu();
@@ -48,6 +43,12 @@ function ResponsiveAppBar() {
     navigate('/users');
   };
 
+  const navigateGames = (event) => {
+    event.preventDefault();
+    handleCloseNavMenu();
+    navigate('/games');
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -58,7 +59,7 @@ function ResponsiveAppBar() {
             noWrap
             component="a"
             href="/"
-            onClick={(event) => navigateHome(event)}
+            onClick={(event) => navigateGames(event)}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -103,14 +104,17 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <MenuItem key="About" onClick={navigateAbout}>
-                <Typography textAlign="center">About</Typography>
+              <MenuItem key="Games" onClick={navigateGames}>
+                <Typography textAlign="center">Games</Typography>
               </MenuItem>
               <AdminOnlyComponent>
                 <MenuItem key="Users" onClick={navigateUsers}>
                   <Typography textAlign="center">Users</Typography>
                 </MenuItem>
               </AdminOnlyComponent>
+              <MenuItem key="About" onClick={navigateAbout}>
+                <Typography textAlign="center">About</Typography>
+              </MenuItem>
             </Menu>
           </Box>
 
@@ -120,7 +124,7 @@ function ResponsiveAppBar() {
             noWrap
             component="a"
             href="/"
-            onClick={(event) => navigateHome(event)}
+            onClick={(event) => navigateGames(event)}
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -135,20 +139,27 @@ function ResponsiveAppBar() {
             {titleText}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button
-              key="About"
-              onClick={(event) => navigateAbout(event)}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              About
-            </Button>
             <AdminOnlyComponent>
+              <Button
+                key="Games"
+                onClick={(event) => navigateGames(event)}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                Games
+              </Button>
               <Button
                 key="Users"
                 onClick={(event) => navigateUsers(event)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 Users
+              </Button>
+              <Button
+                key="About"
+                onClick={(event) => navigateAbout(event)}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                About
               </Button>
             </AdminOnlyComponent>
           </Box>

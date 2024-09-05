@@ -6,7 +6,13 @@ import { Button, CardActions } from '@mui/material';
 import Chip from '@mui/material/Chip';
 
 const UserListItem = (props) => {
-  const { user, actionsVisible, onUpdateUser, onDeleteUser } = props;
+  const {
+    user,
+    modificationEnabled,
+    onUpdateUser,
+    onViewUserGames,
+    onDeleteUser,
+  } = props;
 
   const toEmailTextColor = (verified) => {
     if (verified) {
@@ -17,6 +23,10 @@ const UserListItem = (props) => {
 
   const updateUser = () => {
     onUpdateUser(user.username);
+  };
+
+  const viewUserGames = () => {
+    onViewUserGames(user.username);
   };
 
   const deleteUser = () => {
@@ -53,16 +63,22 @@ const UserListItem = (props) => {
           {user.email}
         </Typography>
       </CardContent>
-      {actionsVisible && (
-        <CardActions>
-          <Button size="small" onClick={() => updateUser()}>
-            Update
-          </Button>
-          <Button size="small" onClick={() => deleteUser()}>
-            Delete
-          </Button>
-        </CardActions>
-      )}
+
+      <CardActions>
+        <Button size="small" onClick={() => viewUserGames()}>
+          Games
+        </Button>
+        {modificationEnabled && (
+          <>
+            <Button size="small" onClick={() => updateUser()}>
+              Update
+            </Button>
+            <Button size="small" onClick={() => deleteUser()}>
+              Delete
+            </Button>
+          </>
+        )}
+      </CardActions>
     </Card>
   );
 };

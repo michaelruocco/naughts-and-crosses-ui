@@ -62,8 +62,3 @@ docker-compose --profile multi-node up -d
 
 running this command will make the UI available on both [local port 3001](http://localhost:3001)
 and [local port 3002](http://localhost:3002)
-
-## TODO List
-
-- game list filtered by player so user only sees their own games
-- game list filtered to hide complete games

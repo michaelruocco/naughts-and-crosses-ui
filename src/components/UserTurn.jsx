@@ -41,9 +41,10 @@ const UserTurn = (props) => {
     return playerToInProgressColor(status.nextPlayer);
   };
 
-  const toText = (status) => {
+  const toText = (game) => {
+    const status = game.status;
     if (status.complete) {
-      return toCompleteText(status);
+      return toCompleteText(game);
     }
     const nextPlayer = status.nextPlayer;
     if (isCurrentUser(nextPlayer)) {
@@ -52,18 +53,20 @@ const UserTurn = (props) => {
     return `${nextPlayer.fullName}s turn`;
   };
 
-  const toCompleteText = (status) => {
+  const toCompleteText = (game) => {
+    const status = game.status;
     if (status.draw) {
       return 'Draw';
     }
     if (isCurrentUser(status.winner)) {
       return 'You won';
     }
-    return `${status.winner.fullName} won`;
+    if (currentUserNotPlaying(game.players)) {
+      return `${status.winner.fullName} won`;
+    }
+    return 'You lost';
   };
 
-  return (
-    <span style={{ color: gameToColor(game) }}>{toText(game.status)}</span>
-  );
+  return <span style={{ color: gameToColor(game) }}>{toText(game)}</span>;
 };
 export default UserTurn;
