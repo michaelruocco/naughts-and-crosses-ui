@@ -40,6 +40,7 @@ services:
       BROKER_SYSTEM_LOGIN: artemis
       BROKER_SYSTEM_PASSCODE: artemis
       AUTH_ISSUER_URL: "http://cognito:9229/local_4RsGXSAf"
+      AWS_COGNITO_AUTH_CODE_ENDPOINT: ""
       AWS_COGNITO_USER_POOL_ID: "local_4RsGXSAf"
       AWS_COGNITO_USER_POOL_CLIENT_ID: "6b0j5hb1u25z290vv502lfl1c"
       AWS_COGNITO_REGION_NAME: eu-central-1
@@ -76,6 +77,7 @@ services:
       BROKER_SYSTEM_LOGIN: artemis
       BROKER_SYSTEM_PASSCODE: artemis
       AUTH_ISSUER_URL: "http://cognito:9229/local_4RsGXSAf"
+      AWS_COGNITO_AUTH_CODE_ENDPOINT: ""
       AWS_COGNITO_USER_POOL_ID: "local_4RsGXSAf"
       AWS_COGNITO_USER_POOL_CLIENT_ID: "6b0j5hb1u25z290vv502lfl1c"
       AWS_COGNITO_REGION_NAME: eu-central-1
