@@ -24,7 +24,10 @@ docker build -t naughts-and-crosses-ui .
 After building the docker image, to run it you can run:
 
 ```bash
-docker run -d -p 3001:80 --rm -e NGINX_PROXY_BACKEND_BASE_URL=http://host.docker.internal:3002 naughts-and-crosses-ui
+docker run -d -p 3001:80 --rm \
+    -e NGINX_PROXY_BACKEND_BASE_URL=http://host.docker.internal:3002 \
+    -e APP_LOGIN_URL= \
+    naughts-and-crosses-ui
 ```
 
 Note - this expects the backend API to be available at the url provided in `NGINX_PROXY_BACKEND_BASE_URL` the
@@ -32,12 +35,12 @@ example above assumes it is running on the host machine on port 3002
 
 ## Running the UI and API in docker
 
-Note - for keycloak to work correctly you will also need to update your hosts file,
+Note - for cognito to work correctly you will also need to update your hosts file,
 on a mac this can be found at `/etc/hosts` and you will need to map the domain name
-`keycloak` to the local machine by adding the following line to the file:
+`cognito` to the local machine by adding the following line to the file:
 
 ```
-127.0.0.1	keycloak
+127.0.0.1	cognito
 ```
 
 Assuming you have built the API docker image following the instructions in the `README.md`
@@ -46,7 +49,7 @@ followed the steps above to build the UI docker image, then you should be able t
 both the UI and API docker containers connected together using docker compose by running:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 running this command will make the UI available on [local port 3001](http://localhost:3001)
@@ -57,7 +60,7 @@ As above, assuming you have built the API and UI docker images, you can run a mu
 up with 2 instances of the API and UI running by running the following command
 
 ```bash
-docker-compose --profile multi-node up -d
+docker compose --profile multi-node up -d
 ```
 
 running this command will make the UI available on both [local port 3001](http://localhost:3001)

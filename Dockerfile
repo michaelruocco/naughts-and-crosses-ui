@@ -1,4 +1,4 @@
-FROM node:21-alpine as builder
+FROM node:21-alpine AS builder
 
 RUN apk --no-cache add git
 RUN mkdir /src

@@ -1,5 +1,38 @@
 {
   "Users": {
+    "admin": {
+      "Attributes": [
+        {
+          "Name": "sub",
+          "Value": "42bfdad9-c66a-4d5a-aa48-a97d6d3574af"
+        },
+        {
+          "Name": "given_name",
+          "Value": "Admin"
+        },
+        {
+          "Name": "family_name",
+          "Value": "User"
+        },
+        {
+          "Name": "email",
+          "Value": "admin@email.com"
+        },
+        {
+          "Name": "email_verified",
+          "Value": "true"
+        }
+      ],
+      "Enabled": true,
+      "Password": "pwd",
+      "RefreshTokens": [
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGVtYWlsLmNvbSIsImlhdCI6MTczNzE0OTY1MSwianRpIjoiYzU3ZDAwZGUtOGIwNS00MDE2LWEzOTItMmZiODBhYWYxNmY0IiwiZXhwIjoxNzM3NzU0NDUxLCJpc3MiOiJodHRwOi8vY29nbml0bzo5MjI5L2xvY2FsXzRSc0dYU0FmIn0.Hlj7qiUfsIuBmw_XTQCH3dtnOeekvkXWKLIyrTKM66lC6PK6e-a_KSZBTcBEzcAvlNPopRgFKMPTn5dBJyW-b2wX48aL222uh7qdMWCV1FvV79Jw_lNrxBpSKEX0mdJVIzt95kjSEFK-zyJ4K5bjn0ldFB6do9-kHz870r3e_EHKF-bd0yyaAlA56gw1eh1QmrZ9GRhhFXxb8dVYugQgvVynRdpXswnNMyaocrRcJJybhwIDbcg9tq429cB6J7Zy79SrYX5Wf5dQ4WOkywEe_BfUnYs7GJsMzaVmP6rwCO7cy42UkLYfCFUrd0uz20AESMGcC-zs-_X7Gtzlqo6GZw"
+      ],
+      "UserCreateDate": "2024-06-28T21:45:41.663Z",
+      "UserLastModifiedDate": "2024-06-29T09:11:24.946Z",
+      "Username": "admin",
+      "UserStatus": "CONFIRMED"
+    },
     "user-1": {
       "Attributes": [
         {
@@ -26,15 +59,10 @@
       "Enabled": true,
       "Password": "pwd1",
       "RefreshTokens": [
-        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidXNlci0xIiwiZW1haWwiOiJ1c2VyLTFAZW1haWwuY29tIiwiaWF0IjoxNzE4NzQ2MjgzLCJqdGkiOiJmM2VhNmE0Yi1mNDM4LTQ2MjgtYjI3YS00NGM0NzExYjE4ZWUiLCJleHAiOjE3MTkzNTEwODMsImlzcyI6Imh0dHA6Ly9jb2duaXRvOjkyMjkvbG9jYWxfNFJzR1hTQWYifQ.HDoG96aL8-1No02_e-95K8fx9zZib8S4tqOeNCJUmTMUhYLC35IeZcIrHhxCTXn6bSbfW9RlNe3Cuy6sW6bLt4FVp2sJGEKKH-E1XAEzYCU2WDqO_IHOucFVaKv9E5AraFa18qFtj0qh8hlUanPbdzgUNsHR4ZroNODMgJSSsvKQep5eR5xGzoluaJrDYCJ8hJO5HiQyIoLq0yCiaT83pMGBU02nOHJU14qeziFXsVMzeD0TT9KnMZTbKOQv_ODoXdyN6pF3cVt9BzZbbc0_wj4e_taivaS87T6cI5TpKpvkOmU92iVQ6dhR2FWwvpN7_7_a3bu5_XFmeiyORuL1TQ",
-        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidXNlci0xIiwiZW1haWwiOiJ1c2VyLTFAZW1haWwuY29tIiwiaWF0IjoxNzE4NzQ2NDE4LCJqdGkiOiI0MDlhOTQyZi1lNGNiLTQ0YmQtYTI3ZS1mOTliNzU3YjM1MmQiLCJleHAiOjE3MTkzNTEyMTgsImlzcyI6Imh0dHA6Ly9jb2duaXRvOjkyMjkvbG9jYWxfNFJzR1hTQWYifQ.Ai0Wuo8qgnY000WesxaLDT_c1rKuB7KCdLt_VPro9Bhf2NiVf7HiWXObBZ8R3jL4MEKrYxGfITpWmsEL8edjh5QhzKupWG3Bpo7OfFBPnEm455w3949uNYfXjDo8_11eMASdNy4_Qwtt9U33HPfYLPEK1IwDk1id737rWhvoCA6mQsNLXLoKe2mWnsz3gRhmyF_7wM-r7YwyC2rJNO6O-pb4J-rGbVLxmETHhMfcgROeU7w8KAvdR4SqynCT87pD7UY_NR8M_prQJE1yvnGxNizmgYZGbEspksaxSNpeuQFWnfKzZtdMYQiERGOT1KDCnM3MhYyO82Lw_mUXJv72tQ",
-        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidXNlci0xIiwiZW1haWwiOiJ1c2VyLTFAZW1haWwuY29tIiwiaWF0IjoxNzE4NzQ2ODA2LCJqdGkiOiI5Njc3MGIzZi05MGU2LTQ0ZjctYTU4ZS03OGViMzlhNmQ4MjciLCJleHAiOjE3MTkzNTE2MDYsImlzcyI6Imh0dHA6Ly9jb2duaXRvOjkyMjkvbG9jYWxfNFJzR1hTQWYifQ.i_fidjfaOjr8uyM0WZNTfIBNi1o1fEu8h1TqeSONXnxPFhPJSEEKH7gkDRENw01QGc-ICCWRNMOMxmg8FC7DwF4yRdqXyOwhJRZ7AizKFLi8FCu1QiCXGI_1h32EE50ELxi8SGaLfO783Zgq-SKZfDLbR73hMozesl_2C3MRpbv5BxpeNSU8k92K-1Vh_QIgvoHZoLnXZE6I32v9HnBMDs3b7d0PXwSai-zBqm00pwpD7bJxyKuBBKk_6JD3IkvWU_OJPdvBBTY0m-hL0Jh_BL-UGi3wMg8ykuxE5_6dT-3xGtIQnbs2gEU6yoBme-UHXq94GVeu6_mayvg6Mv7qJQ",
-        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidXNlci0xIiwiZW1haWwiOiJ1c2VyLTFAZW1haWwuY29tIiwiaWF0IjoxNzE4NzQ3MDg0LCJqdGkiOiI4ZTBlMWY4MC01NzE5LTQ4NDktYTZmMi1iMjdhMWUxMGExMmIiLCJleHAiOjE3MTkzNTE4ODQsImlzcyI6Imh0dHA6Ly9jb2duaXRvOjkyMjkvbG9jYWxfNFJzR1hTQWYifQ.eo6zgN21lnGojuE7Jg2G35ONZj1yhY-6G3qq6sy3P6RBxgDCYhOp6lRQ6DwySj-dZs0Obm18CdV9m6FfoJWnTJjXikYQP11TLztM1WUIkrJR3-_Fs4QfXhxIiqcNYllzdtMIlGTpUnoGMICzbTZ4hdM3O46C5ZhuZr7dpqRZusxfqXT0SoJSjqXJjIx7OrlcPjSIl5hSICBDlU4D79pNZlMt449exf16Zoe5IwCrRTICMw3hz0mhL7KsOiqSqBj5OutyTmp2E_OFEI5bQw0CINLnvKFi4i4azaQ5PUj_tg15sqJHqXpnnNkKEn4dAec1T8R06-ZH1YeNOJbL-yFMYQ",
-        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidXNlci0xIiwiZW1haWwiOiJ1c2VyLTFAZW1haWwuY29tIiwiaWF0IjoxNzE4OTk5NzgxLCJqdGkiOiJiMjkyNmZmMy0xYjk2LTRmNDEtOTMzNi00NzFlM2Y3MzQ2YzQiLCJleHAiOjE3MTk2MDQ1ODEsImlzcyI6Imh0dHA6Ly9jb2duaXRvOjkyMjkvbG9jYWxfNFJzR1hTQWYifQ.0gaM_DJEQKE_cVkKHoLa88FXOo2WJs5OltE_2XTyj9YElQHdg6SCyW4-8hFbNnmWZ0WkOSCodDS-B7kkAHnCmRjT2bTWWY853g7hn5NOeiUbico3bQuz9FXwDop6UDHIl8-gbdnP6OJ_XuXwOWYWkKFNG8eInYXU5Bdr7CMBE4qrTz2UTS_usPv2o2GYL1dR9xkGWbP8vALIPvakrcZ24wEoshilh0_syBIzY4az6HYYue0zf7C-KbtxRI-ulUU8DhXPNDpLvoAPCWqFXC4KDhIWx4q_XwYqaytyNLD91XZhmtzGYiRqxyYRVqNg3ZapJIvZQ-9tGZRG8e3wfkuL2g",
-        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidXNlci0xIiwiZW1haWwiOiJ1c2VyLTFAZW1haWwuY29tIiwiaWF0IjoxNzE5MDg5MDA5LCJqdGkiOiI3YTAxMTMzMi0yMDliLTQwMzMtOTczOS1hZDQ1MzZjMmIxMjciLCJleHAiOjE3MTk2OTM4MDksImlzcyI6Imh0dHA6Ly9jb2duaXRvOjkyMjkvbG9jYWxfNFJzR1hTQWYifQ.Vzg0HERZbsktiqFn6-sK-t8eLnDcpNEoenfjTMD7Y-rIsfN9ZFj0uurHTeIlQ6y3JD9HHF7FbZb5lBCEvx3YnzfnANIwQ7rFepdV0cYKqRFazg3KKBOfiVJ3QhHEBJwMIkEjnPHUr63Y6rttgTtdRGzUEY9aJR2JjnwRA0MgQ2dwZxarakz2xZpNx6eEZaZj-1owWxywGuFM7bwOgyHYHDRBTM4f4vletQtBnMpKzctiaT6uB6xnqArYRiT2P3rFfqkHx8V6Jefs3HTPij3me_ADg_FsYapRXhaJ4EgYU3HVyj6hYiNkgERjVUTnnMbZMXMbDAk3xC9V1WKIZMmbpw"
+        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidXNlci0xIiwiZW1haWwiOiJ1c2VyLTFAZW1haWwuY29tIiwiaWF0IjoxNzM3MTQ5Njc3LCJqdGkiOiJlMjUzY2Y1Zi02M2M1LTQyYmEtYTE1OC1kNTczZjdmYjgzOTAiLCJleHAiOjE3Mzc3NTQ0NzcsImlzcyI6Imh0dHA6Ly9jb2duaXRvOjkyMjkvbG9jYWxfNFJzR1hTQWYifQ.EiKH_aOvp2AIgd-4LkBIwjYoUQoWiDxrCq6qhHiaAabroEc58qcKtLP7PNujKxhXdrEs_fEyOzSYk8v8x4jzdvbdx61-rpp_zVUytXegNIDqqoRJtXQ27iWEkhDV15iwQd8h5UzVHwr-y-PCDnnYHQNUKXlQ_eI-yxEYaOZyAKSBCL5BXQnd35fetK8gLut6FBbCEO9HFF6AvVzK2iDJurlacjFlXxxoG1k4U57LDWECqJlwcg27_RkdnReP2NlqYPYfle4JeijEcHMvQWURJYPUroJgxL1CWj8aDM_6KTq4k_lLgxWujePSVrzqVsZUO5hS34K3Bc6cgmXnD1YxuQ"
       ],
       "UserCreateDate": "2024-06-14T19:50:27.097Z",
-      "UserLastModifiedDate": "2024-06-14T19:50:27.176Z",
+      "UserLastModifiedDate": "2024-07-17T18:49:15.685Z",
       "Username": "user-1",
       "UserStatus": "CONFIRMED"
     },
@@ -63,10 +91,7 @@
       ],
       "Enabled": true,
       "Password": "pwd2",
-      "RefreshTokens": [
-        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidXNlci0yIiwiZW1haWwiOiJ1c2VyLTJAZW1haWwuY29tIiwiaWF0IjoxNzE4NzQ2Mzk1LCJqdGkiOiI0MDQ5NmZiNi02MDE4LTRjMmQtOGI1OC0xNDY5NDI1NWU3ZDgiLCJleHAiOjE3MTkzNTExOTUsImlzcyI6Imh0dHA6Ly9jb2duaXRvOjkyMjkvbG9jYWxfNFJzR1hTQWYifQ.IqrF6rNAUFb0wX-MZpdmzNect7EVFVHZ8R2P_FtvlrJOaWJHLV-YNAXYiN_GgzxAi9z-NsVakMBulpmFdO8ajLf6h1G50MdxxHpMuqjeG5kC8uoUgdx-HUyruSTJ41wWWp1j2xA5D7u2nZDaMoXDLD21rJG7dJCppMclhFjwnhG-F2qZIFhvU6AHe1W7CiuFrjimfednQZhas8Eriu345smxmaNGkna2SJH2FXiWjdkOcrpiQPlm_EyxtdojvD-h5IPzRtn9SCht9jtK1JgGKkhshMK_Gto2pgct4YgJxZJAAY2HFYm7-YekhsyZ56jUBZZR53UbTFbFvAPtTr1Ayg",
-        "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2duaXRvOnVzZXJuYW1lIjoidXNlci0yIiwiZW1haWwiOiJ1c2VyLTJAZW1haWwuY29tIiwiaWF0IjoxNzE5MDg5MDUxLCJqdGkiOiIzNGU1NjJmYS0zNDU0LTRhODYtYmQ3Zi1kNWZiMzk5MTFkOTQiLCJleHAiOjE3MTk2OTM4NTEsImlzcyI6Imh0dHA6Ly9jb2duaXRvOjkyMjkvbG9jYWxfNFJzR1hTQWYifQ.rGhnI56USAgA-GdyQkVAOBu8U757YuuiicQb6S3c5aKAaSG9HGJ4ftcxWOoGV29iWh3ymXGta78jsEEkvodMBXZRo_8X8s8ySAgJZZ5R2-wXE5a7xZk4zKmzsukcu6iSV8xH929r2QOKVxk9R6fwq6lob4XInWi5mHRQX6tF048h0IbnzDIo-wU3xDp_CebHEwQ_KaY-UVjMmdjz2U5QgOI2dfsmGPJJIdt_7Wb0vEmXeWdzGS6Vn-67bizEdke8hADSohbpR6PonFRptT1_sfTV8cMBJIn0C8DGqH0ujTBc3pJ2fhVHsMHfe0wYP4umLPfZgW3iUH_NPbOx7fyR3A"
-      ],
+      "RefreshTokens": [],
       "UserCreateDate": "2024-06-14T19:50:27.196Z",
       "UserLastModifiedDate": "2024-06-14T19:50:27.202Z",
       "Username": "user-2",
@@ -318,5 +343,24 @@
     "Id": "local_4RsGXSAf",
     "LastModifiedDate": "2024-06-14T19:50:26.765Z",
     "Name": "nac-user-pool"
+  },
+  "Groups": {
+    "player": {
+      "CreationDate": "2024-06-26T19:16:44.322Z",
+      "GroupName": "player",
+      "LastModifiedDate": "2024-07-17T20:29:50.290Z",
+      "members": [
+        "user-1",
+        "user-2"
+      ]
+    },
+    "admin": {
+      "CreationDate": "2024-06-26T19:16:44.352Z",
+      "GroupName": "admin",
+      "LastModifiedDate": "2024-07-17T20:29:47.373Z",
+      "members": [
+        "admin"
+      ]
+    }
   }
 }
