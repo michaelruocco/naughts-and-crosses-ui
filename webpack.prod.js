@@ -9,7 +9,12 @@ const gitRevisionPlugin = new GitRevisionPlugin({
 
 module.exports = merge(common, {
   mode: 'production',
-  devtool: 'source-map',
+  devtool: false,
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
   plugins: [
     new webpack.DefinePlugin({
       APP_API_BASE_URL: JSON.stringify('/api'),
