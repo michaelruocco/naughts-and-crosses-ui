@@ -141,20 +141,20 @@ class UserApiClient {
     }
   }
 
-  async getMfaSettings() {
+  async getMfaSettings(username) {
     try {
       return await this.axios
-        .get('v1/users/admin/mfa-settings')
+        .get(`v1/users/${username}/mfa-settings`)
         .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);
     }
   }
 
-    async updateMfaSettings(request) {
+    async updateMfaSettings(username, request) {
     try {
       return await this.axios
-        .put('v1/users/admin/mfa-settings', request)
+        .put(`v1/users/${username}/mfa-settings`, request)
         .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);

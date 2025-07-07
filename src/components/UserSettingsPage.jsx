@@ -36,7 +36,7 @@ const UserSettingsPage = () => {
   };
 
   const fetchMfaSettings = async () => {
-    const response = await client.getMfaSettings();
+    const response = await client.getMfaSettings(user.username);
     setSoftwareTokenEnabled(response.softwareToken.enabled);
   };
 
@@ -57,7 +57,7 @@ const UserSettingsPage = () => {
         preferred: enabled
       }
     };
-    await client.updateMfaSettings(request);
+    await client.updateMfaSettings(user.username, request);
     await fetchMfaSettings();
   };
 
