@@ -71,8 +71,18 @@ const AuthProvider = ({ children }) => {
     logoutIfLoggedInAndTokensExpired();
   }, 5000);
 
-  const login = async (username, password) => {
-    const response = await publicClient.getToken(username, password);
+  const login = async (request) => {
+    const response = await publicClient.getToken(request);
+    if (response.challenge) {
+      return response;
+    }
+    await updateStorage(response);
+    setRefreshToken(response.refreshToken);
+    localStorage.setItem('refreshToken', response.refreshToken);
+  };
+
+  const respondToChallenge = async (request) => {
+    const response = await publicClient.respondToChallenge(request);
     await updateStorage(response);
     setRefreshToken(response.refreshToken);
     localStorage.setItem('refreshToken', response.refreshToken);
@@ -110,6 +120,7 @@ const AuthProvider = ({ children }) => {
         userIsMemberOfAtLeastOne,
         isAuthedUsername,
         callbackLogin,
+        respondToChallenge,
       }}
     >
       {children}

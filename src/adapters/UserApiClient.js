@@ -118,6 +118,48 @@ class UserApiClient {
       throw new Error(e.message);
     }
   }
+
+  async createSoftwareToken() {
+    try {
+      return await this.axios
+        .post('v1/auth/software-tokens')
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async verifySoftwareToken(userCode) {
+    try {
+      return await this.axios
+        .put('v1/auth/software-tokens',  {
+          userCode,
+        })
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async getMfaSettings() {
+    try {
+      return await this.axios
+        .get('v1/users/admin/mfa-settings')
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+    async updateMfaSettings(request) {
+    try {
+      return await this.axios
+        .put('v1/users/admin/mfa-settings', request)
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
 }
 
 export default UserApiClient;

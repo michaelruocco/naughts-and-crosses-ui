@@ -3,11 +3,12 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { Box } from '@mui/system';
 import TextField from '@mui/material/TextField';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import AlertSnackbar from './AlertSnackbar';
 import { useAuth } from '../hooks/AuthProvider';
 
-const LoginPage = () => {
+const MfaPage = () => {
+  const [ searchParams ] = useSearchParams();
   const closedSnackState = {
     open: false,
     message: '',
@@ -18,8 +19,7 @@ const LoginPage = () => {
   const [formInput, setFormInput] = useReducer(
     (state, newState) => ({ ...state, ...newState }),
     {
-      username: '',
-      password: '',
+      userCode: '',
     },
   );
 
@@ -40,14 +40,17 @@ const LoginPage = () => {
     event.preventDefault();
     closeSnackbar();
     try {
-      const response = await auth.login(formInput);
-      if (response?.challenge) {
-       navigate(`/mfa-login?username=${formInput.username}&challenge=${response.challenge}&session=${response.session}`);
-       return;
+      const request = {
+        username: searchParams.get('username'),
+        challenge: searchParams.get('challenge'),
+        session: searchParams.get('session'),
+        userCode: formInput.userCode
       }
+      console.log(`respond to challenge ${JSON.stringify(request)}`);
+      await auth.respondToChallenge(request);
       navigate('/');
     } catch (e) {
-      console.error(e.message);
+      console.debug(e.message);
       setErrorMessage('Login failed');
     }
   };
@@ -61,25 +64,13 @@ const LoginPage = () => {
     >
       <Box component="form" onSubmit={handleSubmit}>
         <TextField
-          id="username"
-          name="username"
-          label="Username"
-          autoComplete="username"
+          id="userCode"
+          name="userCode"
+          label="Code"
           margin="normal"
           onChange={handleInput}
           fullWidth
           autoFocus
-          required
-        />
-        <TextField
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          margin="normal"
-          onChange={handleInput}
-          fullWidth
           required
         />
         <Box m={1} textAlign="center">
@@ -96,4 +87,4 @@ const LoginPage = () => {
     </Grid>
   );
 };
-export default LoginPage;
+export default MfaPage;

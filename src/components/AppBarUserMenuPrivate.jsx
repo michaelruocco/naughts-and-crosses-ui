@@ -21,16 +21,17 @@ function AppBarUserMenuPrivate() {
 
   const navigate = useNavigate();
 
-  const navigateLogin = (event) => {
+  const handleLogout = (event) => {
     event.preventDefault();
+    logout();
     handleCloseUserMenu();
     navigate('/login');
   };
 
-  const handleLogout = (event) => {
+  const handleSettings = (event) => {
     event.preventDefault();
-    logout();
-    navigateLogin(event);
+    handleCloseUserMenu();
+    navigate('/user-settings');
   };
 
   return (
@@ -58,6 +59,14 @@ function AppBarUserMenuPrivate() {
       >
         <MenuItem key="username" disabled={true}>
           <Typography textAlign="center">{user.fullName}</Typography>
+        </MenuItem>
+        <MenuItem key="settings" onClick={handleCloseUserMenu}>
+          <Typography
+            textAlign="center"
+            onClick={(event) => handleSettings(event)}
+          >
+            Settings
+          </Typography>
         </MenuItem>
         <MenuItem key="logout" onClick={handleCloseUserMenu}>
           <Typography

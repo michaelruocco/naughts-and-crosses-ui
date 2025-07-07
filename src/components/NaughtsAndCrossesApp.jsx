@@ -18,6 +18,8 @@ import AuthProvider from '../hooks/AuthProvider';
 import AdminOnlyRoute from './AdminOnlyRoute';
 import Redirect from './Redirect';
 import LoginCallback from './LoginCallback';
+import MfaPage from './MfaPage';
+import UserSettingsPage from './UserSettingsPage';
 
 const NaughtsAndCrossesApp = () => {
   const hostedLoginUrl = `${APP_LOGIN_URL}`;
@@ -39,7 +41,10 @@ const NaughtsAndCrossesApp = () => {
                 </>
               )}
               {!hostedLoginUrl && (
-                <Route path="/login" element={<LoginPage />} />
+                <>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/mfa-login" element={<MfaPage />} />
+                </>
               )}
               <Route path="/" element={<Navigate replace to="/games" />} />
               <Route
@@ -67,6 +72,14 @@ const NaughtsAndCrossesApp = () => {
                 element={
                   <PrivateRoute>
                     <CreateGamePage />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/user-settings"
+                element={
+                  <PrivateRoute>
+                    <UserSettingsPage />
                   </PrivateRoute>
                 }
               />

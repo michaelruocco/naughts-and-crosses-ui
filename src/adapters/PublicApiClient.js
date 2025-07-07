@@ -20,7 +20,7 @@ class PublicApiClient {
   async getToken(request) {
     try {
       return await this.axios
-        .post('/v1/auth/tokens', request)
+        .post('/v1/auth/access-tokens', request)
         .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);
@@ -40,7 +40,18 @@ class PublicApiClient {
   async refreshToken(refreshToken) {
     try {
       return await this.axios
-        .put('/v1/auth/tokens', { refreshToken: refreshToken })
+        .put('/v1/auth/access-tokens', { refreshToken: refreshToken })
+        .then((response) => response.data);
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  async respondToChallenge(request) {
+    try {
+      console.log(`calling respond to challenge in client ${JSON.stringify(request)}`);
+      return await this.axios
+        .post('/v1/auth/challenges', request)
         .then((response) => response.data);
     } catch (e) {
       throw new Error(e.message);
