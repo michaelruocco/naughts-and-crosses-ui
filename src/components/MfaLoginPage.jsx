@@ -64,7 +64,7 @@ const MfaLoginPage = () => {
     >
       <Box sx={{ mb: 2 }}>
         <Typography>
-          Please enter your authenticator application code
+          Please enter your authenticator code
         </Typography>
       </Box>
       <Box component="form" onSubmit={handleSubmit}>

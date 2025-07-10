@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/system';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -9,15 +9,6 @@ import UserGroupAutocomplete from './UserGroupAutocomplete';
 const UserForm = (props) => {
   const { onSubmit, existingUser, buttonText, disabled } = props;
 
-  const toMfaSettings = (enabled) => {
-    return {
-      softwareToken: {
-        enabled: enabled,
-        preferred: enabled,
-      }
-    };
-  }
-
   const newUser = {
     username: '',
     name: '',
@@ -26,7 +17,6 @@ const UserForm = (props) => {
     email: '',
     emailVerified: true,
     groups: [],
-    mfa: toMfaSettings(false),
   };
   const initialUser = existingUser || newUser;
 
@@ -40,7 +30,6 @@ const UserForm = (props) => {
       email: initialUser.email,
       emailVerified: initialUser.emailVerified,
       groups: initialUser.groups,
-      mfa: initialUser.mfa,
     },
   );
 
@@ -54,20 +43,12 @@ const UserForm = (props) => {
     setFormInput({ [target.name]: target.checked });
   };
 
-  const handleMfaEnabledChanged = (event) => {
-    const target = event.target;
-    console.log(`setting mfa ${JSON.stringify(toMfaSettings(target.checked))}`);
-    setFormInput({ 'mfa': toMfaSettings(target.checked) });
-  };
-
-
   const handleGroupsInput = (value) => {
     setFormInput({ groups: value });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(JSON.stringify(formInput));
     onSubmit(formInput);
   };
 
@@ -136,15 +117,6 @@ const UserForm = (props) => {
         disabled={disabled}
         onGroupsChange={handleGroupsInput}
       />
-      <Box sx={{ mb: 1 }}>
-        <FormControlLabel
-          id="softwareMfaEnabled"
-          name="softwareMfaEnabled"
-          label="MFA Enabled" 
-          disabled={disabled || !formInput.mfa?.softwareToken?.enabled }
-          control={<Switch checked={formInput.mfa?.softwareToken?.enabled || false} onChange={handleMfaEnabledChanged} />}
-        />
-      </Box>
       <Box m={1} textAlign="center">
         <Button variant="contained" type="submit" disabled={disabled}>
           {buttonText}

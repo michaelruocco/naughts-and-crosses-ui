@@ -20,6 +20,7 @@ import Redirect from './Redirect';
 import LoginCallback from './LoginCallback';
 import MfaLoginPage from './MfaLoginPage';
 import UserSettingsPage from './UserSettingsPage';
+import UserMfaPage from './UserMfaPage';
 
 const NaughtsAndCrossesApp = () => {
   const hostedLoginUrl = `${APP_LOGIN_URL}`;
@@ -113,9 +114,17 @@ const NaughtsAndCrossesApp = () => {
               <Route
                 path="/user/:username"
                 element={
-                  <PrivateRoute>
+                  <AdminOnlyRoute>
                     <UpdateUserPage />
-                  </PrivateRoute>
+                  </AdminOnlyRoute>
+                }
+              />
+              <Route
+                path="/user/:username/mfa"
+                element={
+                  <AdminOnlyRoute>
+                    <UserMfaPage />
+                  </AdminOnlyRoute>
                 }
               />
             </Routes>

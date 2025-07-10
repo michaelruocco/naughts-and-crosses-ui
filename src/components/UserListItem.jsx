@@ -62,11 +62,6 @@ const UserListItem = (props) => {
         >
           {user.email}
         </Typography>
-        {user.mfa.softwareToken.enabled && (
-        <Typography variant="body2" color="text.secondary">
-          MFA Enabled
-        </Typography>
-        )}
       </CardContent>
 
       <CardActions>

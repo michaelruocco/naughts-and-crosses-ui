@@ -151,7 +151,7 @@ class UserApiClient {
     }
   }
 
-    async updateMfaSettings(username, request) {
+  async updateMfaSettings(username, request) {
     try {
       return await this.axios
         .put(`v1/users/${username}/mfa-settings`, request)

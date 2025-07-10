@@ -4,23 +4,24 @@ import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
 import AlertSnackbar from './AlertSnackbar';
 import { useAuth } from '../hooks/AuthProvider';
-import UserForm from './UserForm';
 import { useParams } from 'react-router-dom';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import UserListButton from './UserListButton';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
+import { Box } from '@mui/system';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 const UpdateUserPage = () => {
   const { username } = useParams();
-  const { isAuthedUsername } = useAuth();
   const closedSnackState = {
     open: false,
     message: '',
   };
   const [snackState, setSnackState] = useState(closedSnackState);
-  const [user, setUser] = useState(null);
   const [mfaEnabled, setMfaEnabled] = useState(false);
+  const [saveEnabled, setSaveEnabled] = useState(false);
 
   const { accessToken } = useAuth();
   const client = new UserApiClient(accessToken);
@@ -38,24 +39,27 @@ const UpdateUserPage = () => {
     setSnackState({ open: true, message: message, severity: 'success' });
   };
 
-  const handleSubmit = async (formInput) => {
+  const handleMfaEnabledChanged = (event) => {
+    setSaveEnabled(true);
+    setMfaEnabled(event.target.checked);
+  };
+
+  const handleSubmit = async () => {
     closeSnackbar();
     try {
-      const user = await client.update(formInput);
-      setSuccessMessage(`User ${user.username} updated successfully`);
-      navigate('/users');
+      const request = {
+        softwareToken: {
+          enabled: mfaEnabled,
+          preferred: mfaEnabled
+        }
+      }
+      const user = await client.updateMfaSettings(username, request);
+      setSuccessMessage(`MFA settings updated successfully`);
+      navigate(`/user/${username}`);
     } catch (e) {
       setErrorMessage(e.message);
     }
   };
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await client.get(username);
-      setUser(user);
-    };
-    fetchUser();
-  }, []);
 
   useEffect(() => {
     const fetchUserMfaSettings = async () => {
@@ -64,7 +68,6 @@ const UpdateUserPage = () => {
     };
     fetchUserMfaSettings();
   }, []);
-
 
   return (
     <Grid
@@ -75,18 +78,26 @@ const UpdateUserPage = () => {
     >
       <ButtonGroup>
         <UserListButton />
-        {mfaEnabled && (
-          <Button variant="contained" component={Link} to={`/user/${username}/mfa`}>
-            MFA
-          </Button>
-        )}
+        <Button variant="contained" component={Link} to={`/user/${username}`}>
+          {username}
+        </Button>
       </ButtonGroup>
-      <UserForm
-        disabled={isAuthedUsername(user?.username)}
-        onSubmit={handleSubmit}
-        existingUser={user}
-        buttonText="Update"
-      />
+      <Box component="form" onSubmit={handleSubmit}>
+        <Box sx={{ mb: 1 }}>
+          <FormControlLabel
+            id="mfaEnabled"
+            name="mfaEnabled"
+            label="MFA Enabled" 
+            disabled={!mfaEnabled}
+            control={<Switch checked={mfaEnabled} onChange={handleMfaEnabledChanged} />}
+          />
+        </Box>
+        <Box m={1} textAlign="center">
+          <Button variant="contained" type="submit" disabled={!saveEnabled}>
+            Save
+          </Button>
+        </Box>
+      </Box>
       <AlertSnackbar
         open={snackState.open}
         severity={snackState.severity}
