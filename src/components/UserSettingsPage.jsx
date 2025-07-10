@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import SecretCodeDialog from 'components/SecretCodeDialog';
 import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import AlertSnackbar from './AlertSnackbar';
 
 const UserSettingsPage = () => {
   const [secretCode, setSecretCode] = useState('');
@@ -23,6 +24,11 @@ const UserSettingsPage = () => {
   const [softwareTokenEnabled, setSoftwareTokenEnabled] = useState('');
   const [secretCodeDialogOpen, setSecretCodeDialogOpen] = useState(false);
   const { accessToken, user } = useAuth();
+  const closedSnackState = {
+      open: false,
+      message: '',
+    };
+    const [snackState, setSnackState] = useState(closedSnackState);
 
   const client = new UserApiClient(accessToken);
 
@@ -40,17 +46,47 @@ const UserSettingsPage = () => {
     setSoftwareTokenEnabled(response.softwareToken.enabled);
   };
 
-  const verifyUserCode = async () => {
+  const closeSnackbar = () => {
+    setSnackState(closedSnackState);
+  };
+
+  const setErrorMessage = (message) => {
+    setSnackState({ open: true, message: message, severity: 'error' });
+  };
+
+  const setSuccessMessage = (message) => {
+    setSnackState({ open: true, message: message, severity: 'success' });
+  };
+
+  const verifyUserCodeAndEnableMfa = async () => {
     try {
       await client.verifySoftwareToken(userCode);
+      setSuccessMessage('Token verification successful');
+      if (!softwareTokenEnabled) {
+        await autoEnableSoftwareToken();
+      }
     } catch (e) {
-      //TODO present error to user
       console.error(e);
+      setErrorMessage('Token verification failed');
     }
   };
 
+  const autoEnableSoftwareToken = async () => {
+      try {
+        updateSoftwareTokenEnabled(true);
+        setSuccessMessage('Two-factor authentication enabled');
+      } catch (e) {
+        console.error(e);
+        setErrorMessage('Enable two-factor authentication failed');
+    }
+  }
+
   const handleSoftwareTokenEnabledChange = async (event) => {
     const enabled = event.target.checked;
+    updateSoftwareTokenEnabled(enabled);
+  };
+
+  const updateSoftwareTokenEnabled = async (enabled) => {
     const request = {
       softwareToken: {
         enabled,
@@ -88,9 +124,6 @@ const UserSettingsPage = () => {
             <Typography component="span" sx={{ fontWeight: 'bold' }}>Authenticator App</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Box sx={{ mb: 2 }}>
-              <FormControlLabel control={<Switch checked={softwareTokenEnabled} onChange={handleSoftwareTokenEnabledChange} />} label="Enabled" />
-            </Box>
             <Typography>
               Authenticator apps and browser extensions like <Link href="https://support.1password.com/one-time-passwords/?mac" target="_blank" rel="noreferrer">1Password</Link>, <Link href="https://www.authy.com/" target="_blank" rel="noreferrer">Authy</Link>, <Link href="https://www.microsoft.com/en-us/security/mobile-authenticator-app" target="_blank" rel="noreferrer">Microsoft Authenticator</Link>, etc. generate one-time passwords that are used as a second factor to verify your identity when prompted during sign-in.
             </Typography>
@@ -99,7 +132,7 @@ const UserSettingsPage = () => {
                 Scan the QR Code
               </Typography>
             </Box>
-            <Box sx={{ mt: 3 }}>
+            <Box>
               <Typography>
                 Use an authenticator app or browser extension to scan.
               </Typography>
@@ -115,18 +148,37 @@ const UserSettingsPage = () => {
                 Verify the code from the app
               </Typography>
             </Box>
-            <Box sx={{ my: 2 }}>
+            <Box sx={{ my: 1 }}>
               <TextField id="userCode" name="userCode" placeholder="XXXXXX" onChange={handleUserCodeChange} />
             </Box>
             <Box>
-              <Button variant="contained" onClick={() => verifyUserCode()}>
-                Save
+              <Button variant="contained" onClick={() => verifyUserCodeAndEnableMfa()}>
+                Verify
               </Button>
+            </Box>
+            <Box sx={{ mt: 3 }}>
+              <Typography sx={{ fontWeight: 'bold' }} variant="h7">
+                Enabled
+              </Typography>
+            </Box>
+            <Box>
+              <Typography>
+                Authenticator app two factor authentication enabled
+              </Typography>
+            </Box>
+            <Box>
+              <FormControlLabel control={<Switch checked={softwareTokenEnabled} onChange={handleSoftwareTokenEnabledChange} />} />
             </Box>
           </AccordionDetails>
         </Accordion>
       </Box>
     </Grid>
+    <AlertSnackbar
+      open={snackState.open}
+      message={snackState.message}
+      severity={snackState.severity}
+      onClose={closeSnackbar}
+    />
     <SecretCodeDialog open={secretCodeDialogOpen} onClose={() => setSecretCodeDialogOpen(false)} secretCode={secretCode} />
   </>);
 };

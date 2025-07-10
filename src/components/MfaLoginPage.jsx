@@ -6,8 +6,9 @@ import TextField from '@mui/material/TextField';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import AlertSnackbar from './AlertSnackbar';
 import { useAuth } from '../hooks/AuthProvider';
+import Typography from '@mui/material/Typography';
 
-const MfaPage = () => {
+const MfaLoginPage = () => {
   const [ searchParams ] = useSearchParams();
   const closedSnackState = {
     open: false,
@@ -46,7 +47,6 @@ const MfaPage = () => {
         session: searchParams.get('session'),
         userCode: formInput.userCode
       }
-      console.log(`respond to challenge ${JSON.stringify(request)}`);
       await auth.respondToChallenge(request);
       navigate('/');
     } catch (e) {
@@ -62,6 +62,11 @@ const MfaPage = () => {
       alignItems="center"
       justifyContent="center"
     >
+      <Box sx={{ mb: 2 }}>
+        <Typography>
+          Please enter your authenticator application code
+        </Typography>
+      </Box>
       <Box component="form" onSubmit={handleSubmit}>
         <TextField
           id="userCode"
@@ -75,7 +80,7 @@ const MfaPage = () => {
         />
         <Box m={1} textAlign="center">
           <Button variant="contained" type="submit">
-            Login
+            Submit
           </Button>
         </Box>
         <AlertSnackbar
@@ -87,4 +92,4 @@ const MfaPage = () => {
     </Grid>
   );
 };
-export default MfaPage;
+export default MfaLoginPage;
